@@ -111,7 +111,10 @@ export default {
       this.set_route("");
       const arr = this.permission_routes.find(item => item.path == "");
       this.set_route_List(arr.children || []);
-    }
+    },
+    toggleSideBar () {
+      this.$store.dispatch("app/toggleSideBar");
+    },
   }
 };
 </script>
@@ -145,6 +148,10 @@ export default {
   }
   .logo {
     width: 130px;
+    &.collapse{
+      width: 54px;
+      overflow: hidden;
+    }
   }
   .right-menu {
     flex: 1;

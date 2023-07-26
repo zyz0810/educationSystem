@@ -1,9 +1,15 @@
 <template>
   <div class="login">
     <div class="n-background">
-      <img width="100%"
-           :src="crm_background"
-           alt />
+<!--      <img width="100%"-->
+<!--           :src="crm_background"-->
+<!--           alt />-->
+      <p class="f32">快速获取用户心声，给予更真实的反馈</p>
+      <p class="f16">调研方式多样，快速触达目标用户收集反馈</p>
+      <p class="f16">丰富的调研视角，多类型的用户需求调研</p>
+      <p class="f16">全渠道用户反馈，满足品牌自有渠道灵活投放</p>
+      <p class="f16">所见即所得的回收数据，有效把控项目进度及质量</p>
+      <p class="f12">Copyright © 北京XXX数科技有限公司    京ICP备17027560号-2</p>
     </div>
     <el-form ref="loginForm"
              :model="loginForm"
@@ -15,21 +21,21 @@
                  class="avatar"
                  :src="crm_icon"></el-avatar>
      -->
-      <h3 class="title-h3">康药麦麦访销管理后台</h3>
-      <h6 class="title-h6">开启线上办公新模式</h6>
+      <h3 class="title-h3">欢迎来到<br/>康药麦麦访销管理后台</h3>
       <el-form-item prop="username">
         <el-input v-model.trim="loginForm.username"
                   type="text"
                   auto-complete="off"
-                  placeholder="请输入你的登录账号">
+                  placeholder="请输入手机号">
         </el-input>
       </el-form-item>
       <el-form-item prop="password">
         <el-input v-model.trim="loginForm.password"
-                  type="password"
+                  :type="passwordType" ref="password"
                   auto-complete="off"
-                  placeholder="请输入你的登录密码"
+                  placeholder="请输入密码"
                   @keyup.enter.native="handleLogin">
+          <i slot="suffix" class="el-input__icon el-icon-view f16" @click.stop="showPwd"></i>
         </el-input>
       </el-form-item>
       <!-- <el-form-item prop="code">
@@ -61,6 +67,7 @@
           <span v-if="!loading">登 录</span>
           <span v-else>登 录 中...</span>
         </el-button>
+        <p class="text-left ml_20">登录即表示我已阅读并同意<span class="yellow01">《服务协议》</span>和<span class="yellow01">《隐私协议》</span></p>
       </el-form-item>
     </el-form>
   </div>
@@ -85,6 +92,7 @@ export default {
         code: "",
         uuid: ""
       },
+      passwordType: "password",
       crm_icon: require("@/assets/logo/crm_icon.png"),
       crm_background: require("@/assets/image/login-background.png"),
       loginRules: {
@@ -116,6 +124,16 @@ export default {
     this.getCookie();
   },
   methods: {
+    showPwd() {
+      if (this.passwordType === "password") {
+        this.passwordType = "";
+      } else {
+        this.passwordType = "password";
+      }
+      this.$nextTick(() => {
+        this.$refs.password.focus();
+      });
+    },
     getCode () {
       getCodeImg().then(res => {
         this.codeUrl = "data:image/gif;base64," + res.img;
@@ -168,10 +186,12 @@ export default {
 }
 .title-h3 {
   font-family: AlibabaPuHuiTi-Medium;
-  font-size: 35px;
-  letter-spacing: 0px;
-  color: #1d69b1;
-  margin: 200px 0px 0px;
+  color:#3D3D3D;
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: 0;
+  margin: 30px 0 20px 0;
+  line-height: 1.5;
 }
 .title-h6 {
   font-family: AlibabaPuHuiTi-Regular;
@@ -190,46 +210,45 @@ export default {
   top: 5px;
 }
 .login-form {
-  border-top-right-radius: 12px;
-  border-bottom-right-radius: 12px;
+ border-radius: 5px;
   background: #ffffff;
-  width: 500px;
-  // height: 580px;
-  height: calc(100vh - 180px);
-  // padding: 25px 25px 5px 25px;
+  width: 520px;
+  /*height: calc(100vh - 180px);*/
   text-align: center;
-  flex: 0.5;
-  padding: 0px;
+  /*flex: 0.5;*/
+  padding: 0;
   .el-form-item__error {
     width: 100% !important;
   }
   .el-input {
-    height: 60px;
-    line-height: 60px;
-    width: 400px !important;
+    height: 40px;
+    line-height: 40px;
+    width: 472px !important;
     input {
-      height: 60px;
-      text-align: center;
-      border: none;
-      border-radius: 30px;
-      background-color: #f6f6f6;
+      height: 40px;
+      border-radius: 4px;
+      background-color: #fff;
+      border: 1px solid #DCDFE6;
     }
     input::-webkit-input-placeholder {
       /* placeholder颜色  */
-      color: #999;
+      color: #C0C4CC;
       font-size: 14px;
     }
   }
+  .el-form-item__error{
+    text-align: left;
+    padding-left: 25px;
+  }
   .el-button {
-    width: 100px;
-    height: 50px;
-    background-image: linear-gradient(0deg, #5b86e5 0%, #36d1dc 100%);
+    height: 40px;
+    background: #F2A249;
     box-shadow: 0px 4px 13px 0px rgba(48, 179, 222, 0.2);
-    width: 160px !important;
+    width: 472px !important;
     border: none;
     color: #ffffff;
-    border-radius: 30px;
-    margin: 80px 0px 0px 0px;
+    border-radius: 4px;
+    /*margin: 10px 0px 0px 0px;*/
   }
   .input-icon {
     height: 39px;
@@ -268,7 +287,10 @@ export default {
 }
 .n-background {
   height: calc(100vh - 180px);
-  flex: 0.5;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   img {
     height: 100%;
   }

@@ -83,6 +83,9 @@ Viewer.setDefaults({
   Options: {'inline': true, 'button': true, 'navbar': true, 'title': true, 'toolbar': true, 'tooltip': true, 'movable': true, 'zoomable': true, 'rotatable': true, 'scalable': true, 'transition': true, 'fullscreen': true, 'keyboard': true, 'url': 'data-source' }
 })
 
+import MyMessageBox from '@/utils/toast.js'
+Vue.prototype.$MyMessageBox = MyMessageBox;
+
 Vue.prototype.msgSuccess = function(msg) {
   this.$message({
     showClose: true,
@@ -121,8 +124,8 @@ Vue.use(permission)
  */
 
 Vue.use(Element, {
-  // size: Cookies.get("size") || "medium" // set element-ui default size
-  size: 'small'
+  // size: Cookies.get("size") || "medium" // set element-ui default size medium / small / mini
+  size: 'mini'
 })
 
 Vue.config.productionTip = false

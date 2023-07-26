@@ -8,11 +8,12 @@
     :append-to-body="appendToBody"
     :title="title"
     :class="isFullscreen ? 'full_screen' : ''"
-    :show-close="true"
+    :show-close="false"
     @open="open"
   >
     <div slot="title" class="dialog-title">
       {{ title }}
+      <i class="el-icon-close fr" @click="close"></i>
     </div>
     <slot></slot>
     <slot name="footer" class="page_footer"></slot>

@@ -45,7 +45,7 @@ export default {
     Sidebar,
     TagsView
   },
-  mixins: [ResizeMixin],
+  // mixins: [ResizeMixin],
   computed: {
     ...mapState({
       sidebar: state => state.app.sidebar,

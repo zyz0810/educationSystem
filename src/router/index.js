@@ -1068,7 +1068,81 @@ export const asyncRoutes = [
             },
           ]
         },
-
+  {
+    path: '/roleManagement',
+    component: Layout,
+    redirect: 'noRedirect',
+    name: '权限管理',
+    meta: {
+      title: '权限管理',
+      icon: 'order',
+      roles: [
+        'admin',
+        'business:set',
+        'business:set:highsee:rule',
+        'business:set:parm',
+        'business:set:attendance',
+        'business:set:dict',
+        'performance:setting',
+        'performance:setting:set',
+        'performance:setting:edit',
+        'performance:setting:del',
+        'performance:setting:list',
+        'performance:setting:journal',
+        'examine-setting',
+        'examine-setting:list',
+        'examine-setting:view',
+        'examine-setting:add',
+        'examine-setting:edit',
+        'examine-setting:copy',
+        'examine-setting:journal',
+        'customer-level',
+        'customer-level:view',
+        'customer-level:edit',
+        'menu',
+        'menu:list',
+        'menu:add',
+        'menu:eidt',
+        'menu:del',
+      ],
+    },
+    children: [
+      {
+        path: 'team',
+        component: resolve =>
+          require(['@/views/roleManagement/team/index'], resolve),
+        name: 'service',
+        meta: {
+          title: '团队管理',
+          icon: 'iconfont icon-edit',
+          roles: [
+            'admin',
+            'business:set',
+            'business:set:highsee:rule',
+            'business:set:parm',
+            'business:set:attendance',
+            'business:set:dict'
+          ]
+        }
+      },
+      {
+        path: 'role',
+        component: resolve =>
+          require(['@/views/roleManagement/role/index'], resolve),
+        name: 'customerLeaverSet',
+        meta: {
+          title: '权限管理',
+          icon: 'iconfont icon-kaoheguanli-xuanzhong',
+          roles: [
+            'admin',
+            'customer-level',
+            'customer-level:view',
+            'customer-level:edit',
+          ]
+        }
+      },
+    ]
+  },
 
     ]
     // export default new Router({

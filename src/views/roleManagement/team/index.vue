@@ -1,16 +1,18 @@
 <template>
   <div class="app-container">
     <el-form :inline="true"
-             class="search_box">
+             class="search_box border_bottom">
       <el-form-item label="">
         <el-input v-model.trim="listQuery.key"
                   clearable suffix-icon="el-icon-search"
                   @change="queryCustomerList"
-                  placeholder="标题/关键词" />
+                  placeholder="请输入" />
       </el-form-item>
-      <el-button type="primary" class="fr mt_10" @click="handelDetail('create', '')">新建公告</el-button>
+      <el-button type="primary" class="fr mt_10" @click="handelDetail('create', '')">新建</el-button>
     </el-form>
-    <div class="container mt_10">
+    <div class="container_box flex">
+      <roleBox :roleList="roleList" :roleCurrent="listQuery.role" @queryList="queryList"></roleBox>
+      <div class="container">
       <el-table v-loading="listLoading"
                 :data="dataList"
                 :max-height="tableHeight"
@@ -76,6 +78,7 @@
                   :limit.sync="listQuery.limit"
                   @pagination="customerList"
                   class="text-right" />
+      </div>
     </div>
     <!--修改定位-->
     <detail :showDialog.sync="showDetail"
@@ -87,11 +90,13 @@
 <script>
 import {customerList,} from "@/api/customer/customer";
 import detail from './detail';
+import roleBox from './../components/roleBox';
 export default {
   data () {
     return {
       listQuery: {
         key: "",
+        role:"",
         limit: 10,
         page: 1,
       },
@@ -105,9 +110,10 @@ export default {
         type:'',
         option:{},
       },
+      roleList:[{id:'',name:'全部'},{id:1,name:'超级管理员'},{id:2,name:'管理员'},{id:3,name:'供应商'},{id:4,name:'客服审核员'}]
     };
   },
-  components: {detail},
+  components: {detail,roleBox},
   computed: {},
   mounted () {
     this.$nextTick(() => {
@@ -141,8 +147,14 @@ export default {
     },
 
     queryCustomerList () {
-      this.listQuery.page = 1
-      this.customerList()
+      this.listQuery.page = 1;
+      this.customerList();
+    },
+    queryList(role){
+      this.listQuery.role = role;
+      this.listQuery.page = 1;
+      this.customerList();
+      console.log('11')
     },
     // 删除单个
     handleDel (id, index) {
@@ -168,6 +180,13 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+  .container_box{
+    height: calc(100vh - 129px);
+    .container{
+      flex: 1;
+      overflow: auto;
+    }
+  }
 /deep/.border-card {
   margin-top: 10px !important;
 }
@@ -181,4 +200,5 @@ export default {
 /deep/.search_box .el-form-item {
   float: none;
 }
+
 </style>
