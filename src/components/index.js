@@ -18,7 +18,7 @@ const commomComponents = {
     Vue.component('brokenline', BrokenLine)
     Vue.component('histogram', Histogram)
     Vue.component('sureTips', SureTips)
-    Vue.component('upload', Upload)
+    // Vue.component('upload', Upload)
     Vue.component('UploadOnly', UploadOnly)
     Vue.component('department', Department)
     Vue.component('addFollow', AddFollow)
