@@ -1,9 +1,9 @@
 <template>
-  <div :class="{'has-logo':showLogo}">
+  <div :class="{'has-logo':showLogo,'nav_two_none':activeRouteList.filter(item=>!item.hidden).length<1}">
     <el-scrollbar wrap-class="scrollbar-wrapper nav_one">
       <router-bar class="top_bar_container" />
     </el-scrollbar>
-    <el-scrollbar wrap-class="scrollbar-wrapper nav_two">
+    <el-scrollbar :wrap-class="['scrollbar-wrapper','nav_two',activeRouteList.filter(item=>!item.hidden).length<1?'nav_two_none':'']">
       <el-menu :default-active="activeSidebarMenu"
                :collapse="isCollapse"
                :background-color="variables.menuBg"
@@ -80,6 +80,11 @@ export default {
 </script>
 
 <style lang="scss">
+  .nav_two_none{
+    .nav_two{
+      display: none;
+    }
+  }
 .operation {
   height: 50px;
   display: flex;
@@ -103,6 +108,9 @@ export default {
   .nav_two{
     width: 167px;
     background: #fff;
+    .el-menu-item{
+      font-size: 12px;
+    }
     .el-menu-item.is-active{
       background: #E6F5FF !important;
       position: relative;
@@ -122,6 +130,9 @@ export default {
         /*transform: scaleY(0.5);*/
         z-index: 2;
       }
+    }
+    &.nav_two_none{
+      /*display: none;*/
     }
   }
 </style>

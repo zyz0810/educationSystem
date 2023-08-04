@@ -6,33 +6,46 @@
              @open="open"
              top="15vh"
              :title="textMap[dialogStatus]">
-    <el-form ref="ruleForm"
-             :model="formData"
-             label-width="120px"
-             :rules="rules"
-             class="formList">
-      <el-form-item label="选择角色："
-                    prop="one">
-        <el-select v-model="formData.one" placeholder="请选择">
-          <el-option v-for="(item, index) in roleList"
-                     :key="index"
-                     :label="item.name"
-                     :value="item.id"></el-option>
-        </el-select>
-      </el-form-item>
-      <el-form-item label="姓名："
-                    prop="two">
-        <el-input v-model.trim="formData.two"
-                  clearable
-                  placeholder="请输入" />
-      </el-form-item>
-      <el-form-item label="手机号："
-                    prop="three">
-        <el-input v-model.trim="formData.three"
-                  clearable
-                  placeholder="请输入" />
-      </el-form-item>
-    </el-form>
+    <div class="flex">
+      <div class="flex_hd"><img class="head_img_detail" src="http://cdn.kyaoduo.com/upload/image/20200808/WechatIMG289.png"></div>
+      <div class="flex_bd">
+        <div>李磊</div>
+        <div>18625632512</div>
+      </div>
+    </div>
+    <div>
+      <div>基本信息</div>
+      <div class="flex border_bottom1">
+        <div>客户ID</div>
+        <div class="flex_bd text-right">发发发</div>
+      </div>
+      <div class="flex border_bottom1">
+        <div>姓名</div>
+        <div class="flex_bd text-right">发发发</div>
+      </div>
+      <div class="flex border_bottom1">
+        <div>地域</div>
+        <div class="flex_bd text-right">发发发</div>
+      </div>
+      <div class="flex border_bottom1">
+        <div>个人简介</div>
+        <div class="flex_bd text-right">发发发</div>
+      </div>
+    </div>
+    <div>
+      <div>资质标签</div>
+      <div class="tag_list">
+        <span class="person_tag">咨询</span>
+        <span class="person_tag">幼教</span>
+      </div>
+    </div>
+    <div>
+      <div>附件</div>
+      <div class="tag_list">
+        <span class="person_tag">咨询</span>
+        <span class="person_tag">幼教</span>
+      </div>
+    </div>
     <span slot="footer"
           class="dialog-footer" v-show="dialogStatus!='detail'">
       <el-button @click="dialogVisible = false">取 消</el-button>
@@ -59,35 +72,34 @@ export default {
         option:{}
       }
     },
-    roleList:{
-      required: true,
-      type: Array,
-      default: []
-    },
   },
   data () {
     return {
       formData: {
         one: 1,
-        two: '21',
-        three: '13589632589',
+        two: 'https://cdn.kyaoduo.com/upload/file/202307/feb5e6bc-0083-4eed-95be-ac7cf82bf11b.jpeg',
+        three: '12',
+        four: '<p style="color:red;">2222</p>',
       },
       isChange:false,
       textMap: {
-        update: '编辑团队用户',
-        create: '新建团队用户',
-        detail:'团队用户详情'
+        update: '编辑家长信息',
+        create: '新建家长信息',
+        detail:'家长信息'
       },
       dialogStatus: '',
       rules: {
         one: [
-          { required: true, message: "请选择角色女", trigger: "blur" }
+          { required: true, message: "请选择类型", trigger: "blur" }
         ],
         two: [
-          { required: true, message: "请输入姓名", trigger: "blur" }
+          { required: true, message: "请上传图片", trigger: "blur" }
         ],
         three: [
-          { required: true, message: "请输入手机号", trigger: "blur" }
+          { required: true, message: "请输入链接", trigger: "blur" }
+        ],
+        four: [
+          { required: true, message: "请输入公告内容", trigger: "blur" }
         ],
       }
     };
@@ -107,12 +119,11 @@ export default {
     }
   },
   methods: {
-
+    hasImgSrc(val) {
+      this.formData.two = val;
+    },
     // 修改定位
     save () {
-      // if (this.$refs.myQuillEditor) {
-      //   this.$refs.myQuillEditor.changeContent(description);
-      // }
       this.$refs.ruleForm.validate(valid => {
         if (valid) {
           this.formData.lonAndLat = `${this.formData.longitude},${this.formData.latitude}`
@@ -130,6 +141,8 @@ export default {
     open () {
       this.formData.id = this.infoData.option.id;
       this.dialogStatus = this.infoData.type;
+
+
     },
     close () {
       this.$refs.ruleForm.clearValidate();

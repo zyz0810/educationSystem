@@ -24,6 +24,8 @@ import 'quill/dist/quill.bubble.css'
 
 import moment from 'moment'
 Vue.prototype.$moment = moment
+import countTo from 'vue-count-to'
+Vue.component('CountTo', countTo)
 
 import VueAMap from 'vue-amap'
 Vue.use(VueAMap)

@@ -1,18 +1,24 @@
 <template>
   <div class="app-container">
     <el-form :inline="true"
-             class="search_box border_bottom">
+             class="search_box">
       <el-form-item label="">
         <el-input v-model.trim="listQuery.key"
                   clearable suffix-icon="el-icon-search"
                   @change="queryCustomerList"
-                  placeholder="请输入" />
+                  placeholder="标题/关键词" />
       </el-form-item>
-      <el-button type="primary" class="fr mt_10" @click="handelDetail('create', '')">新建</el-button>
+      <el-form-item label="">
+        <el-select v-model="listQuery.one" placeholder="请选择" @change="queryCustomerList">
+          <el-option label="全部" value=""></el-option>
+          <el-option v-for="(item, index) in userList"
+                     :key="index"
+                     :label="item.name"
+                     :value="item.id"></el-option>
+        </el-select>
+      </el-form-item>
     </el-form>
-    <div class="container_box flex">
-      <roleBox :roleList="roleList" :roleCurrent="listQuery.role" @queryList="queryList"></roleBox>
-      <div class="container">
+    <div class="container mt_10">
       <el-table v-loading="listLoading"
                 :data="dataList"
                 :max-height="tableHeight"
@@ -26,8 +32,7 @@
           }
         "
                 highlight-current-row>
-        <el-table-column label="客户名称"
-                         fixed="left"
+        <el-table-column label="举报人"
                          min-width="120"
                          align="left"
                          show-overflow-tooltip
@@ -39,34 +44,65 @@
             </a>
           </template>
         </el-table-column>
-        <el-table-column label="客户编号"
+        <el-table-column label="被投诉人"
+                         min-width="120"
+                         align="left"
+                         show-overflow-tooltip
+                         prop="storeName">
+          <template slot-scope="scope">
+            <a class="link link_a link_b"
+               @click="toDetail(scope.row)">
+              {{ scope.row.storeName }}
+            </a>
+          </template>
+        </el-table-column>
+        <el-table-column label="举报订单"
                          min-width="160"
-                         align="center"
+                         align="left"
                          prop="storeSn">
         </el-table-column>
-        <el-table-column label="联系人"
+        <el-table-column label="投诉原因"
                          min-width="100"
-                         align="center"
+                         align="left"
                          show-overflow-tooltip
                          prop="linkman"></el-table-column>
-        <el-table-column label="手机号"
+        <el-table-column label="备注"
                          width="100"
-                         align="center"
+                         align="left"
+                         prop="mobile">
+        </el-table-column>
+        <el-table-column label="证据"
+                         min-width="100"
+                         align="left"
+                         prop="mobile">
+          <template slot-scope="scope">
+            <viewer :images="['http://cdn.kyaoduo.com/upload/license/20220315/c4d2be84-6d5a-47ce-9a0e-7d12045e6d29.png']">
+            <span class="report_img">
+              <img src="http://cdn.kyaoduo.com/upload/license/20220315/c4d2be84-6d5a-47ce-9a0e-7d12045e6d29.png" alt="邀请码"/>
+            </span>
+            </viewer>
+          </template>
+        </el-table-column>
+        <el-table-column label="举报时间"
+                         width="100"
+                         align="left"
                          prop="mobile">
         </el-table-column>
         <el-table-column label="操作"
-                         align="center"
+                         align="left"
                          fixed="right"
                          width="160"
                          prop="remarks">
           <template slot-scope="scope">
             <el-button type="text"
+                       @click.stop="handelDetail('reject',scope.row)">驳回</el-button>
+            <el-button type="text"
                        v-rules="{admin:'admin',ordinary:'customer:edit'}"
                        :disabled="scope.row.result == 0"
-                       @click.stop="handelDetail('update', scope.row)">编辑</el-button>
+                       @click.stop="handelDetail('warn', scope.row)">警告</el-button>
             <el-button type="text"
                        v-rules="{admin:'admin',ordinary:'customer:update:location'}"
-                       @click.stop="handleDel(scope.row)">删除</el-button>
+                       @click.stop="handelDetail('blacklist',scope.row)">加入黑名单</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -76,11 +112,10 @@
                   :limit.sync="listQuery.limit"
                   @pagination="customerList"
                   class="text-right" />
-      </div>
     </div>
     <!--修改定位-->
     <detail :showDialog.sync="showDetail"
-                    :infoData='infoData' :roleList="roleListTwo"
+                    :infoData='infoData' :reasonList="reasonList"
                     @updateList='customerList' />
   </div>
 </template>
@@ -88,13 +123,11 @@
 <script>
 import {customerList,} from "@/api/customer/customer";
 import detail from './detail';
-import roleBox from './../components/roleBox';
 export default {
   data () {
     return {
       listQuery: {
         key: "",
-        role:"",
         limit: 10,
         page: 1,
       },
@@ -108,11 +141,11 @@ export default {
         type:'',
         option:{},
       },
-      roleList:[{id:'',name:'全部'},{id:1,name:'超级管理员'},{id:2,name:'管理员'},{id:3,name:'供应商'},{id:4,name:'客服审核员'}],
-      roleListTwo:[{id:'',name:'全部'},{id:1,name:'超级管理员'},{id:2,name:'管理员'},{id:3,name:'供应商'},{id:4,name:'客服审核员'}]
+      userList:[],
+      reasonList:[{id:1,name:'接单时不专心'},{id:2,name:'恶意骚扰'},{id:3,name:'色情/性骚扰'},{id:4,name:'涉及政治'},{id:5,name:'诈骗'},{id:6,name:'其它'},]
     };
   },
-  components: {detail,roleBox},
+  components: {detail},
   computed: {},
   mounted () {
     this.$nextTick(() => {
@@ -146,58 +179,20 @@ export default {
     },
 
     queryCustomerList () {
-      this.listQuery.page = 1;
-      this.customerList();
+      this.listQuery.page = 1
+      this.customerList()
     },
-    queryList(role){
-      this.listQuery.role = role;
-      this.listQuery.page = 1;
-      this.customerList();
-      console.log('11')
-    },
-    // 删除单个
-    handleDel (id, index) {
-      // type,msg,title,option,callback
 
-      this.$MyMessageBox(3,"<span style='margin-left: 35px;'>确定删除该团队用户？</span>", "确定删除", {
-        cancelButtonText: "取消",
-        confirmButtonText: "确定",
-        // type: "info",
-        dangerouslyUseHTMLString: true,
-        customClass:'del_confirm'
-      }).then(res => {
-        if (res) {
-          // deleteCustomer({ storeIds: [id] }).then(res => {
-          //   this.$message({ message: res.resp_msg, type: 'success' });
-          //   this.dataList.splice(index, 1);
-          // });
-        }}).catch();
-
-    },
   },
 };
 </script>
 
 <style lang="scss" scoped>
-  .container_box{
-    height: calc(100vh - 129px);
-    .container{
-      flex: 1;
-      overflow: auto;
-    }
+.report_img{
+  width: 40px;
+  img{
+    width: 100%;
+    height: 100%;
   }
-/deep/.border-card {
-  margin-top: 10px !important;
 }
-.iconfont::before {
-  margin-right: 4px;
-  font-size: 12px;
-}
-.filter-item {
-  height: 38px;
-}
-/deep/.search_box .el-form-item {
-  float: none;
-}
-
 </style>

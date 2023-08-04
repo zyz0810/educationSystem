@@ -21,14 +21,14 @@
         </div>
         <el-dropdown-menu slot="dropdown">
           <router-link to="/datum/datum">
-            <el-dropdown-item>查看资料</el-dropdown-item>
+            <el-dropdown-item>账户设置</el-dropdown-item>
           </router-link>
           <router-link to="/password/password">
             <el-dropdown-item>修改密码</el-dropdown-item>
           </router-link>
           <el-dropdown-item divided
                             @click.native="logout">
-            <span>退出登录</span>
+            <span>退出</span>
           </el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>

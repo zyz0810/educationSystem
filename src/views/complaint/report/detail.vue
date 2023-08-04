@@ -11,30 +11,30 @@
              label-width="120px"
              :rules="rules"
              class="formList">
-      <el-form-item label="选择角色："
+
+      <el-form-item label="驳回原因"
                     prop="one">
         <el-select v-model="formData.one" placeholder="请选择">
-          <el-option v-for="(item, index) in roleList"
+          <el-option v-for="(item, index) in reasonList"
                      :key="index"
                      :label="item.name"
                      :value="item.id"></el-option>
         </el-select>
+
       </el-form-item>
-      <el-form-item label="姓名："
+      <el-form-item label="备注内容"
                     prop="two">
-        <el-input v-model.trim="formData.two"
-                  clearable
-                  placeholder="请输入" />
-      </el-form-item>
-      <el-form-item label="手机号："
-                    prop="three">
-        <el-input v-model.trim="formData.three"
-                  clearable
-                  placeholder="请输入" />
+        <el-input
+          type="textarea"
+          :autosize="{ minRows: 6, maxRows: 10}"
+          placeholder="请输入内容"
+          v-model="formData.two">
+        </el-input>
+
       </el-form-item>
     </el-form>
     <span slot="footer"
-          class="dialog-footer" v-show="dialogStatus!='detail'">
+          class="dialog-footer">
       <el-button @click="dialogVisible = false">取 消</el-button>
       <el-button type="primary" class="ml_30" @click="save">保 存</el-button>
     </span>
@@ -59,35 +59,39 @@ export default {
         option:{}
       }
     },
-    roleList:{
+    reasonList:{
       required: true,
       type: Array,
       default: []
-    },
+    }
   },
   data () {
     return {
       formData: {
         one: 1,
-        two: '21',
-        three: '13589632589',
+        two: 'https://cdn.kyaoduo.com/upload/file/202307/feb5e6bc-0083-4eed-95be-ac7cf82bf11b.jpeg',
+        three: '12',
+        four: '<p style="color:red;">2222</p>',
       },
       isChange:false,
       textMap: {
-        update: '编辑团队用户',
-        create: '新建团队用户',
-        detail:'团队用户详情'
+        reject: '驳回',
+        warn: '警告',
+        blacklist:'加入黑名单'
       },
       dialogStatus: '',
       rules: {
         one: [
-          { required: true, message: "请选择角色女", trigger: "blur" }
+          { required: true, message: "请选择类型", trigger: "blur" }
         ],
         two: [
-          { required: true, message: "请输入姓名", trigger: "blur" }
+          { required: true, message: "请上传图片", trigger: "blur" }
         ],
         three: [
-          { required: true, message: "请输入手机号", trigger: "blur" }
+          { required: true, message: "请输入链接", trigger: "blur" }
+        ],
+        four: [
+          { required: true, message: "请输入公告内容", trigger: "blur" }
         ],
       }
     };
@@ -107,7 +111,9 @@ export default {
     }
   },
   methods: {
-
+    hasImgSrc(val) {
+      this.formData.two = val;
+    },
     // 修改定位
     save () {
       // if (this.$refs.myQuillEditor) {
@@ -130,6 +136,12 @@ export default {
     open () {
       this.formData.id = this.infoData.option.id;
       this.dialogStatus = this.infoData.type;
+      this.$nextTick(()=>{
+        if (this.$refs.myQuillEditor) {
+          this.$refs.myQuillEditor.changeContent(this.formData.four);
+        }
+      });
+
     },
     close () {
       this.$refs.ruleForm.clearValidate();

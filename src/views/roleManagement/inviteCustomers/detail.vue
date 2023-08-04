@@ -11,26 +11,46 @@
              label-width="120px"
              :rules="rules"
              class="formList">
-      <el-form-item label="选择角色："
+      <el-form-item label="类型："
                     prop="one">
-        <el-select v-model="formData.one" placeholder="请选择">
-          <el-option v-for="(item, index) in roleList"
-                     :key="index"
-                     :label="item.name"
-                     :value="item.id"></el-option>
-        </el-select>
+        <el-radio-group v-model="formData.one" :disabled="isCanView">
+          <el-radio-button :label="0">链接</el-radio-button>
+          <el-radio-button :label="1">图文</el-radio-button>
+        </el-radio-group>
       </el-form-item>
-      <el-form-item label="姓名："
+      <el-form-item label="公告Banner："
                     prop="two">
-        <el-input v-model.trim="formData.two"
-                  clearable
-                  placeholder="请输入" />
+<!--        <el-input v-model.trim="formData.two" v-if="!isCanView"-->
+<!--                  placeholder="请输入"-->
+<!--                  clearable />-->
+        <SingleImage
+          :tempUrl="formData.two"
+          v-on:imgSrc="hasImgSrc"
+          v-if="!isCanView"
+        ></SingleImage>
+        <viewer :images="[formData.two]" v-else>
+            <span class="notice_banner">
+              <img :src="formData.two" />
+            </span>
+        </viewer>
       </el-form-item>
-      <el-form-item label="手机号："
+      <el-form-item label="链接：" v-if="formData.one == 0"
                     prop="three">
-        <el-input v-model.trim="formData.three"
-                  clearable
-                  placeholder="请输入" />
+        <el-input v-model.trim="formData.three" v-show="!isCanView"
+                  placeholder="请输入"
+                  clearable />
+        <span v-show="isCanView">{{formData.three}}</span>
+      </el-form-item>
+      <el-form-item label="公告内容："  v-if="formData.one == 1"
+                    prop="four">
+        <quillEditor ref="myQuillEditor" v-show="!isCanView"
+                     :isChange.sync="isChange"
+                     :isProductDetail="true"
+                     :content.sync="formData.four" />
+        <div v-html="formData.four"
+             v-show="isCanView">
+          {{ formData.four }}
+        </div>
       </el-form-item>
     </el-form>
     <span slot="footer"
@@ -44,6 +64,8 @@
 import {
   lonAndLatEdit
 } from "@/api/customer/customer";
+import SingleImage from "@/components/Upload/SingleImage.vue"; // waves directive
+import quillEditor from "@/components/quillEditor/quillEditorProductDetail.vue";
 export default {
   props: {
     showDialog: {
@@ -59,40 +81,41 @@ export default {
         option:{}
       }
     },
-    roleList:{
-      required: true,
-      type: Array,
-      default: []
-    },
   },
   data () {
     return {
       formData: {
         one: 1,
-        two: '21',
-        three: '13589632589',
+        two: 'https://cdn.kyaoduo.com/upload/file/202307/feb5e6bc-0083-4eed-95be-ac7cf82bf11b.jpeg',
+        three: '12',
+        four: '<p style="color:red;">2222</p>',
       },
       isChange:false,
       textMap: {
-        update: '编辑团队用户',
-        create: '新建团队用户',
-        detail:'团队用户详情'
+        update: '编辑公告',
+        create: '新建公告',
+        detail:'公告详情'
       },
       dialogStatus: '',
       rules: {
         one: [
-          { required: true, message: "请选择角色女", trigger: "blur" }
+          { required: true, message: "请选择类型", trigger: "blur" }
         ],
         two: [
-          { required: true, message: "请输入姓名", trigger: "blur" }
+          { required: true, message: "请上传图片", trigger: "blur" }
         ],
         three: [
-          { required: true, message: "请输入手机号", trigger: "blur" }
+          { required: true, message: "请输入链接", trigger: "blur" }
+        ],
+        four: [
+          { required: true, message: "请输入公告内容", trigger: "blur" }
         ],
       }
     };
   },
-
+  components: {
+    SingleImage,quillEditor
+  },
   computed: {
     dialogVisible: {
       get () {
@@ -107,7 +130,9 @@ export default {
     }
   },
   methods: {
-
+    hasImgSrc(val) {
+      this.formData.two = val;
+    },
     // 修改定位
     save () {
       // if (this.$refs.myQuillEditor) {
@@ -130,6 +155,12 @@ export default {
     open () {
       this.formData.id = this.infoData.option.id;
       this.dialogStatus = this.infoData.type;
+      this.$nextTick(()=>{
+        if (this.$refs.myQuillEditor) {
+          this.$refs.myQuillEditor.changeContent(this.formData.four);
+        }
+      });
+
     },
     close () {
       this.$refs.ruleForm.clearValidate();

@@ -32,7 +32,7 @@ import {
   TopView
 } from "./components";
 import ResizeMixin from "./mixin/ResizeHandler";
-import { mapState } from "vuex";
+import { mapState,mapGetters } from "vuex";
 
 export default {
   name: "Layout",
@@ -47,6 +47,9 @@ export default {
   },
   // mixins: [ResizeMixin],
   computed: {
+    ...mapGetters([
+      "activeRouteList",
+    ]),
     ...mapState({
       sidebar: state => state.app.sidebar,
       device: state => state.app.device,
@@ -59,7 +62,8 @@ export default {
         hideSidebar: !this.sidebar.opened,
         openSidebar: this.sidebar.opened,
         withoutAnimation: this.sidebar.withoutAnimation,
-        mobile: this.device === "mobile"
+        mobile: this.device === "mobile",
+        nav_two_none:this.activeRouteList.filter(item=>!item.hidden).length<1
       };
     }
   },
