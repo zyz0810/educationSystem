@@ -2,22 +2,28 @@ import request from '@/utils/request'
 import Qs from 'qs'
 
 // 登录方法
-export function login(data) {
+export function login(query) {
   return request({
-    url: 'api-auth/oauth/crm/login',
-    method: 'post',
-    data: Qs.stringify(data, {
-      arrayFormat: 'indices',
-      allowDots: true
-    })
+    // url: 'api-auth/oauth/crm/login',
+    // method: 'post',
+    // data: Qs.stringify(data, {
+    //   arrayFormat: 'indices',
+    //   allowDots: true
+    // })
+    url: '/pc/login',
+    method: 'get',
+    params: query
   })
 }
 
 // 获取用户详细信息
 export function getInfo() {
   return request({
-    url: 'api-crm-system/crm/users/current',
-    method: 'get'
+    // url: 'api-crm-system/crm/users/current',
+    // method: 'get'
+    url: 'pc/getblacklist',
+    method: 'get',
+    params:{pn:1,rn:1}
   })
 }
 /* 修改资料

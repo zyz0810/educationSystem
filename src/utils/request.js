@@ -3,7 +3,8 @@ import Qs from 'qs'
 import { MessageBox, Message, Confirm } from 'element-ui'
 import store from '@/store'
 import { getToken } from '@/utils/auth'
-let requestUrl ='http://123.60.163.221:9200/'  //测试环境
+// let requestUrl ='http://123.60.163.221:9200/'  //测试环境
+let requestUrl ='http://118.195.250.220:8200/'  //测试环境1
 // let requestUrl ='http://192.168.2.125:9200' //尚学文
 // let requestUrl ='http://192.168.2.164:9200' //舒逸
 // let requestUrl ='http://23.60.185.194:9200/'  //UAT环境
@@ -23,7 +24,8 @@ switch (process.env.VUE_APP_MODE) {
  requestUrl ='http://test.crm.kyaoduo.com/'
  break;
  default:
-  requestUrl ='http://123.60.163.221:9200/'   //测试环境
+  // requestUrl ='http://123.60.163.221:9200/'   //测试环境
+   requestUrl ='http://118.195.250.220:8200/'  //测试环境1
   // requestUrl ='http://192.168.2.125:9200' //尚学文
   //  requestUrl ='http://192.168.2.164:9200' //舒逸
   // requestUrl ='http://23.60.185.194:9200/'   //UAT环境
@@ -42,10 +44,10 @@ axios.defaults.headers['Content-Type'] =
 service.interceptors.request.use(
   config => {
     config.baseURL = requestUrl
-    config.headers['client_id'] = 'crmWebApp'
-    config.headers['client_secret'] = 'crmWebApp'
+    // config.headers['client_id'] = 'crmWebApp'
+    // config.headers['client_secret'] = 'crmWebApp'
     if (store.getters.crm_token) {
-      config.headers.Authorization = 'Bearer ' + store.getters.crm_token
+      // config.headers.Authorization = 'Bearer ' + store.getters.crm_token
     }
     return config
   },
@@ -68,11 +70,12 @@ service.interceptors.response.use(
    * You can also judge the status by HTTP Status Code
    */
   response => {
+    console.log('登录',response.headers)
     const res = response.data
-    if (res.resp_code === 0 || !res.resp_code) {
+    if (res.errno === 0 || !res.errno) {
       return res
     }
-    if (res.resp_code === 401) {
+    if (res.errno === 401) {
       // to re-login
       // MessageBox.confirm('您已注销，您可以取消以停留在此页，或重新登录', '确认注销', {
       //   confirmButtonText: '重新登录',
@@ -83,31 +86,31 @@ service.interceptors.response.use(
         location.reload()
       })
       // })
-    } else if (res.resp_code === 2) {
+    } else if (res.errno === 2) {
       Message({
         message: '登录密码错误',
         type: 'error',
         duration: 3 * 1000
       })
-    } else if (res.resp_code === 3) {
+    } else if (res.errno === 3) {
       Message({
         message: '您没此权限',
         type: 'error',
         duration: 3 * 1000
       })
-    } else if (res.resp_code === 4) {
+    } else if (res.errno === 4) {
       Message({
         message: '该数据不存在',
         type: 'error',
         duration: 3 * 1000
       })
-    } else if (res.resp_code === 5) {
+    } else if (res.errno === 5) {
       Message({
         message: '该数据已存在',
         type: 'error',
         duration: 3 * 1000
       })
-    } else if (res.resp_code === 6) {
+    } else if (res.errno === 6) {
       // MessageBox.confirm('该数据有关联数据，不能删除', '提示', {
       //   confirmButtonText: '确定',
       //   showCancelButton:false,
@@ -119,7 +122,7 @@ service.interceptors.response.use(
         duration: 3 * 1000
       })
       return res
-    } else if (res.resp_code === 1002) {
+    } else if (res.errno === 1002) {
       Message({
         message: '该用户没有此权限',
         type: 'error',
@@ -127,7 +130,7 @@ service.interceptors.response.use(
       })
     } else {
       Message({
-        message: res.resp_msg || '获取数据失败',
+        message: res.errmsg || '获取数据失败',
         type: 'error',
         duration: 3 * 1000
       })
@@ -135,7 +138,7 @@ service.interceptors.response.use(
   },
   error => {
     Message({
-      message: error.response.data.resp_msg,
+      message: error.response.data.errmsg,
       type: 'warning',
       duration: 3 * 1000
     })

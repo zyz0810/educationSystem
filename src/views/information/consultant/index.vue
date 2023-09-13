@@ -91,8 +91,8 @@
       </el-table>
       <pagination v-show="total > 0"
                   :total="total"
-                  :page.sync="listQuery.page"
-                  :limit.sync="listQuery.limit"
+                  :page.sync="listQuery.pn"
+                  :limit.sync="listQuery.rn"
                   @pagination="customerList"
                   class="text-right" />
     </div>
@@ -103,7 +103,7 @@
 </template>
 
 <script>
-  import {customerList,} from "@/api/customer/customer";
+  import {getauditconsultlist,} from "@/api/counselor";
   import detail from './detail';
   export default {
     data () {
@@ -111,8 +111,8 @@
         listQuery: {
           key: "",
           role:"",
-          limit: 10,
-          page: 1,
+          rn: 10,
+          pn: 1,
         },
         total: 0,
         listLoading: false,
@@ -150,7 +150,7 @@
       },
       // 获取客户列表
       customerList () {
-        customerList({ ...this.listQuery, })
+        getauditconsultlist({ ...this.listQuery, })
           .then(res => {
             // this.dataList = res.data.data;
             this.dataList = [{id:1,storeName:'111',storeSn:'11',linkman:'张三',mobile:'18656547892'}];
@@ -160,12 +160,12 @@
       },
 
       queryCustomerList () {
-        this.listQuery.page = 1;
+        this.listQuery.pn = 1;
         this.customerList();
       },
       queryList(role){
         this.listQuery.role = role;
-        this.listQuery.page = 1;
+        this.listQuery.pn = 1;
         this.customerList();
         console.log('11')
       },

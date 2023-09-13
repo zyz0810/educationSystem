@@ -21,6 +21,7 @@ router.beforeEach((to, from, next) => {
 
   // const hasToken = sessionStorage.getItem("CRM-Token");
   const hasToken = getToken();
+  console.log('hasToken',hasToken)
   if (hasToken) {
     /* has token*/
     if (to.path === '/login') {

@@ -86,10 +86,10 @@ export default {
     Hamburger
   },
   mounted () {
-    this.getBacklog();
+    // this.getBacklog();
   },
   methods: {
-    ...mapActions(["set_route", "set_route_List", "getBacklog"]),
+    ...mapActions(["set_route", "set_route_List", ]),
     async logout () {
       this.$confirm("确定注销并退出系统吗？", "提示", {
         confirmButtonText: "确定",

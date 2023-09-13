@@ -1,16 +1,15 @@
 import request from '@/utils/request'
-import Qs from 'qs'  
+import Qs from 'qs'
 
 // 分类设置列表
 export function selectProductSortPage(query) {
   return request({
     url: '/api-crm-system/web/selectProductSortPage',
-    method: 'post',
     method: 'get',
     params: query
   })
 }
-  
+
 // 获取所有一级商品等级名称
 export function selectAllProductCategory (query) {
   return request({
