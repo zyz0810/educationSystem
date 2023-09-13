@@ -7,7 +7,7 @@ import Qs from 'qs'
 */
 export function getaudituserlist(query) {
   return request({
-    url: 'pc/getaudituserlist',
+    url: '/pc/getaudituserlist',
     method: 'get',
     params: query
   })

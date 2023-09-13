@@ -1,6 +1,6 @@
 import Cookies from 'js-cookie'
 
-const TokenKey = 'CRM-Token'
+const TokenKey = 'pc_login_token'
 
 export function getToken() {
   return Cookies.get(TokenKey)

@@ -86,12 +86,11 @@ const user = {
           mobile: username.trim(),
           passwd: password
         }).then(res => {
-          // setToken(res.data)
-          // sessionStorage.setItem("CRM-Token", JSON.stringify(res.data));
-          // commit('SET_TOKEN', res.data)
-          setToken('11')
-          sessionStorage.setItem("CRM-Token", JSON.stringify('11'));
-          commit('SET_TOKEN', '11')
+          console.log('dd:'+res.data.pc_login_token)
+          setToken(res.data.pc_login_token)
+          sessionStorage.setItem("pc_login_token", JSON.stringify(res.data.pc_login_token));
+          commit('SET_TOKEN', res.data.pc_login_token)
+
           resolve()
         }).catch(error => {
           reject(error)
@@ -152,17 +151,16 @@ const user = {
           //未调用getInfo接口
           role = ['admin']
           // debugger
-          removeToken()
+          // removeToken()
           commit('SET_ROLES', ['admin'])
           commit('SET_PERMISSIONS', ['admin'])
-
 
 
           resolve(role)
         }).catch(error => {
 
           console.log('跳转登录')
-          // removeToken()
+          removeToken()
 
           reject(error)
         })
@@ -187,7 +185,7 @@ const user = {
           commit('SET_PERMISSIONS', [])
           commit('SET_MOBILE', '')
           removeToken()
-          sessionStorage.setItem("CRM-Token", '');
+          sessionStorage.setItem("pc_login_token", '');
           removeMobile()
           removeId()
           resolve()
@@ -211,7 +209,7 @@ const user = {
         commit('SET_MOBILE', '')
         removeToken()
         removeId()
-        sessionStorage.setItem("CRM-Token", '');
+        sessionStorage.setItem("pc_login_token", '');
         resolve()
       })
     },

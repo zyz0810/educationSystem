@@ -33,13 +33,52 @@ module.exports = {
     open: false,
     proxy: {
       // detail: https://cli.vuejs.org/config/#devserver-proxy
+      // [process.env.VUE_APP_BASE_API]: {
+      //   target: `http://localhost:8080`,
+      //   changeOrigin: true,
+      //   pathRewrite: {
+      //     ['^' + process.env.VUE_APP_BASE_API]: ''
+      //   }
+      // },
+
+
+      // '/api': {
+      //   target: 'http://118.195.250.220:8200', //设置调用接口域名和端口号别忘了加http
+      //   changeOrigin: true,
+      //   pathRewrite: {// 如果接口本身没有/api需要通过pathRewrite来重写了地址
+      //     '^/api': '' //这里理解成用‘/api’代替target里面的地址，组件中我们调接口时直接用/api代替
+      //     // 比如我要调用'http://0.0:300/user/add'，直接写‘/api/user/add’即可 代理后地址栏显示/
+      //
+      //   },
+      // },
+
       [process.env.VUE_APP_BASE_API]: {
-        target: `http://localhost:8080`,
+        target: `http://118.195.250.220:8200`,
         changeOrigin: true,
         pathRewrite: {
           ['^' + process.env.VUE_APP_BASE_API]: ''
         }
-      }
+      },
+      //
+      // "/api": {
+      //   target: "http://118.195.250.220:8200",
+      //   changeOrigin: true,
+      //   // ws: true,//websocket支持
+      //   secure: false,
+      //   pathRewrite: {
+      //     '^/api': '/'    //代理的路径
+      //   },
+      //   onProxyRes(proxyRes, req, res) {
+      //     if(proxyRes.headers['set-cookie']) {
+      //       proxyRes.headers['set-cookie'] = proxyRes.headers['set-cookie'].map(v => {
+      //         // /coss/app是后端服务设置的上下文跟， 由于是本地所以需要添加一个代理/api（于proxy端口的代理是一样的）
+      //         return v.replace('/coss/app', '/api/coss/app')
+      //       })
+      //     }
+      //   }
+      // },
+
+
     },
     disableHostCheck: true
   },

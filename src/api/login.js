@@ -21,7 +21,7 @@ export function getInfo() {
   return request({
     // url: 'api-crm-system/crm/users/current',
     // method: 'get'
-    url: 'pc/getblacklist',
+    url: '/pc/getaudituserlist',
     method: 'get',
     params:{pn:1,rn:1}
   })
@@ -56,11 +56,10 @@ export function resetPassword(data) {
 /* 退出登录
  *
  */
-export function logout(data) {
+export function logout() {
   return request({
-    url: 'api-auth/oauth/token/logout',
-    method: 'post',
-    data: Qs.stringify(data)
+    url: 'pc/logout',
+    method: 'get',
   })
 }
 

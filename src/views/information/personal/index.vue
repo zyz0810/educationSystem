@@ -3,13 +3,13 @@
     <el-form :inline="true"
              class="search_box">
       <el-form-item label="">
-        <el-input v-model.trim="listQuery.key"
+        <el-input v-model.trim="listQuery.keyword"
                   clearable suffix-icon="el-icon-search"
                   @change="queryCustomerList"
                   placeholder="搜索/ID/姓名/手机号" />
       </el-form-item>
       <el-form-item label="">
-          <el-select v-model="listQuery.role" @change="queryCustomerList" placeholder="请选择">
+          <el-select v-model="listQuery.channel" @change="queryCustomerList" placeholder="请选择">
             <el-option v-for="(item, index) in channelList"
                        :key="index"
                        :label="item.name"
@@ -38,9 +38,9 @@
           <template slot-scope="scope">
             <span class="flex pointer"  @click="handelDetail('detail', scope.row)">
                 <span class="header_img">
-              <img src="http://cdn.kyaoduo.com/upload/image/20200808/WechatIMG289.png" alt="邀请码"/>
+              <img :src="scope.row.portrait" alt=""/>
             </span>
-            {{scope.row.storeName}}
+            {{scope.row.user_name}}
             </span>
 
           </template>
@@ -49,7 +49,7 @@
         <el-table-column label="ID"
                          min-width="100"
                          align="left"
-                         prop="mobile">
+                         prop="user_id">
         </el-table-column>
         <el-table-column label="手机"
                          min-width="100"
@@ -59,15 +59,15 @@
         <el-table-column label="性别"
                          min-width="100"
                          align="left"
-                         prop="mobile"></el-table-column>
+                         prop=""></el-table-column>
         <el-table-column label="地域"
                          min-width="100"
                          align="left"
-                         prop="mobile"></el-table-column>
+                         prop="city"></el-table-column>
         <el-table-column label="个人简介"
                          min-width="130"
                          align="left"
-                         prop="mobile"></el-table-column>
+                         prop="intro"></el-table-column>
         <el-table-column label="注册来源"
                          min-width="130"
                          align="left"
@@ -99,8 +99,8 @@
     data () {
       return {
         listQuery: {
-          key: "",
-          role:"",
+          keyword: "",
+          channel:"",
           rn: 10,
           pn: 1,
         },
@@ -142,9 +142,9 @@
       customerList () {
         getaudituserlist({ ...this.listQuery, })
           .then(res => {
-            // this.dataList = res.data.data;
-            this.dataList = [{id:1,storeName:'111',storeSn:'11',linkman:'张三',mobile:'18656547892'}];
-            this.total = res.data.count;
+            this.dataList = res.data.list;
+            // this.dataList = [{id:1,storeName:'111',storeSn:'11',linkman:'张三',mobile:'18656547892'}];
+            this.total = res.data.total_num;
           })
           .catch(err => console.log(err));
       },
@@ -153,8 +153,8 @@
         this.listQuery.pn = 1;
         this.customerList();
       },
-      queryList(role){
-        this.listQuery.role = role;
+      queryList(channel){
+        this.listQuery.channel = channel;
         this.listQuery.pn = 1;
         this.customerList();
         console.log('11')

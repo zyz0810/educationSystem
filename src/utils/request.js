@@ -34,20 +34,26 @@ switch (process.env.VUE_APP_MODE) {
 }
 // create an axios instance
 const service = axios.create({
+  baseURL: process.env.VUE_APP_BASE_API,
   // withCredentials: false, // send cookies when cross-domain requests
   // timeout: 10000 // request timeout
+  // withCredentials: true // 允许携带cookie
 })
 axios.defaults.headers['Content-Type'] =
   'application/x-www-form-urlencoded;charset=UTF-8'
 // axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=UTF-8'
+// axios.defaults.withCredentials=true;
+// axios.defaults.headers[withCredentials]=true;
 // request interceptor
 service.interceptors.request.use(
   config => {
-    config.baseURL = requestUrl
+    // config.baseURL = requestUrl
     // config.headers['client_id'] = 'crmWebApp'
     // config.headers['client_secret'] = 'crmWebApp'
+    // config.withCredentials = true;
     if (store.getters.crm_token) {
-      // config.headers.Authorization = 'Bearer ' + store.getters.crm_token
+      // config.headers.Cookie = 'pc_login_token=' + store.getters.crm_token
+      // config.params['pc_login_token'] = 'pc_login_token=' + store.getters.crm_token
     }
     return config
   },
@@ -70,7 +76,6 @@ service.interceptors.response.use(
    * You can also judge the status by HTTP Status Code
    */
   response => {
-    console.log('登录',response.headers)
     const res = response.data
     if (res.errno === 0 || !res.errno) {
       return res
