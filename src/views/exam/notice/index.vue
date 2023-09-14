@@ -3,7 +3,7 @@
     <el-form :inline="true"
              class="search_box">
       <el-form-item label="">
-        <el-input v-model.trim="listQuery.key"
+        <el-input v-model.trim="listQuery.keyword"
                   clearable suffix-icon="el-icon-search"
                   @change="queryCustomerList"
                   placeholder="标题/关键词" />
@@ -24,33 +24,38 @@
           }
         "
                 highlight-current-row>
-        <el-table-column label="客户名称"
+        <el-table-column label="公告banner"
                          fixed="left"
                          min-width="120"
                          align="left"
                          show-overflow-tooltip
-                         prop="storeName">
+                         prop="cover">
           <template slot-scope="scope">
-            <a class="link link_a link_b"
-               @click="toDetail(scope.row)">
-              {{ scope.row.storeName }}
-            </a>
+            <viewer :images="[scope.row.cover]">
+                <span class="list_img">
+                  <img :src="scope.row.cover" />
+                </span>
+            </viewer>
           </template>
         </el-table-column>
-        <el-table-column label="客户编号"
+        <el-table-column label="详情/链接地址"
                          min-width="160"
                          align="center"
-                         prop="storeSn">
+                         prop="cmd">
         </el-table-column>
-        <el-table-column label="联系人"
-                         min-width="100"
+        <el-table-column label="发布日期"
+                         min-width="150"
                          align="center"
                          show-overflow-tooltip
-                         prop="linkman"></el-table-column>
-        <el-table-column label="手机号"
+                         prop="create_time">
+          <template slot-scope="scope">
+            <span>{{$moment(scope.row.create_time).format('YYYY-MM-DD HH:mm:ss')}}</span>
+          </template>
+        </el-table-column>
+        <el-table-column label="发布人"
                          width="100"
                          align="center"
-                         prop="mobile">
+                         prop="publisher">
         </el-table-column>
         <el-table-column label="操作"
                          align="center"
@@ -72,8 +77,8 @@
       </el-table>
       <pagination v-show="total > 0"
                   :total="total"
-                  :page.sync="listQuery.page"
-                  :limit.sync="listQuery.limit"
+                  :page.sync="listQuery.pn"
+                  :limit.sync="listQuery.rn"
                   @pagination="customerList"
                   class="text-right" />
     </div>
@@ -85,15 +90,15 @@
 </template>
 
 <script>
-import {customerList,} from "@/api/customer/customer";
+import {noticelist,} from "@/api/notice";
 import detail from './detail';
 export default {
   data () {
     return {
       listQuery: {
-        key: "",
-        limit: 10,
-        page: 1,
+        keyword: "",
+        rn: 10,
+        pn: 1,
       },
       total: 0,
       listLoading: false,
@@ -131,17 +136,17 @@ export default {
     },
     // 获取客户列表
     customerList () {
-      customerList({ ...this.listQuery, })
+      noticelist({ ...this.listQuery, })
         .then(res => {
-          // this.dataList = res.data.data;
-          this.dataList = [{id:1,storeName:'111',storeSn:'11',linkman:'张三',mobile:'18656547892'}];
+          this.dataList = res.data;
+          // this.dataList = [{id:1,storeName:'111',storeSn:'11',linkman:'张三',mobile:'18656547892'}];
           this.total = res.data.count;
         })
         .catch(err => console.log(err));
     },
 
     queryCustomerList () {
-      this.listQuery.page = 1
+      this.listQuery.pn = 1
       this.customerList()
     },
     // 删除单个
@@ -168,6 +173,15 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+  .list_img{
+    display: inline-block;
+    /*width: 30px;*/
+    height: 30px;
+    img{
+      /*width: 100%;*/
+      height: 100%;
+    }
+  }
 /deep/.border-card {
   margin-top: 10px !important;
 }

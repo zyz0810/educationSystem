@@ -26,7 +26,12 @@ import moment from 'moment'
 Vue.prototype.$moment = moment
 import countTo from 'vue-count-to'
 Vue.component('CountTo', countTo)
+import constant from './utils/const.js'
+Vue.use(constant);
 
+import aa from '@/assets/image/table_empty.png';
+// import $imgUrl from '@/assets/image/table_empty.png';
+Vue.prototype.$imgUrl = aa;
 import VueAMap from 'vue-amap'
 Vue.use(VueAMap)
 VueAMap.initAMapApiLoader({

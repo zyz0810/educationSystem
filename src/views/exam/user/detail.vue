@@ -9,15 +9,15 @@
     <div class="flex">
       <div class="flex_hd"><img class="head_img_detail" src="http://cdn.kyaoduo.com/upload/image/20200808/WechatIMG289.png"></div>
       <div class="flex_bd">
-        <div>李磊</div>
-        <div>18625632512</div>
+        <div>{{formData.user_name}}</div>
+        <div>{{form.mobile}}</div>
       </div>
     </div>
     <div class="mt_10">
       <div class="detail_title">基本信息</div>
       <div class="flex border_bottom1">
         <div>客户ID</div>
-        <div class="flex_bd text-right">发发发</div>
+        <div class="flex_bd text-right">{{formData.user_id}}</div>
       </div>
       <div class="flex border_bottom1">
         <div>姓名</div>
@@ -143,6 +143,8 @@
         this.dialogStatus = this.infoData.type;
 
 
+        const {id,portrait,user_name,mobile,user_id,city,intro} = this.infoData.option;
+        this.formData = {id,portrait,user_name,mobile,user_id,city,intro};
       },
       close () {
         this.$refs.ruleForm.clearValidate();

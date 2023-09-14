@@ -10,6 +10,7 @@ import AddFollow from './AddFollow'
 import Map from './Map'
 import OrdersDetail from './OrdersDetail'
 import ColumnChart from './ColumnChart'
+import EmptyTable from './EmptyTable'
 
 const commomComponents = {
   install: function (Vue) {
@@ -25,6 +26,7 @@ const commomComponents = {
     Vue.component('Map', Map)
     Vue.component('OrdersDetail', OrdersDetail)
     Vue.component('ColumnChart', ColumnChart)
+    Vue.component('EmptyTable', EmptyTable)
   }
 }
 // 导出

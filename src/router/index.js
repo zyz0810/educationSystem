@@ -170,7 +170,7 @@ export const asyncRoutes = [
         component: resolve => require(['@/views/exam/user/index'], resolve),
         name: 'user',
         meta: {
-          title: '个人信息审核',
+          title: '家长信息审核',
           noCache: true,
           icon: '',
           // affix: true,

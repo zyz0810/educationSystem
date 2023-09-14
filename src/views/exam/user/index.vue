@@ -3,13 +3,13 @@
     <el-form :inline="true"
              class="search_box">
       <el-form-item label="">
-        <el-input v-model.trim="listQuery.key"
+        <el-input v-model.trim="listQuery.keyword"
                   clearable suffix-icon="el-icon-search"
-                  @change="queryCustomerList"
+                  @change="queryList"
                   placeholder="标题/关键词" />
       </el-form-item>
       <el-form-item label="">
-        <el-select v-model="listQuery.one" placeholder="请选择" @change="queryCustomerList">
+        <el-select v-model="listQuery.channel" placeholder="请选择" @change="queryList">
           <el-option label="全部" value=""></el-option>
           <el-option v-for="(item, index) in userList"
                      :key="index"
@@ -37,48 +37,50 @@
                          min-width="120"
                          align="left"
                          show-overflow-tooltip
-                         prop="storeName">
+                         prop="user_name">
           <template slot-scope="scope">
-            <a class="link link_a link_b"
-               @click="toDetail(scope.row)">
-              {{ scope.row.storeName }}
-            </a>
+               <span class="flex pointer"  @click="handelDetail('detail', scope.row)">
+                <span class="header_img">
+              <img :src="scope.row.portrait" alt=""/>
+            </span>
+            {{scope.row.user_name}}
+            </span>
           </template>
         </el-table-column>
         <el-table-column label="ID"
                          min-width="160"
                          align="left"
-                         prop="storeSn">
+                         prop="user_id">
         </el-table-column>
         <el-table-column label="手机"
                          min-width="100"
                          align="left"
                          show-overflow-tooltip
-                         prop="linkman"></el-table-column>
-        <el-table-column label="性别"
+                         prop="mobile"></el-table-column>
+        <el-table-column label="性别缺字段"
                          width="100"
                          align="left"
-                         prop="mobile">
+                         prop="">
         </el-table-column>
         <el-table-column label="地域"
                          width="100"
                          align="left"
-                         prop="mobile">
+                         prop="city">
         </el-table-column>
         <el-table-column label="个人简介"
                          width="100"
                          align="left"
-                         prop="mobile">
+                         prop="intro">
         </el-table-column>
-        <el-table-column label="提交时间"
+        <el-table-column label="提交时间缺字段"
                          width="100"
                          align="left"
-                         prop="mobile">
+                         prop="">
         </el-table-column>
-        <el-table-column label="状态和审核意见"
+        <el-table-column label="状态和审核意见缺字段"
                          width="100"
                          align="left"
-                         prop="mobile">
+                         prop="status">
         </el-table-column>
         <el-table-column label="操作"
                          align="left"
@@ -97,32 +99,40 @@
                        @click.stop="handleDel(scope.row)">退回</el-button>
           </template>
         </el-table-column>
+
+
+        <template slot="empty" style="text-align: left;">
+<!--          <img :src="$imgUrl">-->
+<!--          暂无数据11</template>-->
+          <empty-table/>
+        </template>
       </el-table>
       <pagination v-show="total > 0"
                   :total="total"
-                  :page.sync="listQuery.page"
-                  :limit.sync="listQuery.limit"
-                  @pagination="customerList"
+                  :page.sync="listQuery.pn"
+                  :limit.sync="listQuery.rn"
+                  @pagination="getList"
                   class="text-right" />
     </div>
     <!--详情-->
     <detail :showDialog.sync="showDetail"
                     :infoData='infoData'
-                    @updateList='customerList' />
+                    @updateList='getList' />
   </div>
 </template>
 
 <script>
-import {customerList,} from "@/api/customer/customer";
+import {getaudituserlist,} from "@/api/parent";
 import detail from './detail';
 export default {
   data () {
     return {
       userList:[],
       listQuery: {
-        key: "",
-        limit: 10,
-        page: 1,
+        keyword: "",
+        channel:"",
+        rn: 10,
+        pn: 1,
       },
       total: 0,
       listLoading: false,
@@ -147,7 +157,7 @@ export default {
           window.innerHeight - this.$refs.activityTable.$el.offsetTop - 150;
       };
     });
-    this.customerList();
+    this.getList();
   },
   methods: {
     // 修改定位
@@ -159,19 +169,18 @@ export default {
       }
     },
     // 获取客户列表
-    customerList () {
-      customerList({ ...this.listQuery, })
+    getList () {
+      getaudituserlist({ ...this.listQuery, })
         .then(res => {
-          // this.dataList = res.data.data;
-          this.dataList = [{id:1,storeName:'111',storeSn:'11',linkman:'张三',mobile:'18656547892'}];
-          this.total = res.data.count;
+          this.dataList = res.data.list;
+          this.total = res.data.total_num;
         })
         .catch(err => console.log(err));
     },
 
-    queryCustomerList () {
-      this.listQuery.page = 1
-      this.customerList()
+    queryList () {
+      this.listQuery.pn = 1
+      this.getList()
     },
     // 删除单个
     handleDel (id, index) {
