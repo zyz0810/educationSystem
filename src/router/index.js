@@ -113,30 +113,7 @@ export const asyncRoutes = [
       // title: '资料审核',
       icon: 'peoples',
       roles: [
-        'admin',
-        'panel',
-        'customer',
-        'customer:add',
-        'customer:edit',
-        'customer:del',
-        'customer:transfer',
-        'customer:enter:highsee',
-        'customer:change:dealstatus',
-        'customer:export',
-        'customer:task:add',
-        'customer:list',
-        'customer:update:location',
-        'customer:level:batch:update',
-        'highsee',
-        'highsee:distribution',
-        'highsee:receive',
-        'highsee:export',
-        'highsee:list',
-        // 'office',
-        'office:point',
-        'office:point:verify:yes',
-        'office:point:verify:no',
-        'office:point:update'
+        'can_audit_user',
       ]
     },
     children: [
@@ -150,19 +127,7 @@ export const asyncRoutes = [
           icon: '',
           // affix: true,
           roles: [
-            'admin',
-            'customer',
-            'customer:add',
-            'customer:edit',
-            'customer:del',
-            'customer:transfer',
-            'customer:enter:highsee',
-            'customer:change:dealstatus',
-            'customer:export',
-            'customer:task:add',
-            'customer:list',
-            'customer:update:location',
-            'customer:level:batch:update'
+            'can_audit_user',
           ]
         }
       }, {
@@ -175,24 +140,12 @@ export const asyncRoutes = [
           icon: '',
           // affix: true,
           roles: [
-            'admin',
-            'customer',
-            'customer:add',
-            'customer:edit',
-            'customer:del',
-            'customer:transfer',
-            'customer:enter:highsee',
-            'customer:change:dealstatus',
-            'customer:export',
-            'customer:task:add',
-            'customer:list',
-            'customer:update:location',
-            'customer:level:batch:update'
+            'can_audit_user',
           ]
         }
       },      {
         path: 'consultant',
-        component: resolve => require(['@/views/customer/customerList/index'], resolve),
+        component: resolve => require(['@/views/exam/consultant/index'], resolve),
         name: 'consultant',
         meta: {
           title: '咨询师简介/定位审核',
@@ -200,24 +153,12 @@ export const asyncRoutes = [
           icon: '',
           // affix: true,
           roles: [
-            'admin',
-            'customer',
-            'customer:add',
-            'customer:edit',
-            'customer:del',
-            'customer:transfer',
-            'customer:enter:highsee',
-            'customer:change:dealstatus',
-            'customer:export',
-            'customer:task:add',
-            'customer:list',
-            'customer:update:location',
-            'customer:level:batch:update'
+            'can_audit_user',
           ]
         }
       },{
         path: 'openClass',
-        component: resolve => require(['@/views/customer/customerList/index'], resolve),
+        component: resolve => require(['@/views/exam/openClass/index'], resolve),
         name: 'openClass',
         meta: {
           title: '公开课审核',
@@ -225,24 +166,12 @@ export const asyncRoutes = [
           icon: '',
           // affix: true,
           roles: [
-            'admin',
-            'customer',
-            'customer:add',
-            'customer:edit',
-            'customer:del',
-            'customer:transfer',
-            'customer:enter:highsee',
-            'customer:change:dealstatus',
-            'customer:export',
-            'customer:task:add',
-            'customer:list',
-            'customer:update:location',
-            'customer:level:batch:update'
+            'can_audit_user',
           ]
         }
       },{
         path: 'shareInfo',
-        component: resolve => require(['@/views/customer/customerList/index'], resolve),
+        component: resolve => require(['@/views/exam/shareInfo/index'], resolve),
         name: 'shareInfo',
         meta: {
           title: '相关协议附录、清单隐私',
@@ -250,24 +179,12 @@ export const asyncRoutes = [
           icon: '',
           // affix: true,
           roles: [
-            'admin',
-            'customer',
-            'customer:add',
-            'customer:edit',
-            'customer:del',
-            'customer:transfer',
-            'customer:enter:highsee',
-            'customer:change:dealstatus',
-            'customer:export',
-            'customer:task:add',
-            'customer:list',
-            'customer:update:location',
-            'customer:level:batch:update'
+            'can_audit_user',
           ]
         }
       },{
         path: 'aboutUs',
-        component: resolve => require(['@/views/customer/customerList/index'], resolve),
+        component: resolve => require(['@/views/exam/aboutUs/index'], resolve),
         name: 'aboutUs',
         meta: {
           title: '关于我们',
@@ -275,19 +192,7 @@ export const asyncRoutes = [
           icon: '',
           // affix: true,
           roles: [
-            'admin',
-            'customer',
-            'customer:add',
-            'customer:edit',
-            'customer:del',
-            'customer:transfer',
-            'customer:enter:highsee',
-            'customer:change:dealstatus',
-            'customer:export',
-            'customer:task:add',
-            'customer:list',
-            'customer:update:location',
-            'customer:level:batch:update'
+            'can_audit_user',
           ]
         }
       },
@@ -307,30 +212,7 @@ export const asyncRoutes = [
       // title: '资料审核',
       icon: 'peoples',
       roles: [
-        'admin',
-        'panel',
-        'customer',
-        'customer:add',
-        'customer:edit',
-        'customer:del',
-        'customer:transfer',
-        'customer:enter:highsee',
-        'customer:change:dealstatus',
-        'customer:export',
-        'customer:task:add',
-        'customer:list',
-        'customer:update:location',
-        'customer:level:batch:update',
-        'highsee',
-        'highsee:distribution',
-        'highsee:receive',
-        'highsee:export',
-        'highsee:list',
-        // 'office',
-        'office:point',
-        'office:point:verify:yes',
-        'office:point:verify:no',
-        'office:point:update'
+        'can_deal_comlaint',
       ]
     },
     children: [
@@ -344,19 +226,7 @@ export const asyncRoutes = [
           icon: '',
           // affix: true,
           roles: [
-            'admin',
-            'customer',
-            'customer:add',
-            'customer:edit',
-            'customer:del',
-            'customer:transfer',
-            'customer:enter:highsee',
-            'customer:change:dealstatus',
-            'customer:export',
-            'customer:task:add',
-            'customer:list',
-            'customer:update:location',
-            'customer:level:batch:update'
+            'can_deal_comlaint',
           ]
         }
       }, {
@@ -369,24 +239,12 @@ export const asyncRoutes = [
           icon: '',
           // affix: true,
           roles: [
-            'admin',
-            'customer',
-            'customer:add',
-            'customer:edit',
-            'customer:del',
-            'customer:transfer',
-            'customer:enter:highsee',
-            'customer:change:dealstatus',
-            'customer:export',
-            'customer:task:add',
-            'customer:list',
-            'customer:update:location',
-            'customer:level:batch:update'
+            'can_deal_comlaint',
           ]
         }
       },{
         path: 'online',
-        component: resolve => require(['@/views/customer/customerList/index'], resolve),
+        component: resolve => require(['@/views//complaint/online/index'], resolve),
         name: 'online',
         meta: {
           title: '人工在线客服',
@@ -394,19 +252,7 @@ export const asyncRoutes = [
           icon: '',
           // affix: true,
           roles: [
-            'admin',
-            'customer',
-            'customer:add',
-            'customer:edit',
-            'customer:del',
-            'customer:transfer',
-            'customer:enter:highsee',
-            'customer:change:dealstatus',
-            'customer:export',
-            'customer:task:add',
-            'customer:list',
-            'customer:update:location',
-            'customer:level:batch:update'
+            'can_deal_comlaint',
           ]
         }
       },
@@ -426,30 +272,7 @@ export const asyncRoutes = [
       // title: '资料审核',
       icon: 'peoples',
       roles: [
-        'admin',
-        'panel',
-        'customer',
-        'customer:add',
-        'customer:edit',
-        'customer:del',
-        'customer:transfer',
-        'customer:enter:highsee',
-        'customer:change:dealstatus',
-        'customer:export',
-        'customer:task:add',
-        'customer:list',
-        'customer:update:location',
-        'customer:level:batch:update',
-        'highsee',
-        'highsee:distribution',
-        'highsee:receive',
-        'highsee:export',
-        'highsee:list',
-        // 'office',
-        'office:point',
-        'office:point:verify:yes',
-        'office:point:verify:no',
-        'office:point:update'
+        'can_deal_income',
       ]
     },
     children: [
@@ -463,19 +286,7 @@ export const asyncRoutes = [
           icon: '',
           // affix: true,
           roles: [
-            'admin',
-            'customer',
-            'customer:add',
-            'customer:edit',
-            'customer:del',
-            'customer:transfer',
-            'customer:enter:highsee',
-            'customer:change:dealstatus',
-            'customer:export',
-            'customer:task:add',
-            'customer:list',
-            'customer:update:location',
-            'customer:level:batch:update'
+            'can_deal_income',
           ]
         }
       },
@@ -490,10 +301,7 @@ export const asyncRoutes = [
       title: '供应商查询',
       icon: 'order',
       roles: [
-        'admin',
-        'order:list',
-        'order:export',
-        'order:detail',
+        'can_query_supplier',
       ],
     },
     children: [{
@@ -506,52 +314,24 @@ export const asyncRoutes = [
         icon: 'iconfont icon-ballot-check',
         hidden: true,
         roles: [
-          'admin',
-          'order:list',
-          'order:export',
-          'order:detail',
+          'can_query_supplier',
         ]
       },
     }]
   },
 
   {
-    // path: '',
     path: '/businessData',
     component: Layout,
     // redirect: 'dashboard',
     redirect: 'noRedirect',
     name: '经营数据',
-    // name: '资料审核',
     meta: {
       title: '经营数据',
       // title: '资料审核',
       icon: 'peoples',
       roles: [
-        'admin',
-        'panel',
-        'customer',
-        'customer:add',
-        'customer:edit',
-        'customer:del',
-        'customer:transfer',
-        'customer:enter:highsee',
-        'customer:change:dealstatus',
-        'customer:export',
-        'customer:task:add',
-        'customer:list',
-        'customer:update:location',
-        'customer:level:batch:update',
-        'highsee',
-        'highsee:distribution',
-        'highsee:receive',
-        'highsee:export',
-        'highsee:list',
-        // 'office',
-        'office:point',
-        'office:point:verify:yes',
-        'office:point:verify:no',
-        'office:point:update'
+        'can_query_operations',
       ]
     },
     children: [
@@ -566,19 +346,7 @@ export const asyncRoutes = [
           icon: '',
           // affix: true,
           roles: [
-            'admin',
-            'customer',
-            'customer:add',
-            'customer:edit',
-            'customer:del',
-            'customer:transfer',
-            'customer:enter:highsee',
-            'customer:change:dealstatus',
-            'customer:export',
-            'customer:task:add',
-            'customer:list',
-            'customer:update:location',
-            'customer:level:batch:update'
+            'can_query_operations',
           ]
         }
       },
@@ -598,30 +366,7 @@ export const asyncRoutes = [
       // title: '资料审核',
       icon: 'peoples',
       roles: [
-        'admin',
-        'panel',
-        'customer',
-        'customer:add',
-        'customer:edit',
-        'customer:del',
-        'customer:transfer',
-        'customer:enter:highsee',
-        'customer:change:dealstatus',
-        'customer:export',
-        'customer:task:add',
-        'customer:list',
-        'customer:update:location',
-        'customer:level:batch:update',
-        'highsee',
-        'highsee:distribution',
-        'highsee:receive',
-        'highsee:export',
-        'highsee:list',
-        // 'office',
-        'office:point',
-        'office:point:verify:yes',
-        'office:point:verify:no',
-        'office:point:update'
+        'can_query_user',
       ]
     },
     children: [
@@ -635,19 +380,7 @@ export const asyncRoutes = [
           icon: '',
           // affix: true,
           roles: [
-            'admin',
-            'customer',
-            'customer:add',
-            'customer:edit',
-            'customer:del',
-            'customer:transfer',
-            'customer:enter:highsee',
-            'customer:change:dealstatus',
-            'customer:export',
-            'customer:task:add',
-            'customer:list',
-            'customer:update:location',
-            'customer:level:batch:update'
+            'can_query_user',
           ]
         }
       }, {
@@ -660,19 +393,7 @@ export const asyncRoutes = [
           icon: '',
           // affix: true,
           roles: [
-            'admin',
-            'customer',
-            'customer:add',
-            'customer:edit',
-            'customer:del',
-            'customer:transfer',
-            'customer:enter:highsee',
-            'customer:change:dealstatus',
-            'customer:export',
-            'customer:task:add',
-            'customer:list',
-            'customer:update:location',
-            'customer:level:batch:update'
+            'can_query_user',
           ]
         }
       },
@@ -689,33 +410,7 @@ export const asyncRoutes = [
       title: '权限管理',
       icon: 'order',
       roles: [
-        'admin',
-        'business:set',
-        'business:set:highsee:rule',
-        'business:set:parm',
-        'business:set:attendance',
-        'business:set:dict',
-        'performance:setting',
-        'performance:setting:set',
-        'performance:setting:edit',
-        'performance:setting:del',
-        'performance:setting:list',
-        'performance:setting:journal',
-        'examine-setting',
-        'examine-setting:list',
-        'examine-setting:view',
-        'examine-setting:add',
-        'examine-setting:edit',
-        'examine-setting:copy',
-        'examine-setting:journal',
-        'customer-level',
-        'customer-level:view',
-        'customer-level:edit',
-        'menu',
-        'menu:list',
-        'menu:add',
-        'menu:eidt',
-        'menu:del',
+        'can_manage_perm',
       ],
     },
     children: [
@@ -728,12 +423,7 @@ export const asyncRoutes = [
           title: '团队管理',
           icon: '',
           roles: [
-            'admin',
-            'business:set',
-            'business:set:highsee:rule',
-            'business:set:parm',
-            'business:set:attendance',
-            'business:set:dict'
+            'can_manage_perm',
           ]
         }
       }, {
@@ -745,10 +435,7 @@ export const asyncRoutes = [
           title: '权限管理',
           icon: '',
           roles: [
-            'admin',
-            'customer-level',
-            'customer-level:view',
-            'customer-level:edit',
+            'can_manage_perm',
           ]
         }
       },{
@@ -760,10 +447,7 @@ export const asyncRoutes = [
           title: '邀请客户',
           icon: '',
           roles: [
-            'admin',
-            'customer-level',
-            'customer-level:view',
-            'customer-level:edit',
+            'can_manage_perm',
           ]
         }
       },

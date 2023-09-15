@@ -40,7 +40,7 @@
                          prop="user_name">
           <template slot-scope="scope">
                <span class="flex pointer"  @click="handelDetail('detail', scope.row)">
-                <span class="header_img">
+                <span class="header_img el-avatar--circle">
               <img :src="scope.row.portrait" alt=""/>
             </span>
             {{scope.row.user_name}}
@@ -48,7 +48,7 @@
           </template>
         </el-table-column>
         <el-table-column label="ID"
-                         min-width="160"
+                         min-width="80"
                          align="left"
                          prop="user_id">
         </el-table-column>
@@ -57,46 +57,47 @@
                          align="left"
                          show-overflow-tooltip
                          prop="mobile"></el-table-column>
-        <el-table-column label="性别缺字段"
-                         width="100"
+        <el-table-column label="性别"
+                         width="60"
                          align="left"
-                         prop="">
+                         prop="sex" :formatter="formatterSex">
         </el-table-column>
         <el-table-column label="地域"
-                         width="100"
+                         min-width="100"
                          align="left"
                          prop="city">
         </el-table-column>
         <el-table-column label="个人简介"
-                         width="100"
+                         min-width="100"
                          align="left"
                          prop="intro">
         </el-table-column>
-        <el-table-column label="提交时间缺字段"
-                         width="100"
+        <el-table-column label="提交时间"
+                         min-width="120"
                          align="left"
-                         prop="">
+                         prop="create_time" :formatter="formatTime">
         </el-table-column>
-        <el-table-column label="状态和审核意见缺字段"
-                         width="100"
+        <el-table-column label="状态和审核意见"
+                         min-width="160"
                          align="left"
                          prop="status">
+          <template slot-scope="scope">
+<!--            状态，1待审核 2通过 3拒绝-->
+            <span :class="{'orange01':scope.row.status == 1,'green01':scope.row.status == 2,'red01':scope.row.status == 3}">{{formatterStatus(scope.row.status)}}</span>
+            <span v-if="scope.row.status == 3">{{scope.row.reason}}</span>
+          </template>
         </el-table-column>
         <el-table-column label="操作"
                          align="left"
                          fixed="right"
-                         width="160"
+                         width="120"
                          prop="remarks">
           <template slot-scope="scope">
             <el-button type="text"
                        @click.stop="handelDetail('detail',scope.row)">详情</el-button>
-            <el-button type="text"
-                       v-rules="{admin:'admin',ordinary:'customer:edit'}"
-                       :disabled="scope.row.result == 0"
-                       @click.stop="handelDetail('update', scope.row)">同意</el-button>
-            <el-button type="text"
-                       v-rules="{admin:'admin',ordinary:'customer:update:location'}"
-                       @click.stop="handleDel(scope.row)">退回</el-button>
+            <el-button type="text" :disabled="scope.row.result == 0"
+                       @click.stop="handelPass('update', scope.row)">同意</el-button>
+            <el-button type="text" @click.stop="handleReject(scope.row)">退回</el-button>
           </template>
         </el-table-column>
 
@@ -160,13 +161,26 @@ export default {
     this.getList();
   },
   methods: {
+    formatterStatus(cellValue){
+      //状态，1待审核 2通过 3拒绝
+      return cellValue == 1 ? "1待审核" : cellValue == 2? "通过" : cellValue == 3? "拒绝" : "";
+    },
+    formatterSex (row, column, cellValue, index) {
+      // 1男 2女
+      return cellValue == 1 ? "男" : cellValue == 2? "女" : "";
+    },
+    formatTime (row, column, cellValue, index) {
+      return this.$moment(cellValue).format("YYYY-MM-DD HH:mm:ss");
+    },
     // 修改定位
     handelDetail (type, row) {
+
       this.showDetail = true
       this.infoData = {
         type:type,
         option:row==''?{}:row,
       }
+      console.log(this.infoData)
     },
     // 获取客户列表
     getList () {
@@ -182,11 +196,9 @@ export default {
       this.listQuery.pn = 1
       this.getList()
     },
-    // 删除单个
-    handleDel (id, index) {
-      // type,msg,title,option,callback
-
-      this.$MyMessageBox(3,"<span style='margin-left: 35px;'>确定删除该项目？</span>", "确定删除", {
+    // 同意
+    handelPass (id, index) {
+      this.$MyMessageBox(3,"<span style='margin-left: 35px;'>确定同意吗？</span>", "确定同意", {
         cancelButtonText: "取消",
         confirmButtonText: "确定",
         // type: "info",
@@ -201,6 +213,7 @@ export default {
         }}).catch();
 
     },
+    handleReject(){},
   },
 };
 </script>

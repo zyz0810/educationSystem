@@ -1,123 +1,122 @@
 <template>
   <div class="app-container">
-    <el-form :inline="true"
-             class="search_box border_bottom">
-      <el-form-item label="">
-        <el-input v-model.trim="listQuery.key"
-                  clearable suffix-icon="el-icon-search"
-                  @change="queryCustomerList"
-                  placeholder="请输入" />
-      </el-form-item>
-<!--      <el-button type="primary" class="fr mt_10" @click="handelDetail('create', '')">新建</el-button>-->
-    </el-form>
     <div class="container_box flex">
       <roleBox :roleList="roleList" :roleCurrent="listQuery.role" @queryList="queryList"></roleBox>
       <div class="container role_container">
         <el-checkbox-group v-model="checkList">
-          <el-checkbox :label="0" disabled>复选框 A</el-checkbox>
-          <el-checkbox :label="1">复选框 B</el-checkbox>
-          <el-checkbox :label="2">复选框 C</el-checkbox>
+          <el-checkbox v-for="(item,index) in menuList" :key="item.id" :label="item.id" :disabled="listQuery.role == 'super_manager'">{{item.name}}</el-checkbox>
         </el-checkbox-group>
+        <div class="bottom_btn">
+          <el-button @click="cancel">取消</el-button>
+          <el-button type="primary" @click="save">保存</el-button>
+        </div>
+
       </div>
     </div>
-    <!--修改定位-->
-    <detail :showDialog.sync="showDetail"
-            :infoData='infoData'
-            @updateList='customerList' />
   </div>
 </template>
 
 <script>
-  import {customerList,} from "@/api/customer/customer";
-  import detail from './detail';
+  import {getpermbyrole,setroleperm} from "@/api/role";
   import roleBox from './../components/roleBox';
   export default {
     data () {
       return {
-        checkList:[1,0],
+        checkList:[],
         listQuery: {
-          key: "",
-          role:1,
-          limit: 10,
-          page: 1,
+          role:'super_manager',
         },
-        total: 0,
         listLoading: false,
-        selectList: [],
-        dataList: [],
-        tableHeight: 520,
-        showDetail: false,
-        infoData: {
-          type:'',
-          option:{},
-        },
-        roleList:[{id:1,name:'超级管理员'},{id:2,name:'管理员'},{id:3,name:'供应商'},{id:4,name:'客服审核员'}]
+        roleList:[{id:'super_manager',name:'超级管理员'},{id:'manager',name:'管理员'},{id:'supplier',name:'供应商'},{id:'custom_service',name:'客服审核员'}],
+        menuList:[{id:'can_audit_user',name:'资料审核'},{id:'can_deal_comlaint',name:'投诉处理'},{id:'can_deal_income',name:'收益发放'},
+          {id:'can_query_supplier',name:'供应商查询'},{id:'can_query_operations',name:'经营数据'},{id:'can_query_user',name:'平台用户信息查询'},{id:'can_manage_perm',name:'权限管理'}],
       };
     },
-    components: {detail,roleBox},
-    computed: {},
+    components: {roleBox},
     mounted () {
-      this.customerList();
+      this.getList();
     },
     methods: {
-      // 修改定位
-      handelDetail (type, row) {
-        this.showDetail = true
-        this.infoData = {
-          type:type,
-          option:row==''?{}:row,
-        }
+      save(){
+        console.log(this.checkList)
+        let arr = JSON.parse(JSON.stringify(this.checkList));
+        let formData={
+          role:this.listQuery.role,
+          can_audit_user:arr.indexOf('can_audit_user')>-1 ? 1 : -1,
+          can_deal_comlaint:arr.indexOf('can_deal_comlaint')>-1 ? 1 : -1,
+          can_deal_income:arr.indexOf('can_deal_income')>-1 ? 1 : -1,
+          can_query_supplier:arr.indexOf('can_query_supplier')>-1 ? 1 : -1,
+          can_query_operations:arr.indexOf('can_query_operations')>-1 ? 1 : -1,
+          can_query_user:arr.indexOf('can_query_user')>-1 ? 1 : -1,
+          can_manage_perm:arr.indexOf('can_manage_perm')>-1 ? 1 : -1,
+        };
+
+        setroleperm(formData)
+          .then(res => {
+            this.$message({
+              message: "权限设置成功",
+              type: "success"
+            });
+          })
+          .catch(err => console.log(err));
+
+
+
+      },
+      cancel(){
+        this.getList();
       },
       // 获取客户列表
-      customerList () {
-        customerList({ ...this.listQuery, })
+      getList () {
+        getpermbyrole(this.listQuery)
           .then(res => {
-            // this.dataList = res.data.data;
-            this.dataList = [{id:1,storeName:'111',storeSn:'11',linkman:'张三',mobile:'18656547892'}];
-            this.total = res.data.count;
+            let json = res.data;
+            let arr = [];
+            if(json.can_audit_user == 1){
+              arr.push('can_audit_user')
+            }
+            if(json.can_deal_comlaint == 1){
+              arr.push('can_deal_comlaint')
+            }
+            if(json.can_deal_income == 1){
+              arr.push('can_deal_income')
+            }
+            if(json.can_query_supplier == 1){
+              arr.push('can_query_supplier')
+            }
+            if(json.can_query_operations == 1){
+              arr.push('can_query_operations')
+            }
+            if(json.can_query_user == 1){
+              arr.push('can_query_user')
+            }
+            if(json.can_manage_perm == 1){
+              arr.push('can_manage_perm')
+            }
+            this.checkList = arr
+
           })
           .catch(err => console.log(err));
       },
 
-      queryCustomerList () {
-        this.listQuery.page = 1;
-        this.customerList();
-      },
       queryList(role){
         this.listQuery.role = role;
-        this.listQuery.page = 1;
-        this.customerList();
-        console.log('11')
+        this.getList();
       },
-      // 删除单个
-      handleDel (id, index) {
-        // type,msg,title,option,callback
 
-        this.$MyMessageBox(3,"<span style='margin-left: 35px;'>确定删除该项目？</span>", "确定删除", {
-          cancelButtonText: "取消",
-          confirmButtonText: "确定",
-          // type: "info",
-          dangerouslyUseHTMLString: true,
-          customClass:'del_confirm'
-        }).then(res => {
-          if (res) {
-            // deleteCustomer({ storeIds: [id] }).then(res => {
-            //   this.$message({ message: res.resp_msg, type: 'success' });
-            //   this.dataList.splice(index, 1);
-            // });
-          }}).catch();
-
-      },
     },
   };
 </script>
 
 <style lang="scss" scoped>
   .container_box{
-    height: calc(100vh - 129px);
+    height: calc(100vh - 70px);
+    align-items: stretch;
     .role_container{
       flex: 1;
       overflow: auto;
+      position: relative;
+
       /deep/.el-checkbox{
 
         display: block;
@@ -154,5 +153,14 @@
     }
   }
 
+  .bottom_btn{
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    text-align: center;
+    box-shadow: 0 -2px 2px #f2f2f2;
+    padding: 10px 0;
+  }
 
 </style>

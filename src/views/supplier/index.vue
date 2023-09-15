@@ -106,7 +106,7 @@
 </template>
 
 <script>
-  import {customerList,} from "@/api/customer/customer";
+  // import {customerList,} from "@/api/customer/customer";
 
   export default {
     data () {
@@ -145,13 +145,13 @@
     methods: {
       // 获取客户列表
       customerList () {
-        customerList({ ...this.listQuery, })
-          .then(res => {
-            // this.dataList = res.data.data;
-            this.dataList = [{id:1,storeName:'111',storeSn:'11',linkman:'张三',mobile:'18656547892'}];
-            this.total = res.data.count;
-          })
-          .catch(err => console.log(err));
+        // customerList({ ...this.listQuery, })
+        //   .then(res => {
+        //     // this.dataList = res.data.data;
+        //     this.dataList = [{id:1,storeName:'111',storeSn:'11',linkman:'张三',mobile:'18656547892'}];
+        //     this.total = res.data.count;
+        //   })
+        //   .catch(err => console.log(err));
       },
       queryCustomerList () {
         this.listQuery.page = 1

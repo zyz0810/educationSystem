@@ -3,9 +3,9 @@
     <el-form :inline="true"
              class="search_box border_bottom">
       <el-form-item label="">
-        <el-input v-model.trim="listQuery.key"
+        <el-input v-model.trim="listQuery.keyword"
                   clearable suffix-icon="el-icon-search"
-                  @change="queryCustomerList"
+                  @change="queryGetList"
                   placeholder="请输入" />
       </el-form-item>
       <el-button type="primary" class="fr mt_10" @click="handelDetail('create', '')">新建</el-button>
@@ -26,33 +26,22 @@
           }
         "
                 highlight-current-row>
-        <el-table-column label="客户名称"
+        <el-table-column label="姓名"
                          fixed="left"
                          min-width="120"
                          align="left"
                          show-overflow-tooltip
-                         prop="storeName">
-          <template slot-scope="scope">
-            <a class="link link_a link_b"
-               @click="toDetail(scope.row)">
-              {{ scope.row.storeName }}
-            </a>
-          </template>
-        </el-table-column>
-        <el-table-column label="客户编号"
+                         prop="name"></el-table-column>
+        <el-table-column label="手机号"
                          min-width="160"
                          align="center"
-                         prop="storeSn">
+                         prop="mobile">
         </el-table-column>
-        <el-table-column label="联系人"
-                         min-width="100"
-                         align="center"
-                         show-overflow-tooltip
-                         prop="linkman"></el-table-column>
-        <el-table-column label="手机号"
+
+        <el-table-column label="角色"
                          width="100"
                          align="center"
-                         prop="mobile">
+                         prop="role" :formatter="formatterRole">
         </el-table-column>
         <el-table-column label="操作"
                          align="center"
@@ -61,42 +50,40 @@
                          prop="remarks">
           <template slot-scope="scope">
             <el-button type="text"
-                       v-rules="{admin:'admin',ordinary:'customer:edit'}"
                        :disabled="scope.row.result == 0"
                        @click.stop="handelDetail('update', scope.row)">编辑</el-button>
             <el-button type="text"
-                       v-rules="{admin:'admin',ordinary:'customer:update:location'}"
                        @click.stop="handleDel(scope.row)">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
       <pagination v-show="total > 0"
                   :total="total"
-                  :page.sync="listQuery.page"
-                  :limit.sync="listQuery.limit"
-                  @pagination="customerList"
+                  :page.sync="listQuery.pn"
+                  :limit.sync="listQuery.rn"
+                  @pagination="getList"
                   class="text-right" />
       </div>
     </div>
     <!--修改定位-->
     <detail :showDialog.sync="showDetail"
                     :infoData='infoData' :roleList="roleListTwo"
-                    @updateList='customerList' />
+                    @updateList='getList' />
   </div>
 </template>
 
 <script>
-import {customerList,} from "@/api/customer/customer";
+import {userlist,deleteuser} from "@/api/role";
 import detail from './detail';
 import roleBox from './../components/roleBox';
 export default {
   data () {
     return {
       listQuery: {
-        key: "",
+        keyword: "",
         role:"",
-        limit: 10,
-        page: 1,
+        rn: 10,
+        pn: 1,
       },
       total: 0,
       listLoading: false,
@@ -108,8 +95,8 @@ export default {
         type:'',
         option:{},
       },
-      roleList:[{id:'',name:'全部'},{id:1,name:'超级管理员'},{id:2,name:'管理员'},{id:3,name:'供应商'},{id:4,name:'客服审核员'}],
-      roleListTwo:[{id:'',name:'全部'},{id:1,name:'超级管理员'},{id:2,name:'管理员'},{id:3,name:'供应商'},{id:4,name:'客服审核员'}]
+      roleList:[{id:'',name:'全部'},{id:'super_manager',name:'超级管理员'},{id:'manager',name:'管理员'},{id:'supplier',name:'供应商'},{id:'custom_service',name:'客服审核员'}],
+      roleListTwo:[{id:'manager',name:'管理员'},{id:'supplier',name:'供应商'},{id:'custom_service',name:'客服审核员'}]
     };
   },
   components: {detail,roleBox},
@@ -123,9 +110,13 @@ export default {
           window.innerHeight - this.$refs.activityTable.$el.offsetTop - 150;
       };
     });
-    this.customerList();
+    this.getList();
   },
   methods: {
+    formatterRole (row, column, cellValue, index) {
+      // super_manager 超级管理员, manager 管理员,supplier 供应商,custom_service 客服
+      return cellValue == 'super_manager' ? "超级管理员" : cellValue == 'manager'? "管理员" : cellValue == 'supplier'? "供应商" : cellValue == 'custom_service'? "客服" : "";
+    },
     // 修改定位
     handelDetail (type, row) {
       this.showDetail = true
@@ -135,44 +126,43 @@ export default {
       }
     },
     // 获取客户列表
-    customerList () {
-      customerList({ ...this.listQuery, })
+    getList () {
+      userlist({ ...this.listQuery, })
         .then(res => {
-          // this.dataList = res.data.data;
-          this.dataList = [{id:1,storeName:'111',storeSn:'11',linkman:'张三',mobile:'18656547892'}];
-          this.total = res.data.count;
+          this.dataList = res.data.user_list;
+          // this.total = res.data.count;
         })
         .catch(err => console.log(err));
     },
 
-    queryCustomerList () {
-      this.listQuery.page = 1;
-      this.customerList();
+    queryGetList () {
+      this.listQuery.pn = 1;
+      this.getList();
     },
     queryList(role){
       this.listQuery.role = role;
-      this.listQuery.page = 1;
-      this.customerList();
+      this.listQuery.pn = 1;
+      this.getList();
       console.log('11')
     },
     // 删除单个
-    handleDel (id, index) {
-      // type,msg,title,option,callback
 
-      this.$MyMessageBox(3,"<span style='margin-left: 35px;'>确定删除该团队用户？</span>", "确定删除", {
+    async  handleDel(row){
+      const res = await this.$confirm("<span style='margin-left: 35px;'>确定删除该团队用户？</span>", "确定删除", {
         cancelButtonText: "取消",
         confirmButtonText: "确定",
         // type: "info",
         dangerouslyUseHTMLString: true,
         customClass:'del_confirm'
-      }).then(res => {
-        if (res) {
-          // deleteCustomer({ storeIds: [id] }).then(res => {
-          //   this.$message({ message: res.resp_msg, type: 'success' });
-          //   this.dataList.splice(index, 1);
-          // });
-        }}).catch();
-
+      }).catch((err)=>{console.log('err',err)})
+      if(res){
+        // this.$success("你确认惹删除！")
+          deleteuser({ id: row.id }).then(res => {
+            this.$message({ message: res.resp_msg, type: 'success' });
+            this.getList();
+          });
+        console.log('确定',res)
+      }
     },
   },
 };
@@ -181,6 +171,7 @@ export default {
 <style lang="scss" scoped>
   .container_box{
     height: calc(100vh - 129px);
+    align-items: flex-start;
     .container{
       flex: 1;
       overflow: auto;

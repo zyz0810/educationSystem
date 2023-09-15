@@ -3,13 +3,13 @@
     <el-form :inline="true"
              class="search_box">
       <el-form-item label="">
-        <el-input v-model.trim="listQuery.key"
+        <el-input v-model.trim="listQuery.keyword"
                   clearable suffix-icon="el-icon-search"
-                  @change="queryCustomerList"
+                  @change="queryList"
                   placeholder="标题/关键词" />
       </el-form-item>
       <el-form-item label="">
-        <el-select v-model="listQuery.one" placeholder="请选择" @change="queryCustomerList">
+        <el-select v-model="listQuery.one" placeholder="请选择" @change="queryList">
           <el-option label="全部" value=""></el-option>
           <el-option v-for="(item, index) in userList"
                      :key="index"
@@ -37,11 +37,11 @@
                          width="150"
                          align="left">
           <template slot-scope="scope">
-            <span class="flex pointer"  @click="handelDetail('detail', scope.row)">
+            <span class="flex pointer">
                 <span class="header_img">
               <img src="http://cdn.kyaoduo.com/upload/image/20200808/WechatIMG289.png" alt="邀请码"/>
             </span>
-            {{scope.row.storeName}}
+            {{scope.row.consult_name}}
             </span>
 
           </template>
@@ -50,7 +50,7 @@
         <el-table-column label="ID"
                          min-width="100"
                          align="left"
-                         prop="mobile">
+                         prop="consult_id">
         </el-table-column>
         <el-table-column label="手机"
                          min-width="100"
@@ -60,43 +60,37 @@
         <el-table-column label="性别"
                          min-width="100"
                          align="left"
-                         prop="mobile"></el-table-column>
+                         prop="sex" :formatter="formatterSex"></el-table-column>
         <el-table-column label="城市"
                          min-width="100"
                          align="left"
-                         prop="mobile"></el-table-column>
+                         prop="city"></el-table-column>
         <el-table-column label="个人简介"
                          min-width="130"
                          align="left"
-                         prop="mobile"></el-table-column>
-        <el-table-column label=""
-                         min-width="150"
-                         align="left"
-                         prop="mobile">
+                         prop="into">
           <template slot-scope="scope">
-            <span class="person_tag">幼育</span>
-            <span class="person_tag">幼儿教育</span>
-            <span class="f16 bold yellow02">…</span>
+            <span class="mr10">{{scope.row.intro}}</span>
+<!--            <span class="person_tag" v-for="(item,index) in scope.row.label">{{item}}</span>-->
+<!--            <span class="f16 bold yellow02" v-show="scope.row.label.length > 2">…</span>-->
           </template>
         </el-table-column>
         <el-table-column label="提交时间"
                          min-width="130"
                          align="left"
-                         prop="mobile"></el-table-column>
+                         prop="create_time"></el-table-column>
 
         <el-table-column label="违规/拉黑原因"
                          min-width="130"
                          align="left"
-                         prop="mobile"></el-table-column>
+                         prop="reason"></el-table-column>
         <el-table-column label="操作"
                          align="center"
                          fixed="right"
                          width="160"
                          prop="remarks">
           <template slot-scope="scope">
-            <el-button type="text"
-                       v-rules="{admin:'admin',ordinary:'customer:update:location'}"
-                       @click.stop="handleDel(scope.row)">移除</el-button>
+            <el-button type="text" @click.stop="handleDel(scope.row)">移除</el-button>
           </template>
         </el-table-column>
 
@@ -104,29 +98,26 @@
       </el-table>
       <pagination v-show="total > 0"
                   :total="total"
-                  :page.sync="listQuery.page"
-                  :limit.sync="listQuery.limit"
-                  @pagination="customerList"
+                  :page.sync="listQuery.pn"
+                  :limit.sync="listQuery.rn"
+                  @pagination="getList"
                   class="text-right" />
     </div>
-    <detail :showDialog.sync="showDetail"
-            :infoData='infoData'
-            @updateList='customerList' />
+
   </div>
 </template>
 
 <script>
-  import {customerList,} from "@/api/customer/customer";
-  import detail from './detail';
+  import {getblacklist,removebacklist} from "@/api/blackList";
   export default {
     data () {
       return {
         userList:[],
         listQuery: {
-          key: "",
+          keyword: "",
           role:"",
-          limit: 10,
-          page: 1,
+          rn: 10,
+          pn: 1,
         },
         total: 0,
         listLoading: false,
@@ -141,7 +132,7 @@
         channelList:[{id:'',name:'全部渠道'},{id:1,name:'超级管理员'},{id:2,name:'管理员'},{id:3,name:'供应商'},{id:4,name:'客服审核员'}]
       };
     },
-    components: {detail},
+    components: {},
     computed: {},
     mounted () {
       this.$nextTick(() => {
@@ -152,48 +143,44 @@
             window.innerHeight - this.$refs.activityTable.$el.offsetTop - 150;
         };
       });
-      this.customerList();
+      this.getList();
     },
     methods: {
+      formatterSex (row, column, cellValue, index) {
+        // 1男 2女
+        return cellValue == 1 ? "男" : cellValue == 2? "女" : "";
+      },
       // 删除单个
-      handleDel (row) {
-        // type,msg,title,option,callback
-
-        this.$MyMessageBox(3,`<span style='margin-left: 35px;'>“${row.storeName}”从黑名单移除？将恢复沟通权限</span>`, "移除黑名单", {
+      async  handleDel(row){
+        const res = await this.$confirm("<span style='margin-left: 35px;'>“"+ row.consult_name +"”从黑名单移除？将恢复沟通权限</span>", "移除黑名单", {
           cancelButtonText: "取消",
           confirmButtonText: "确定",
           // type: "info",
           dangerouslyUseHTMLString: true,
           customClass:'del_confirm'
-        }).then(res => {
-          if (res) {
-            // deleteCustomer({ storeIds: [id] }).then(res => {
-            //   this.$message({ message: res.resp_msg, type: 'success' });
-            //   this.dataList.splice(index, 1);
-            // });
-          }}).catch();
-
+        }).catch((err)=>{console.log('err',err)})
+        if(res){
+          // this.$success("你确认惹删除！")
+          removebacklist({ black_user_id: row.consult_id }).then(res => {
+            this.$message({ message: res.resp_msg, type: 'success' });
+            this.getList();
+          });
+          console.log('确定',res)
+        }
       },
       // 获取客户列表
-      customerList () {
-        customerList({ ...this.listQuery, })
+      getList () {
+        getblacklist({ ...this.listQuery, })
           .then(res => {
-            // this.dataList = res.data.data;
-            this.dataList = [{id:1,storeName:'111',storeSn:'11',linkman:'张三',mobile:'18656547892'}];
-            this.total = res.data.count;
+            this.dataList = res.data.black_list;
+            this.total = res.data.totalCount;
           })
           .catch(err => console.log(err));
       },
 
-      queryCustomerList () {
-        this.listQuery.page = 1;
-        this.customerList();
-      },
-      queryList(role){
-        this.listQuery.role = role;
-        this.listQuery.page = 1;
-        this.customerList();
-        console.log('11')
+      queryList () {
+        this.listQuery.pn = 1;
+        this.getList();
       },
     },
   };

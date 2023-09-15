@@ -59,7 +59,7 @@
         <el-table-column label="性别"
                          min-width="100"
                          align="left"
-                         prop=""></el-table-column>
+                         prop="sex" :formatter="formatterSex"></el-table-column>
         <el-table-column label="地域"
                          min-width="100"
                          align="left"
@@ -71,18 +71,16 @@
         <el-table-column label="注册来源"
                          min-width="130"
                          align="left"
-                         prop="mobile"></el-table-column>
+                         prop="channel"></el-table-column>
         <el-table-column label="提交时间"
                          min-width="130"
                          align="left"
-                         prop="mobile"></el-table-column>
-
-
+                         prop="create_time" :formatter="formatTime"></el-table-column>
       </el-table>
       <pagination v-show="total > 0"
                   :total="total"
                   :page.sync="listQuery.pn"
-                  :limit.sync="listQuery.limit"
+                  :limit.sync="listQuery.rn"
                   @pagination="customerList"
                   class="text-right" />
     </div>
@@ -131,6 +129,13 @@
       this.customerList();
     },
     methods: {
+      formatterSex (row, column, cellValue, index) {
+        // 1男 2女
+        return cellValue == 1 ? "男" : cellValue == 2? "女" : "";
+      },
+      formatTime (row, column, cellValue, index) {
+        return this.$moment(cellValue).format("YYYY-MM-DD HH:mm:ss");
+      },
       handelDetail (type, row) {
         this.showDetail = true
         this.infoData = {

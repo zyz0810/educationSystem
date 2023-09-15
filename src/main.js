@@ -32,24 +32,24 @@ Vue.use(constant);
 import aa from '@/assets/image/table_empty.png';
 // import $imgUrl from '@/assets/image/table_empty.png';
 Vue.prototype.$imgUrl = aa;
-import VueAMap from 'vue-amap'
-Vue.use(VueAMap)
-VueAMap.initAMapApiLoader({
-  key: '8a4791f6010f719bcf548c8907980d2c', // 康药麦麦高德key
-  plugin: [
-    'AMap.Autocomplete',
-    'AMap.PlaceSearch',
-    'AMap.Scale',
-    'AMap.OverView',
-    'AMap.ToolBar',
-    'AMap.MapType',
-    'AMap.PolyEditor',
-    'AMap.CircleEditor',
-    'AMap.Geolocation'
-  ],
-  // 默认高德 sdk 版本为 1.4.4
-  v: '1.4.4'
-})
+// import VueAMap from 'vue-amap'
+// Vue.use(VueAMap)
+// VueAMap.initAMapApiLoader({
+//   key: '8a4791f6010f719bcf548c8907980d2c', // 康药麦麦高德key
+//   plugin: [
+//     'AMap.Autocomplete',
+//     'AMap.PlaceSearch',
+//     'AMap.Scale',
+//     'AMap.OverView',
+//     'AMap.ToolBar',
+//     'AMap.MapType',
+//     'AMap.PolyEditor',
+//     'AMap.CircleEditor',
+//     'AMap.Geolocation'
+//   ],
+//   // 默认高德 sdk 版本为 1.4.4
+//   v: '1.4.4'
+// })
 
 import axios from 'axios'
 //其他vue组件中就可以this.$axios调用使用
@@ -112,6 +112,22 @@ Vue.prototype.msgError = function(msg) {
 Vue.prototype.msgInfo = function(msg) {
   this.$message.info(msg)
 }
+import { Message,MessageBox  } from 'element-ui'
+Vue.prototype.$confirm= (text,title,option) => {
+  return new Promise((resolve, reject) => {
+    MessageBox.confirm(text, title,option).then((res) => {
+      resolve(true)
+    }).catch((res) => {
+      Message.info('已取消')
+      reject(false)
+    })
+  }).catch(() => {
+    // 可对错误进行处理
+  })
+}
+
+
+
 
 // 全局组件挂载
 Vue.component('RightToolbar', RightToolbar)

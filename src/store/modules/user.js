@@ -147,20 +147,58 @@ const user = {
 
 
 
+          let json = res.data;
 
-          //未调用getInfo接口
-          role = ['admin']
-          // debugger
-          // removeToken()
-          commit('SET_ROLES', ['admin'])
-          commit('SET_PERMISSIONS', ['admin'])
+          if(json.can_audit_user == 1){
+            role.push('can_audit_user')
+          }
+          if(json.can_deal_comlaint == 1){
+            role.push('can_deal_comlaint')
+          }
+          if(json.can_deal_income == 1){
+            role.push('can_deal_income')
+          }
+          if(json.can_query_supplier == 1){
+            role.push('can_query_supplier')
+          }
+          if(json.can_query_operations == 1){
+            role.push('can_query_operations')
+          }
+          if(json.can_query_user == 1){
+            role.push('can_query_user')
+          }
+          if(json.can_manage_perm == 1){
+            role.push('can_manage_perm')
+          }
+
+            if (!role.length) {
+              Message({
+                message: '没有访问权限',
+                type: 'warning'
+              })
+              removeToken()
+              return
+            }
+            commit('SET_ROLES', role)
+            commit('SET_PERMISSIONS', role)
+
+
+
+
+
+          // //未调用getInfo接口
+          // role = ['admin']
+          // // debugger
+          // // removeToken()
+          // commit('SET_ROLES', ['admin'])
+          // commit('SET_PERMISSIONS', ['admin'])
 
 
           resolve(role)
         }).catch(error => {
 
           console.log('跳转登录')
-          removeToken()
+          // removeToken()
 
           reject(error)
         })

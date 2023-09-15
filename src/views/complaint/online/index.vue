@@ -5,16 +5,17 @@
       <el-form-item label="">
         <el-input v-model.trim="listQuery.keyword"
                   clearable suffix-icon="el-icon-search"
-                  @change="queryCustomerList"
-                  placeholder="搜索/ID/姓名/手机号" />
+                  @change="queryList"
+                  placeholder="标题/关键词" />
       </el-form-item>
       <el-form-item label="">
-          <el-select v-model="listQuery.channel" @change="queryCustomerList" placeholder="请选择">
-            <el-option v-for="(item, index) in channelList"
-                       :key="index"
-                       :label="item.name"
-                       :value="item.id"></el-option>
-          </el-select>
+        <el-select v-model="listQuery.one" placeholder="请选择" @change="queryList">
+          <el-option label="全部" value=""></el-option>
+          <el-option v-for="(item, index) in userList"
+                     :key="index"
+                     :label="item.name"
+                     :value="item.id"></el-option>
+        </el-select>
       </el-form-item>
     </el-form>
     <div class="container mt_10">
@@ -38,9 +39,9 @@
           <template slot-scope="scope">
             <span class="flex pointer"  @click="handelDetail('detail', scope.row)">
                 <span class="header_img">
-              <img :src="scope.row.portrait" alt=""/>
+              <img src="http://cdn.kyaoduo.com/upload/image/20200808/WechatIMG289.png" alt="邀请码"/>
             </span>
-            {{scope.row.user_name}}
+            {{scope.row.consult_name}}
             </span>
 
           </template>
@@ -49,7 +50,7 @@
         <el-table-column label="ID"
                          min-width="100"
                          align="left"
-                         prop="user_id">
+                         prop="consult_id">
         </el-table-column>
         <el-table-column label="手机"
                          min-width="100"
@@ -67,31 +68,31 @@
         <el-table-column label="个人简介"
                          min-width="130"
                          align="left"
-                         prop="intro">
+                         prop="into">
           <template slot-scope="scope">
             <span class="mr10">{{scope.row.intro}}</span>
-            <span class="person_tag" v-for="(item,index) in scope.row.label">{{item}}</span>
-            <span class="f16 bold yellow02" v-show="scope.row.label.length > 2">…</span>
+<!--            <span class="person_tag" v-for="(item,index) in scope.row.label">{{item}}</span>-->
+<!--            <span class="f16 bold yellow02" v-show="scope.row.label.length > 2">…</span>-->
           </template>
         </el-table-column>
-<!--        <el-table-column label=""-->
-<!--                         min-width="150"-->
-<!--                         align="left"-->
-<!--                         prop="label">-->
-<!--          <template slot-scope="scope">-->
-<!--            <span class="person_tag">幼育</span>-->
-<!--            <span class="person_tag">幼儿教育</span>-->
-<!--            <span class="f16 bold yellow02">…</span>-->
-<!--          </template>-->
-<!--        </el-table-column>-->
-        <el-table-column label="注册来源无字段"
+        <el-table-column label="提交时间"
                          min-width="130"
                          align="left"
-                         prop="mobile"></el-table-column>
-        <el-table-column label="提交时间"
-                         min-width="150"
-                         align="left"
                          prop="create_time"></el-table-column>
+
+        <el-table-column label="违规/拉黑原因"
+                         min-width="130"
+                         align="left"
+                         prop="reason"></el-table-column>
+        <el-table-column label="操作"
+                         align="center"
+                         fixed="right"
+                         width="160"
+                         prop="remarks">
+          <template slot-scope="scope">
+            <el-button type="text" @click.stop="handleDel(scope.row)">移除</el-button>
+          </template>
+        </el-table-column>
 
 
       </el-table>
@@ -99,24 +100,25 @@
                   :total="total"
                   :page.sync="listQuery.pn"
                   :limit.sync="listQuery.rn"
-                  @pagination="customerList"
+                  @pagination="getList"
                   class="text-right" />
     </div>
     <detail :showDialog.sync="showDetail"
             :infoData='infoData'
-            @updateList='customerList' />
+            @updateList='getList' />
   </div>
 </template>
 
 <script>
-  import {getauditconsultlist,} from "@/api/counselor";
+  import {getblacklist,removebacklist} from "@/api/blackList";
   import detail from './detail';
   export default {
     data () {
       return {
+        userList:[],
         listQuery: {
           keyword: "",
-          channel:"",
+          role:"",
           rn: 10,
           pn: 1,
         },
@@ -144,36 +146,45 @@
             window.innerHeight - this.$refs.activityTable.$el.offsetTop - 150;
         };
       });
-      this.customerList();
+      this.getList();
     },
     methods: {
       formatterSex (row, column, cellValue, index) {
         // 1男 2女
         return cellValue == 1 ? "男" : cellValue == 2? "女" : "";
       },
-      handelDetail (type, row) {
-        this.showDetail = true
-        this.infoData = {
-          type:type,
-          option:row==''?{}:row,
+      // 删除单个
+      async  handleDel(row){
+        const res = await this.$confirm("<span style='margin-left: 35px;'>“"+ row.consult_name +"”从黑名单移除？将恢复沟通权限</span>", "移除黑名单", {
+          cancelButtonText: "取消",
+          confirmButtonText: "确定",
+          // type: "info",
+          dangerouslyUseHTMLString: true,
+          customClass:'del_confirm'
+        }).catch((err)=>{console.log('err',err)})
+        if(res){
+          // this.$success("你确认惹删除！")
+          removebacklist({ black_user_id: row.consult_id }).then(res => {
+            this.$message({ message: res.resp_msg, type: 'success' });
+            this.getList();
+          });
+          console.log('确定',res)
         }
       },
       // 获取客户列表
-      customerList () {
-        getauditconsultlist({ ...this.listQuery, })
+      getList () {
+        getblacklist({ ...this.listQuery, })
           .then(res => {
-            this.dataList = res.data.list;
-            // this.dataList = [{id:1,storeName:'111',storeSn:'11',linkman:'张三',mobile:'18656547892'}];
-            this.total = res.data.total_num;
+            this.dataList = res.data.black_list;
+            this.total = res.data.totalCount;
           })
           .catch(err => console.log(err));
       },
 
-      queryCustomerList () {
+      queryList () {
         this.listQuery.pn = 1;
-        this.customerList();
+        this.getList();
       },
-
     },
   };
 </script>

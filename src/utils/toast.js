@@ -31,8 +31,9 @@ const MyMessageBox = (type,msg,title,option,callback)=>{
         title,
         option,
       ).then(()=>{
+        console.log('点击 确认')
         callback()
-      }).catch(()=>{});
+      }).catch(()=>{      console.log('取消操作')});
       break;
   }
   return alert;

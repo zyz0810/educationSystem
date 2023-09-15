@@ -61,9 +61,9 @@
   </my-dialog>
 </template>
 <script>
-import {
-  lonAndLatEdit
-} from "@/api/customer/customer";
+// import {
+//   lonAndLatEdit
+// } from "@/api/customer/customer";
 import SingleImage from "@/components/Upload/SingleImage.vue"; // waves directive
 import quillEditor from "@/components/quillEditor/quillEditorProductDetail.vue";
 export default {
@@ -141,12 +141,12 @@ export default {
       this.$refs.ruleForm.validate(valid => {
         if (valid) {
           this.formData.lonAndLat = `${this.formData.longitude},${this.formData.latitude}`
-          lonAndLatEdit(this.formData)
-            .then(res => {
-              this.$emit("updateList");
-              this.dialogVisible = false;
-            })
-            .catch(err => console.log(err));
+          // lonAndLatEdit(this.formData)
+          //   .then(res => {
+          //     this.$emit("updateList");
+          //     this.dialogVisible = false;
+          //   })
+          //   .catch(err => console.log(err));
         } else {
           return false;
         }

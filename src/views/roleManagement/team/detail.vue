@@ -12,8 +12,8 @@
              :rules="rules"
              class="formList">
       <el-form-item label="选择角色："
-                    prop="one">
-        <el-select v-model="formData.one" placeholder="请选择">
+                    prop="role">
+        <el-select v-model="formData.role" placeholder="请选择">
           <el-option v-for="(item, index) in roleList"
                      :key="index"
                      :label="item.name"
@@ -21,14 +21,14 @@
         </el-select>
       </el-form-item>
       <el-form-item label="姓名："
-                    prop="two">
-        <el-input v-model.trim="formData.two"
+                    prop="name">
+        <el-input v-model.trim="formData.name"
                   clearable
                   placeholder="请输入" />
       </el-form-item>
       <el-form-item label="手机号："
-                    prop="three">
-        <el-input v-model.trim="formData.three"
+                    prop="mobile">
+        <el-input v-model.trim="formData.mobile"
                   clearable
                   placeholder="请输入" />
       </el-form-item>
@@ -36,14 +36,14 @@
     <span slot="footer"
           class="dialog-footer" v-show="dialogStatus!='detail'">
       <el-button @click="dialogVisible = false">取 消</el-button>
-      <el-button type="primary" class="ml_30" @click="save">保 存</el-button>
+      <el-button type="primary" class="ml_30" @click="dialogStatus == 'create'?save():updateData()">保 存</el-button>
     </span>
   </my-dialog>
 </template>
 <script>
 import {
-  lonAndLatEdit
-} from "@/api/customer/customer";
+  adduser,updateuser
+} from "@/api/role";
 export default {
   props: {
     showDialog: {
@@ -68,9 +68,9 @@ export default {
   data () {
     return {
       formData: {
-        one: 1,
-        two: '21',
-        three: '13589632589',
+        role: '',
+        name: '',
+        mobile: '',
       },
       isChange:false,
       textMap: {
@@ -80,13 +80,13 @@ export default {
       },
       dialogStatus: '',
       rules: {
-        one: [
-          { required: true, message: "请选择角色女", trigger: "blur" }
+        role: [
+          { required: true, message: "请选择角色", trigger: "blur" }
         ],
-        two: [
+        name: [
           { required: true, message: "请输入姓名", trigger: "blur" }
         ],
-        three: [
+        mobile: [
           { required: true, message: "请输入手机号", trigger: "blur" }
         ],
       }
@@ -107,7 +107,23 @@ export default {
     }
   },
   methods: {
-
+    updateData() {
+      // if (this.$refs.myQuillEditor) {
+      //   this.$refs.myQuillEditor.changeContent(description);
+      // }
+      this.$refs.ruleForm.validate(valid => {
+        if (valid) {
+          updateuser(this.formData)
+            .then(res => {
+              this.$emit("updateList");
+              this.dialogVisible = false;
+            })
+            .catch(err => console.log(err));
+        } else {
+          return false;
+        }
+      });
+    },
     // 修改定位
     save () {
       // if (this.$refs.myQuillEditor) {
@@ -115,8 +131,7 @@ export default {
       // }
       this.$refs.ruleForm.validate(valid => {
         if (valid) {
-          this.formData.lonAndLat = `${this.formData.longitude},${this.formData.latitude}`
-          lonAndLatEdit(this.formData)
+          adduser(this.formData)
             .then(res => {
               this.$emit("updateList");
               this.dialogVisible = false;
@@ -130,6 +145,10 @@ export default {
     open () {
       this.formData.id = this.infoData.option.id;
       this.dialogStatus = this.infoData.type;
+      if(this.infoData.type == 'update'){
+        const {id,role, name, mobile,} = this.infoData.option;
+        this.formData = {id,role, name, mobile,};
+      }
     },
     close () {
       this.$refs.ruleForm.clearValidate();

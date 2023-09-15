@@ -16,14 +16,13 @@ export function login(query) {
   })
 }
 
-// 获取用户详细信息
+// 获取用户详细信息（用户权限）
 export function getInfo() {
   return request({
     // url: 'api-crm-system/crm/users/current',
     // method: 'get'
-    url: '/pc/getaudituserlist',
+    url: '/perm/getuserperm',
     method: 'get',
-    params:{pn:1,rn:1}
   })
 }
 /* 修改资料

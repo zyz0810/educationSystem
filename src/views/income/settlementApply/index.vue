@@ -111,7 +111,7 @@
 </template>
 
 <script>
-  import {customerList,} from "@/api/customer/customer";
+  import {getProfits,} from "@/api/income";
 
   export default {
     data () {
@@ -173,7 +173,7 @@
     methods: {
       // 获取客户列表
       customerList () {
-        customerList({ ...this.listQuery, })
+        getProfits({ ...this.listQuery, })
           .then(res => {
             // this.dataList = res.data.data;
             this.dataList = [{id:1,storeName:'111',storeSn:'11',linkman:'张三',mobile:'18656547892'}];

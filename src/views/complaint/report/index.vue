@@ -3,7 +3,7 @@
     <el-form :inline="true"
              class="search_box">
       <el-form-item label="">
-        <el-input v-model.trim="listQuery.key"
+        <el-input v-model.trim="listQuery.keyword"
                   clearable suffix-icon="el-icon-search"
                   @change="queryCustomerList"
                   placeholder="标题/关键词" />
@@ -94,22 +94,16 @@
                          width="160"
                          prop="remarks">
           <template slot-scope="scope">
-            <el-button type="text"
-                       @click.stop="handelDetail('reject',scope.row)">驳回</el-button>
-            <el-button type="text"
-                       v-rules="{admin:'admin',ordinary:'customer:edit'}"
-                       :disabled="scope.row.result == 0"
-                       @click.stop="handelDetail('warn', scope.row)">警告</el-button>
-            <el-button type="text"
-                       v-rules="{admin:'admin',ordinary:'customer:update:location'}"
-                       @click.stop="handelDetail('blacklist',scope.row)">加入黑名单</el-button>
+            <el-button type="text" @click.stop="handelDetail('reject',scope.row)">驳回</el-button>
+            <el-button type="text" @click.stop="handelDetail('warn', scope.row)">警告</el-button>
+            <el-button type="text" @click.stop="handelDetail('blacklist',scope.row)">移入黑名单</el-button>
           </template>
         </el-table-column>
       </el-table>
       <pagination v-show="total > 0"
                   :total="total"
-                  :page.sync="listQuery.page"
-                  :limit.sync="listQuery.limit"
+                  :page.sync="listQuery.pn"
+                  :limit.sync="listQuery.rn"
                   @pagination="customerList"
                   class="text-right" />
     </div>
@@ -121,15 +115,15 @@
 </template>
 
 <script>
-import {customerList,} from "@/api/customer/customer";
+import {complaintlists,} from "@/api/report";
 import detail from './detail';
 export default {
   data () {
     return {
       listQuery: {
-        key: "",
-        limit: 10,
-        page: 1,
+        keyword: "",
+        rn: 10,
+        pn: 1,
       },
       total: 0,
       listLoading: false,
@@ -169,7 +163,7 @@ export default {
     },
     // 获取客户列表
     customerList () {
-      customerList({ ...this.listQuery, })
+      complaintlists({ ...this.listQuery, })
         .then(res => {
           // this.dataList = res.data.data;
           this.dataList = [{id:1,storeName:'111',storeSn:'11',linkman:'张三',mobile:'18656547892'}];
@@ -179,7 +173,7 @@ export default {
     },
 
     queryCustomerList () {
-      this.listQuery.page = 1
+      this.listQuery.pn = 1
       this.customerList()
     },
 

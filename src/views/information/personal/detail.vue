@@ -1,37 +1,38 @@
 <template>
   <my-dialog :visible.sync="dialogVisible"
              :close-on-click-modal="false"
-             width="36%"
+             width="400px"
              @close="close"
              @open="open"
              top="15vh"
              :title="textMap[dialogStatus]">
-    <div class="flex">
-      <div class="flex_hd"><img class="head_img_detail" src="http://cdn.kyaoduo.com/upload/image/20200808/WechatIMG289.png"></div>
+    <div class="flex mr10 ml_10">
+      <div class="flex_hd"><img class="head_img_detail" :src="formData.portrait"/></div>
       <div class="flex_bd">
-        <div>李磊</div>
-        <div>18625632512</div>
+        <div class="f14"><i class="iconfont icon-nan" v-show="formData.sex == 1"></i><i class="iconfont icon-nv" v-show="formData.sex == 2"></i>{{formData.user_name}}</div>
+        <div><img class="phone_icon" src="./../../../assets/image/phone.png"/>{{formData.mobile}}</div>
       </div>
     </div>
-    <div>
-      <div>基本信息</div>
-      <div class="flex border_bottom1">
-        <div>客户ID</div>
-        <div class="flex_bd text-right">发发发</div>
+    <div class="mt_10 info_content">
+      <div class="detail_title">基本信息</div>
+      <div class="flex border_bottom1 info_content_line">
+        <div class="info_txt">客户ID</div>
+        <div class="flex_bd text-right">{{formData.user_id}}</div>
       </div>
-      <div class="flex border_bottom1">
-        <div>姓名</div>
-        <div class="flex_bd text-right">发发发</div>
+      <div class="flex border_bottom1 info_content_line">
+        <div class="info_txt">姓名</div>
+        <div class="flex_bd text-right">{{formData.user_name}}</div>
       </div>
-      <div class="flex border_bottom1">
-        <div>地域</div>
-        <div class="flex_bd text-right">发发发</div>
+      <div class="flex border_bottom1 info_content_line">
+        <div class="info_txt">地域</div>
+        <div class="flex_bd text-right">{{formData.city}}</div>
       </div>
-      <div class="flex border_bottom1">
-        <div>个人简介</div>
-        <div class="flex_bd text-right">发发发</div>
+      <div class="flex border_bottom1 info_content_line">
+        <div class="info_txt">个人简介</div>
+        <div class="flex_bd text-right">{{formData.intro}}</div>
       </div>
     </div>
+
 
     <span slot="footer"
           class="dialog-footer" v-show="dialogStatus!='detail'">
@@ -41,135 +42,133 @@
   </my-dialog>
 </template>
 <script>
-import {
-  lonAndLatEdit
-} from "@/api/customer/customer";
-import SingleImage from "@/components/Upload/SingleImage.vue"; // waves directive
-import quillEditor from "@/components/quillEditor/quillEditorProductDetail.vue";
-export default {
-  props: {
-    showDialog: {
-      required: true,
-      type: Boolean,
-      default: false
-    },
-    infoData:{
-      required: true,
-      type: Object,
-      default: {
-        type:'create',
-        option:{}
-      }
-    },
-  },
-  data () {
-    return {
-      formData: {
-        one: 1,
-        two: 'https://cdn.kyaoduo.com/upload/file/202307/feb5e6bc-0083-4eed-95be-ac7cf82bf11b.jpeg',
-        three: '12',
-        four: '<p style="color:red;">2222</p>',
+  // import {
+  //   lonAndLatEdit
+  // } from "@/api/customer/customer";
+  export default {
+    props: {
+      showDialog: {
+        required: true,
+        type: Boolean,
+        default: false
       },
-      isChange:false,
-      textMap: {
-        update: '编辑家长信息',
-        create: '新建家长信息',
-        detail:'家长信息'
-      },
-      dialogStatus: '',
-      rules: {
-        one: [
-          { required: true, message: "请选择类型", trigger: "blur" }
-        ],
-        two: [
-          { required: true, message: "请上传图片", trigger: "blur" }
-        ],
-        three: [
-          { required: true, message: "请输入链接", trigger: "blur" }
-        ],
-        four: [
-          { required: true, message: "请输入公告内容", trigger: "blur" }
-        ],
-      }
-    };
-  },
-  components: {
-    SingleImage,quillEditor
-  },
-  computed: {
-    dialogVisible: {
-      get () {
-        return this.showDialog;
-      },
-      set (value) {
-        this.$emit("update:show-dialog", value);
-      }
-    },
-    isCanView(){
-      return this.dialogStatus == 'detail'
-    }
-  },
-  methods: {
-    hasImgSrc(val) {
-      this.formData.two = val;
-    },
-    // 修改定位
-    save () {
-      // if (this.$refs.myQuillEditor) {
-      //   this.$refs.myQuillEditor.changeContent(description);
-      // }
-      this.$refs.ruleForm.validate(valid => {
-        if (valid) {
-          this.formData.lonAndLat = `${this.formData.longitude},${this.formData.latitude}`
-          lonAndLatEdit(this.formData)
-            .then(res => {
-              this.$emit("updateList");
-              this.dialogVisible = false;
-            })
-            .catch(err => console.log(err));
-        } else {
-          return false;
+      infoData:{
+        required: true,
+        type: Object,
+        default: {
+          type:'create',
+          option:{}
         }
-      });
+      },
     },
-    open () {
-      this.formData.id = this.infoData.option.id;
-      this.dialogStatus = this.infoData.type;
-      this.$nextTick(()=>{
-        if (this.$refs.myQuillEditor) {
-          this.$refs.myQuillEditor.changeContent(this.formData.four);
+    data () {
+      return {
+        formData: {
+          id:'',
+          portrait:'',
+          user_name:'',
+          mobile:'',
+          user_id:'',
+          city:'',
+          intro:'',
+          sex:''
+        },
+        isChange:false,
+        textMap: {
+          update: '编辑家长信息',
+          create: '新建家长信息',
+          detail:'家长信息'
+        },
+        dialogStatus: '',
+        rules: {
+          one: [
+            { required: true, message: "请选择类型", trigger: "blur" }
+          ],
+          two: [
+            { required: true, message: "请上传图片", trigger: "blur" }
+          ],
+          three: [
+            { required: true, message: "请输入链接", trigger: "blur" }
+          ],
+          four: [
+            { required: true, message: "请输入公告内容", trigger: "blur" }
+          ],
         }
-      });
+      };
+    },
 
+    computed: {
+      dialogVisible: {
+        get () {
+          return this.showDialog;
+        },
+        set (value) {
+          this.$emit("update:show-dialog", value);
+        }
+      },
     },
-    close () {
-      this.$refs.ruleForm.clearValidate();
-      Object.assign(this.formData, {
-        longitude: '',
-        latitude: '',
-      });
-      this.dialogVisible = false;
+    methods: {
+
+      // 修改定位
+      save () {
+        this.$refs.ruleForm.validate(valid => {
+          if (valid) {
+            this.formData.lonAndLat = `${this.formData.longitude},${this.formData.latitude}`
+            // lonAndLatEdit(this.formData)
+            //   .then(res => {
+            //     this.$emit("updateList");
+            //     this.dialogVisible = false;
+            //   })
+            //   .catch(err => console.log(err));
+          } else {
+            return false;
+          }
+        });
+      },
+      open () {
+        // this.formData.id = this.infoData.option.id;
+        this.dialogStatus = this.infoData.type;
+
+        const {id,portrait,user_name,mobile,user_id,city,intro,sex} = this.infoData.option;
+        this.formData = {id,portrait,user_name,mobile,user_id,city,intro,sex};
+      },
+      close () {
+        // this.$refs.ruleForm.clearValidate();
+
+        this.dialogVisible = false;
+      }
     }
-  }
-};
+  };
 </script>
 
 <style lang="scss">
-.el-form {
-  padding: 0 20px;
-  .flex {
-    display: flex;
+  .info_content{
+    line-height: 2;
+    margin: 10px 10px 0;
+    .info_content_line{
+      font-size: 14px;
+      padding: 0 10px;
+      line-height: 2.3;
+    }
+    .info_txt{
+      color: #676C72;
+    }
   }
+  .el-form {
+    padding: 0 20px;
+    .flex {
+      display: flex;
+    }
 
-}
-.notice_banner{
-  img{
-    height: 100px;
   }
-}
-.uploader {
-  .el-upload--picture-card {
-    display: none;
+  .notice_banner{
+    img{
+      height: 100px;
+    }
   }
-}
+  .uploader {
+    .el-upload--picture-card {
+      display: none;
+    }
+  }
 </style>

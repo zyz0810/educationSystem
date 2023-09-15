@@ -5,9 +5,9 @@ import Qs from 'qs'
  * pn
  * rn
 */
-export function getauditconsultlist(query) {
+export function getblacklist(query) {
   return request({
-    url: 'pc/getblacklist',
+    url: '/pc/getblacklist',
     method: 'get',
     params: query
   })

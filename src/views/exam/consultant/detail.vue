@@ -6,35 +6,48 @@
              @open="open"
              top="15vh"
              :title="textMap[dialogStatus]">
-    <el-form ref="ruleForm"
-             :model="formData"
-             label-width="120px"
-             :rules="rules"
-             class="formList">
-
-      <el-form-item :label="textMap[dialogStatus]"
-                    prop="one">
-        <el-select v-model="formData.one" placeholder="请选择">
-          <el-option v-for="(item, index) in reasonList"
-                     :key="index"
-                     :label="item.name"
-                     :value="item.id"></el-option>
-        </el-select>
-
-      </el-form-item>
-      <el-form-item label="备注内容"
-                    prop="two">
-        <el-input
-          type="textarea"
-          :autosize="{ minRows: 6, maxRows: 10}"
-          placeholder="请输入内容"
-          v-model="formData.two">
-        </el-input>
-
-      </el-form-item>
-    </el-form>
+    <div class="flex">
+      <div class="flex_hd"><img class="head_img_detail" src="http://cdn.kyaoduo.com/upload/image/20200808/WechatIMG289.png"></div>
+      <div class="flex_bd">
+        <div>李磊</div>
+        <div>18625632512</div>
+      </div>
+    </div>
+    <div>
+      <div>基本信息</div>
+      <div class="flex border_bottom1">
+        <div>客户ID</div>
+        <div class="flex_bd text-right">发发发</div>
+      </div>
+      <div class="flex border_bottom1">
+        <div>姓名</div>
+        <div class="flex_bd text-right">发发发</div>
+      </div>
+      <div class="flex border_bottom1">
+        <div>地域</div>
+        <div class="flex_bd text-right">发发发</div>
+      </div>
+      <div class="flex border_bottom1">
+        <div>个人简介</div>
+        <div class="flex_bd text-right">发发发</div>
+      </div>
+    </div>
+    <div>
+      <div>资质标签</div>
+      <div class="tag_list">
+        <span class="person_tag">咨询</span>
+        <span class="person_tag">幼教</span>
+      </div>
+    </div>
+    <div>
+      <div>附件</div>
+      <div class="tag_list">
+        <span class="person_tag">咨询</span>
+        <span class="person_tag">幼教</span>
+      </div>
+    </div>
     <span slot="footer"
-          class="dialog-footer">
+          class="dialog-footer" v-show="dialogStatus!='detail'">
       <el-button @click="dialogVisible = false">取 消</el-button>
       <el-button type="primary" class="ml_30" @click="save">保 存</el-button>
     </span>
@@ -59,11 +72,6 @@ export default {
         option:{}
       }
     },
-    reasonList:{
-      required: true,
-      type: Array,
-      default: []
-    }
   },
   data () {
     return {
@@ -75,9 +83,9 @@ export default {
       },
       isChange:false,
       textMap: {
-        reject: '驳回',
-        warn: '警告',
-        blacklist:'移入黑名单'
+        update: '编辑家长信息',
+        create: '新建家长信息',
+        detail:'家长信息'
       },
       dialogStatus: '',
       rules: {
@@ -116,9 +124,6 @@ export default {
     },
     // 修改定位
     save () {
-      // if (this.$refs.myQuillEditor) {
-      //   this.$refs.myQuillEditor.changeContent(description);
-      // }
       this.$refs.ruleForm.validate(valid => {
         if (valid) {
           this.formData.lonAndLat = `${this.formData.longitude},${this.formData.latitude}`
@@ -136,11 +141,7 @@ export default {
     open () {
       this.formData.id = this.infoData.option.id;
       this.dialogStatus = this.infoData.type;
-      this.$nextTick(()=>{
-        if (this.$refs.myQuillEditor) {
-          this.$refs.myQuillEditor.changeContent(this.formData.four);
-        }
-      });
+
 
     },
     close () {
