@@ -1,13 +1,14 @@
 <template>
-  <div class="sidebar-logo-container" :class="{'collapse':collapse}">
+<!--  <div class="sidebar-logo-container" :class="{'collapse':collapse}">-->
+  <div class="sidebar-logo-container">
     <transition name="sidebarLogoFade">
       <router-link v-if="collapse" key="collapse" class="sidebar-logo-link" to="/">
          <img v-if="logo" :src="logo" class="sidebar-logo" />
-        <h1 class="sidebar-title">{{ title }}</h1>
+        <span class="sidebar-title">{{ title }}</span>
       </router-link>
       <router-link v-else key="expand" class="sidebar-logo-link" to="/">
          <img v-if="logo" :src="logo" class="sidebar-logo" />
-        <h1 class="sidebar-title">{{ title }}</h1>
+        <span class="sidebar-title">{{ title }}</span>
       </router-link>
     </transition>
   </div>
@@ -67,16 +68,11 @@ export default {
       display: inline-block;
       margin: 0;
       color: #fff;
-      font-weight: 600;
-      line-height: 50px;
       font-size: 14px;
       font-family: Avenir, Helvetica Neue, Arial, Helvetica, sans-serif;
       vertical-align: middle;
-      font-family: "微软雅黑 Bold", "微软雅黑 Regular", "微软雅黑";
-      font-weight: 700;
+      /*font-family: "微软雅黑 Bold", "微软雅黑 Regular", "微软雅黑";*/
       font-style: normal;
-      font-size: 18px;
-      color: #ffffff;
       line-height: 28px;
     }
   }

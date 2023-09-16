@@ -28,25 +28,20 @@
                 highlight-current-row>
         <el-table-column label="姓名"
                          fixed="left"
-                         min-width="120"
                          align="left"
                          show-overflow-tooltip
                          prop="name"></el-table-column>
         <el-table-column label="手机号"
-                         min-width="160"
-                         align="center"
+                         align="left"
                          prop="mobile">
         </el-table-column>
 
         <el-table-column label="角色"
-                         width="100"
-                         align="center"
+                         align="left"
                          prop="role" :formatter="formatterRole">
         </el-table-column>
         <el-table-column label="操作"
-                         align="center"
-                         fixed="right"
-                         width="160"
+                         align="left"
                          prop="remarks">
           <template slot-scope="scope">
             <el-button type="text"

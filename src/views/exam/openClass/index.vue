@@ -105,7 +105,7 @@
 </template>
 
 <script>
-import {getaboutus,} from "@/api/aboutUs";
+import {getVideoList,} from "@/api/openClass";
 import detail from './detail';
 export default {
   data () {
@@ -154,7 +154,7 @@ export default {
     },
     // 获取客户列表
     getList () {
-      getaboutus()
+      getVideoList(this.listQuery)
         .then(res => {
           this.dataList = res.data;
           // this.dataList = [{id:1,storeName:'111',storeSn:'11',linkman:'张三',mobile:'18656547892'}];

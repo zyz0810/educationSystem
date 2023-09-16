@@ -1,14 +1,14 @@
 import request from '@/utils/request'
 import Qs from 'qs'
 
-/* 获取发放收益列表
+/* 公开课列表
  * start 开始时间
  * end 结束时间
  * status 当前的状态
  */
-export function getProfits(query) {
+export function getVideoList(query) {
   return request({
-    url: 'pc/profits',
+    url: '/getVideoList',
     method: 'get',
     params: query
   })
@@ -20,7 +20,7 @@ export function getProfits(query) {
  */
 export function update_apply() {
   return request({
-    url: 'pc/updateapply',
+    url: '/update_apply',
     method: 'get',
   })
 }

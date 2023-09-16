@@ -36,8 +36,8 @@
                          width="150"
                          align="left">
           <template slot-scope="scope">
-            <span class="flex pointer"  @click="handelDetail('detail', scope.row)">
-                <span class="header_img">
+            <span class="flex pointer blue01"  @click="handelDetail('detail', scope.row)">
+                <span class="header_img mr5">
               <img :src="scope.row.portrait" alt=""/>
             </span>
             {{scope.row.user_name}}

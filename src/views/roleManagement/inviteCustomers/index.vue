@@ -16,20 +16,17 @@
                 highlight-current-row>
 
         <el-table-column label="姓名"
-                         width="50"
+                         min-width="120"
                          align="left">
           <template slot-scope="scope">
             <span class="header_img">
               <img src="http://cdn.kyaoduo.com/upload/image/20200808/WechatIMG289.png" alt="邀请码"/>
             </span>
+            张三
           </template>
         </el-table-column>
-        <el-table-column label=""
-                         min-width="160"
-                         align="left" prop="storeName">
-        </el-table-column>
         <el-table-column label="手机"
-                         min-width="100"
+                         min-width="160"
                          align="left"
                          prop="mobile">
         </el-table-column>
@@ -38,7 +35,7 @@
                          align="left"
                          prop="mobile"></el-table-column>
         <el-table-column label="邀请二维码"
-                         min-width="100"
+                         min-width="200"
                          align="left"
                          prop="mobile">
           <template slot-scope="scope">

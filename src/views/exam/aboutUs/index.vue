@@ -8,7 +8,7 @@
 <!--                  @change="queryCustomerList"-->
 <!--                  placeholder="标题/关键词" />-->
 <!--      </el-form-item>-->
-      <el-button type="primary" class="fr mt_10" :disabled="dataList.length > 0" @click="handelDetail('create', '')">新建</el-button>
+      <el-button type="primary" class="fr mt_10 mb_10" :disabled="dataList.length > 0" @click="handelDetail('create', '')">新建</el-button>
     </el-form>
     <div class="container mt_10">
       <el-table v-loading="listLoading"
@@ -31,13 +31,14 @@
                          show-overflow-tooltip
                          prop="cover">
           <template slot-scope="scope">
-            <viewer :images="[scope.row.logo]">
-                <span class="list_img">
+            <div class="flex">
+              <viewer :images="[scope.row.logo]">
+                <span class="list_img mr5">
                   <img :src="scope.row.logo" />
                 </span>
-            </viewer>
-
-            {{scope.row.content}}
+              </viewer>
+              {{scope.row.content}}
+            </div>
 
           </template>
         </el-table-column>
@@ -133,15 +134,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  .list_img{
-    display: inline-block;
-    /*width: 30px;*/
-    height: 30px;
-    img{
-      /*width: 100%;*/
-      height: 100%;
-    }
-  }
+
 /deep/.border-card {
   margin-top: 10px !important;
 }

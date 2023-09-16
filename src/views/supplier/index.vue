@@ -49,47 +49,47 @@
           }
         "
                 highlight-current-row>
-        <el-table-column label="咨询师"
-                         fixed="left"
-                         min-width="120"
-                         align="left"
-                         show-overflow-tooltip
-                         prop="storeName">
+        <el-table-column label="个人姓名"
+                         width="150"
+                         align="left">
           <template slot-scope="scope">
-            <a class="link link_a link_b"
-               @click="toDetail(scope.row)">
-              {{ scope.row.storeName }}
-            </a>
+            <span class="flex pointer blue01"  @click="handelDetail('detail', scope.row)">
+                <span class="header_img mr5">
+                  <img :src="scope.row.portrait" alt=""/>
+                </span>
+            {{scope.row.user_name}}
+            </span>
+
           </template>
         </el-table-column>
         <el-table-column label="ID"
                          min-width="60"
-                         align="center"
+                         align="left"
                          prop="storeSn">
         </el-table-column>
         <el-table-column label="手机"
                          min-width="100"
-                         align="center"
+                         align="left"
                          show-overflow-tooltip
                          prop="linkman"></el-table-column>
         <el-table-column label="收入金额"
-                         width="100"
-                         align="center"
+                         min-width="100"
+                         align="left"
                          prop="mobile">
         </el-table-column>
         <el-table-column label="本月汇总"
-                         width="100"
-                         align="center"
+                         min-width="100"
+                         align="left"
                          prop="mobile">
         </el-table-column>
         <el-table-column label="注册日期"
-                         width="100"
-                         align="center"
+                         min-width="150"
+                         align="left"
                          prop="mobile">
         </el-table-column>
         <el-table-column label="邀请人"
-                         width="100"
-                         align="center"
+                         min-width="100"
+                         align="left"
                          prop="mobile">
         </el-table-column>
 

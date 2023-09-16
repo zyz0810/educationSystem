@@ -69,25 +69,32 @@ export const constantRoutes = [{
             }
         }]
     },
-    {
-        path: '/password',
-        component: Layout,
-        redirect: 'noRedirect',
-        hidden: true,
-        name: '修改密码',
-        meta: {
-            title: '修改密码',
-            icon: 'chart'
-        },
-        children: [{
-            path: 'password',
-            component: resolve => require(['@/views/password/index'], resolve),
-            name: 'password',
-            meta: {
-                title: '修改密码'
-            }
-        }]
-    },
+    // {
+    //     path: '/password',
+    //     component: Layout,
+    //     redirect: 'noRedirect',
+    //     hidden: true,
+    //     name: '修改密码',
+    //     meta: {
+    //         title: '修改密码',
+    //         icon: 'chart'
+    //     },
+    //     children: [{
+    //         path: 'password',
+    //         component: resolve => require(['@/views/password/index'], resolve),
+    //         name: 'password',
+    //         meta: {
+    //             title: '修改密码'
+    //         }
+    //     }]
+    // },
+  {
+    path: '/password',
+    component: resolve => require(['@/views/password/index'], resolve),
+    hidden: true,
+    name: '修改密码',
+  },
+
   {
     path: '/root',
     component: resolve => require(['@/views/index'], resolve),

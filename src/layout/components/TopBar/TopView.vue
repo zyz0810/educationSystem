@@ -10,7 +10,7 @@
 
 <!--    <router-bar class="top_bar_container" />-->
     <div class="right-menu">
-      <span class="tip pointer"><i class="el-icon-bell f16 bold"></i></span>
+<!--      <span class="tip pointer"><i class="el-icon-bell f16 bold"></i></span>-->
       <el-dropdown class="avatar-container right-menu-item hover-effect"
                    trigger="click">
         <div class="avatar-wrapper">
@@ -18,12 +18,13 @@
           <el-avatar size="small"
                      v-bind:src="imgURL"></el-avatar>
 
+
         </div>
         <el-dropdown-menu slot="dropdown">
           <router-link to="/datum/datum">
             <el-dropdown-item>账户设置</el-dropdown-item>
           </router-link>
-          <router-link to="/password/password">
+          <router-link :to="{path: '/password', query: { type: 'update' }}">
             <el-dropdown-item>修改密码</el-dropdown-item>
           </router-link>
           <el-dropdown-item divided

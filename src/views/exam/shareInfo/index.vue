@@ -8,7 +8,7 @@
 <!--                  @change="queryCustomerList"-->
 <!--                  placeholder="标题/关键词" />-->
 <!--      </el-form-item>-->
-      <el-button type="primary" class="fr mt_10" :disabled="dataList.length > 0" @click="handelDetail('create', '')">新建</el-button>
+      <el-button type="primary" class="fr mt_10 mb_10" :disabled="dataList.length > 0" @click="handelDetail('create', '')">新建</el-button>
     </el-form>
     <div class="container mt_10">
       <el-table v-loading="listLoading"

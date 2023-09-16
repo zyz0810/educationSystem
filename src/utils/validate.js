@@ -81,3 +81,51 @@ export function isArray(arg) {
   }
   return Array.isArray(arg)
 }
+/* 是否手机号码*/
+export function validatePhone(rule, value, callback) {
+  const reg = /^[1][3,4,5,6,7,8,9][0-9]{9}$/;
+  if (value == "" || value == undefined || value == null) {
+    callback();
+  } else {
+    if (!reg.test(value) && value != "") {
+      callback(new Error("请输入正确的电话号码"));
+    } else {
+      callback();
+    }
+  }
+}
+/*验证内容是否英文数字*/
+export function isPassword(rule, value, callback) {
+  // const reg = /^[_a-zA-Z0-9]+$/;
+  const reg = /(?![A-Z]*$)(?![a-z]*$)(?![0-9]*$)(?![^a-zA-Z0-9]*$)/
+
+  if (value == "" || value == undefined || value == null) {
+    callback();
+  } else {
+    if (value.length < 6 && reg.test(value)) {
+      callback(new Error("密码为6-18位"));
+    } else if (value.length < 6 && !reg.test(value)) {
+      callback(new Error("密码为6-18位，且由英文字母和数字组成"));
+    } else if (value.length > 18 && reg.test(value)) {
+      callback(new Error("密码为6-18位"));
+    } else {
+      if (!reg.test(value)) {
+        callback(new Error("密码仅由英文字母和数字组成"));
+      } else {
+        callback();
+      }
+    }
+  }
+}
+/* 是否手机号码*/
+export function validateConfirmPassword(rule, value, callback,password) {
+  if (value == "" || value == undefined || value == null) {
+    callback();
+  } else {
+    if (value != password) {
+      callback(new Error("两次密码输入不一致"));
+    } else {
+      callback();
+    }
+  }
+}

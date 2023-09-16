@@ -69,6 +69,11 @@
         </el-button>
         <p class="text-left ml_20">登录即表示我已阅读并同意<span class="yellow01">《服务协议》</span>和<span class="yellow01">《隐私协议》</span></p>
       </el-form-item>
+      <el-form-item style="width:100%; padding: 20px 20px 0 0; text-align: right;">
+        <router-link :to="{path: '/password', query: { type: 'forget' }}">
+          <span class="red01">忘记密码？</span>
+        </router-link>
+      </el-form-item>
     </el-form>
   </div>
 </template>

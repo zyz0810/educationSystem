@@ -3,15 +3,16 @@
     <el-form :inline="true"
              class="search_box">
       <el-form-item label="">
-        <el-input v-model.trim="listQuery.key"
+        <el-input v-model.trim="listQuery.key_word"
                   clearable suffix-icon="el-icon-search"
                   @change="queryCustomerList"
                   placeholder="请输入" />
       </el-form-item>
       <el-form-item label="">
         <el-date-picker
-          v-model="listQuery.key"
+          v-model="dateTime"
           type="daterange"
+          value-format="yyyy-MM-dd HH:mm:ss"
           align="right"
           unlink-panels
           range-separator="至"
@@ -21,12 +22,18 @@
         </el-date-picker>
       </el-form-item>
       <el-form-item label="">
-        <el-select v-model="listQuery.one" placeholder="请选择" @change="queryCustomerList">
+        <el-select v-model="listQuery.status" placeholder="请选择" @change="queryCustomerList">
           <el-option label="全部状态" value=""></el-option>
-          <el-option v-for="(item, index) in userList"
-                     :key="index"
-                     :label="item.name"
-                     :value="item.id"></el-option>
+<!--          收益单的状态 (1: 待审核， 2 审核中， 3: 结算中，4已结算， 5: 结算失败)-->
+
+          <el-option label="全部状态" value=""></el-option>
+          <el-option label="待审核" :value="1"></el-option>
+          <el-option label="审核中" :value="2"></el-option>
+          <el-option label="结算中" :value="3"></el-option>
+          <el-option label="已结算" :value="4"></el-option>
+          <el-option label="结算失败" :value="5"></el-option>
+
+
         </el-select>
       </el-form-item>
     </el-form>
@@ -77,46 +84,56 @@
                          align="center"
                          show-overflow-tooltip
                          prop="linkman"></el-table-column>
-        <el-table-column label="收入金额"
+        <el-table-column label="申请金额"
                          width="100"
                          align="center"
                          prop="mobile">
         </el-table-column>
-        <el-table-column label="本月汇总"
+        <el-table-column label="结算金额"
                          width="100"
                          align="center"
                          prop="mobile">
         </el-table-column>
-        <el-table-column label="注册日期"
+        <el-table-column label="申请时间"
                          width="100"
                          align="center"
                          prop="mobile">
         </el-table-column>
-        <el-table-column label="邀请人"
+        <el-table-column label="状态"
                          width="100"
                          align="center"
                          prop="mobile">
+        </el-table-column>
+        <el-table-column label="操作"
+                         align="center"
+                         fixed="right"
+                         width="160"
+                         prop="remarks">
+          <template slot-scope="scope">
+            <el-button type="text" @click.stop="handelPass(scope.row)">同意</el-button>
+            <el-button type="text" @click.stop="handelSettlement( scope.row)">结算</el-button>
+          </template>
         </el-table-column>
 
       </el-table>
       <pagination v-show="total > 0"
                   :total="total"
-                  :page.sync="listQuery.page"
-                  :limit.sync="listQuery.limit"
+                  :page.sync="listQuery.pn"
+                  :limit.sync="listQuery.rn"
                   @pagination="customerList"
                   class="text-right" />
     </div>
 
+    <settlement :showDialog.sync="showSettlementDialog" :infoData="infoData"></settlement>
   </div>
 </template>
 
 <script>
   import {getProfits,} from "@/api/income";
-
+  import settlement from "./settlement";
   export default {
     data () {
       return {
-        userList:[],
         pickerOptions: {
           shortcuts: [{
             text: '最近一周',
@@ -145,20 +162,43 @@
           }]
         },
         listQuery: {
-          key: "",
-          limit: 10,
-          page: 1,
+          key_word: "",
+          start_time:'',
+          end_time:'',
+          status:'',
+          rn: 10,
+          pn: 1,
         },
         total: 0,
         listLoading: false,
         selectList: [],
-        dataList: [],
+        dataList: [{id:1,storeName:'111',storeSn:'11',linkman:'张三',mobile:'18656547892'}],
         tableHeight: 520,
-
+        showSettlementDialog:false,
+        infoData:{},
       };
     },
-
-    computed: {},
+    components:{settlement},
+    computed: {
+      dateTime: {
+        get() {
+          if (this.listQuery.start_time && this.listQuery.end_time) {
+            return [this.listQuery.start_time, this.listQuery.end_time];
+          } else {
+            return [];
+          }
+        },
+        set(v) {
+          if (v == null) {
+            this.listQuery.start_time = "";
+            this.listQuery.end_time = "";
+          } else {
+            this.listQuery.start_time = v[0];
+            this.listQuery.end_time = v[1];
+          }
+        },
+      },
+    },
     mounted () {
       this.$nextTick(() => {
         this.tableHeight =
@@ -182,8 +222,29 @@
           .catch(err => console.log(err));
       },
       queryCustomerList () {
-        this.listQuery.page = 1
+        this.listQuery.pn = 1
         this.customerList()
+      },
+      handelSettlement(row){
+        this.showSettlementDialog = true;
+        this.infoData=row;
+      },
+      async handelPass(row){
+        const res = await this.$confirm("<span style='margin-left: 35px;'>确定同意"+ row +"的结算审核</span>", "审核通过", {
+          cancelButtonText: "取消",
+          confirmButtonText: "确定",
+          // type: "info",
+          dangerouslyUseHTMLString: true,
+          customClass:'del_confirm'
+        }).catch((err)=>{console.log('err',err)})
+        if(res){
+          // this.$success("你确认惹删除！")
+          deleteuser({ id: row.id }).then(res => {
+            this.$message({ message: res.resp_msg, type: 'success' });
+            this.getList();
+          });
+          console.log('确定',res)
+        }
       },
     },
   };

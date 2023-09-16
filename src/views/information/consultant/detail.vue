@@ -9,8 +9,11 @@
     <div class="flex mr10 ml_10">
       <div class="flex_hd"><img class="head_img_detail" :src="formData.portrait"/></div>
       <div class="flex_bd">
-        <div class="f14"><i class="iconfont icon-nan" v-show="formData.sex == 1"></i><i class="iconfont icon-nv" v-show="formData.sex == 2"></i>{{formData.user_name}}</div>
-        <div><img class="phone_icon" src="./../../../assets/image/phone.png"/>{{formData.mobile}}</div>
+        <div class="f14 flex ">{{formData.user_name}}
+          <img src="./../../../assets/image/male.png" class="sex_icon ml5" v-show="formData.sex == 1"/>
+          <img src="./../../../assets/image/female.png" class="sex_icon ml5" v-show="formData.sex == 2"/>
+        </div>
+        <div class="mt5"><img class="phone_icon" src="./../../../assets/image/phone.png"/>{{formData.mobile}}</div>
       </div>
     </div>
     <div class="mt_10 info_content">

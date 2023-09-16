@@ -36,10 +36,10 @@
                          width="150"
                          align="left">
           <template slot-scope="scope">
-            <span class="flex pointer"  @click="handelDetail('detail', scope.row)">
-                <span class="header_img">
-              <img :src="scope.row.portrait" alt=""/>
-            </span>
+            <span class="flex pointer blue01"  @click="handelDetail('detail', scope.row)">
+                <span class="header_img mr5">
+                  <img :src="scope.row.portrait" alt=""/>
+                </span>
             {{scope.row.user_name}}
             </span>
 
@@ -73,7 +73,7 @@
                          align="left"
                          prop="channel"></el-table-column>
         <el-table-column label="提交时间"
-                         min-width="130"
+                         min-width="150"
                          align="left"
                          prop="create_time" :formatter="formatTime"></el-table-column>
       </el-table>

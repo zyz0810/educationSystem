@@ -262,8 +262,8 @@ aside {
 }
 .container {
   background: #ffffff;
-  padding: 15px;
-  border-radius: 3px;
+  padding: 10px;
+  border-radius: 5px;
 }
 .mt_20 {
   margin-top: 20px;
@@ -317,10 +317,15 @@ aside {
 .f12{
   font-size: 12px;
 }
+.f20{
+  font-size: 20px;
+}
 .f26{
   font-size: 26px;
 }
-
+.f76{
+  font-size: 76px;
+}
 .page_footer {
   display: flex;
   justify-content: center;
@@ -469,6 +474,9 @@ aside {
 .f16{
   font-size: 16px;
 }
+.f18{
+  font-size: 18px;
+}
 .yellow01{
   color: #F2A249;
 }
@@ -519,6 +527,7 @@ ul,ul li {
 
 .person_tag{
   color: #FF8F1F;
+  font-size: 12px;
   background: #FDEAC9;
   padding: 3px 5px;
   border-radius: 3px;
@@ -530,16 +539,18 @@ ul,ul li {
 
 .statistics_title{
   //border-left: 10px solid #1880FF;
-  padding-left: 30px;
+  font-size: 12px;
+  line-height: 1.5;
+  padding-left: 10px;
   position: relative;
   &::before{
     content: " ";
     position: absolute;
-    left: 20px;
-    bottom: 5px;
-    top: 5px;
-    width: 10px;
-    border-left: 10px solid #1880FF;
+    left: 0px;
+    bottom: 2px;
+    top: 2px;
+    width: 6px;
+    border-left: 6px solid #1880FF;
     color: #1880FF;
     -webkit-transform-origin: 0 0;
     transform-origin: 0 0;
@@ -580,6 +591,31 @@ ul,ul li {
 .green01{
   color: #00D6B9;
 }
+.green02{
+  color: #54C151;
+}
 .red01{
   color: #FF1313;
+}
+.red02{
+  color: #D65A3D;
+}
+.blue02{
+  color:#047AE2;
+}
+.visibility{
+  visibility: hidden;
+}
+.list_img{
+  display: block;
+  /*width: 30px;*/
+  height: 30px;
+  img{
+    /*width: 100%;*/
+    height: 100%;
+  }
+}
+.sex_icon{
+  width: 20px;
+  height: 20px;
 }
