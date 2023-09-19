@@ -118,7 +118,7 @@ export const asyncRoutes = [
     meta: {
       title: '客户管理',
       // title: '资料审核',
-      icon: 'peoples',
+      icon: 'icon-01',
       roles: [
         'can_audit_user',
       ]
@@ -217,7 +217,7 @@ export const asyncRoutes = [
     meta: {
       title: '投诉处理',
       // title: '资料审核',
-      icon: 'peoples',
+      icon: 'icon-02',
       roles: [
         'can_deal_comlaint',
       ]
@@ -277,7 +277,7 @@ export const asyncRoutes = [
     meta: {
       title: '收益发放',
       // title: '资料审核',
-      icon: 'peoples',
+      icon: 'icon-03',
       roles: [
         'can_deal_income',
       ]
@@ -306,7 +306,7 @@ export const asyncRoutes = [
     name: '供应商查询',
     meta: {
       title: '供应商查询',
-      icon: 'order',
+      icon: 'icon-04',
       roles: [
         'can_query_supplier',
       ],
@@ -336,7 +336,7 @@ export const asyncRoutes = [
     meta: {
       title: '经营数据',
       // title: '资料审核',
-      icon: 'peoples',
+      icon: 'icon-05',
       roles: [
         'can_query_operations',
       ]
@@ -371,7 +371,7 @@ export const asyncRoutes = [
     meta: {
       title: '平台用户信息查询',
       // title: '资料审核',
-      icon: 'peoples',
+      icon: 'icon-06',
       roles: [
         'can_query_user',
       ]
@@ -415,7 +415,7 @@ export const asyncRoutes = [
     name: '权限管理',
     meta: {
       title: '权限管理',
-      icon: 'order',
+      icon: 'icon-07',
       roles: [
         'can_manage_perm',
       ],

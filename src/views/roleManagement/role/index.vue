@@ -6,7 +6,7 @@
         <el-checkbox-group v-model="checkList">
           <el-checkbox v-for="(item,index) in menuList" :key="item.id" :label="item.id" :disabled="listQuery.role == 'super_manager'">{{item.name}}</el-checkbox>
         </el-checkbox-group>
-        <div class="bottom_btn">
+        <div class="bottom_btn" v-show="listQuery.role != 'super_manager'">
           <el-button @click="cancel">取消</el-button>
           <el-button type="primary" @click="save">保存</el-button>
         </div>

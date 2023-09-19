@@ -63,6 +63,9 @@
             <el-button type="text" @click.stop="handelDetail('update', scope.row)">编辑</el-button>
           </template>
         </el-table-column>
+        <template slot="empty">
+          <empty-table/>
+        </template>
       </el-table>
     </div>
     <!--修改定位-->

@@ -1,7 +1,7 @@
 <template>
   <my-dialog :visible.sync="dialogVisible"
              :close-on-click-modal="false"
-             width="36%"
+             width="500px"
              @close="close"
              @open="open"
              top="15vh"
@@ -12,58 +12,56 @@
              :rules="rules"
              class="formList">
       <el-form-item label="类型："
-                    prop="one">
-        <el-radio-group v-model="formData.one" :disabled="isCanView">
-          <el-radio-button :label="0">链接</el-radio-button>
-          <el-radio-button :label="1">图文</el-radio-button>
+                    prop="notice_type">
+        <el-radio-group v-model="formData.notice_type" :disabled="isCanView">
+          <el-radio-button :label="1">链接</el-radio-button>
+          <el-radio-button :label="2">图文</el-radio-button>
         </el-radio-group>
       </el-form-item>
       <el-form-item label="公告Banner："
-                    prop="two">
+                    prop="cover">
 <!--        <el-input v-model.trim="formData.two" v-if="!isCanView"-->
 <!--                  placeholder="请输入"-->
 <!--                  clearable />-->
         <SingleImage
-          :tempUrl="formData.two"
+          :tempUrl="formData.cover"
           v-on:imgSrc="hasImgSrc"
           v-if="!isCanView"
         ></SingleImage>
-        <viewer :images="[formData.two]" v-else>
+        <viewer :images="[formData.cover]" v-else>
             <span class="notice_banner">
-              <img :src="formData.two" />
+              <img :src="formData.cover" />
             </span>
         </viewer>
       </el-form-item>
-      <el-form-item label="链接：" v-if="formData.one == 0"
-                    prop="three">
-        <el-input v-model.trim="formData.three" v-show="!isCanView"
+      <el-form-item label="链接：" v-if="formData.notice_type == 1"
+                    prop="cmd">
+        <el-input v-model.trim="formData.cmd" v-show="!isCanView"
                   placeholder="请输入"
                   clearable />
-        <span v-show="isCanView">{{formData.three}}</span>
+        <span v-show="isCanView">{{formData.cmd}}</span>
       </el-form-item>
-      <el-form-item label="公告内容："  v-if="formData.one == 1"
+      <el-form-item label="公告内容："  v-if="formData.notice_type == 2"
                     prop="four">
         <quillEditor ref="myQuillEditor" v-show="!isCanView"
                      :isChange.sync="isChange"
                      :isProductDetail="true"
-                     :content.sync="formData.four" />
-        <div v-html="formData.four"
+                     :content.sync="formData.notice_content" />
+        <div v-html="formData.notice_content"
              v-show="isCanView">
-          {{ formData.four }}
+          {{ formData.notice_content }}
         </div>
       </el-form-item>
     </el-form>
     <span slot="footer"
           class="dialog-footer" v-show="dialogStatus!='detail'">
       <el-button @click="dialogVisible = false">取 消</el-button>
-      <el-button type="primary" class="ml_30" @click="save">保 存</el-button>
+      <el-button type="primary" class="ml_30" @click="dialogStatus=='create'?save():updateData()">保 存</el-button>
     </span>
   </my-dialog>
 </template>
 <script>
-// import {
-//   lonAndLatEdit
-// } from "@/api/customer/customer";
+import {publishnotice} from "@/api/notice";
 import SingleImage from "@/components/Upload/SingleImage.vue"; // waves directive
 import quillEditor from "@/components/quillEditor/quillEditorProductDetail.vue";
 export default {
@@ -85,10 +83,10 @@ export default {
   data () {
     return {
       formData: {
-        one: 1,
-        two: 'https://cdn.kyaoduo.com/upload/file/202307/feb5e6bc-0083-4eed-95be-ac7cf82bf11b.jpeg',
-        three: '12',
-        four: '<p style="color:red;">2222</p>',
+        notice_type: 1,
+        cover: '',
+        cmd: '',
+        notice_content: '',
       },
       isChange:false,
       textMap: {
@@ -98,16 +96,16 @@ export default {
       },
       dialogStatus: '',
       rules: {
-        one: [
+        notice_type: [
           { required: true, message: "请选择类型", trigger: "blur" }
         ],
-        two: [
+        cover: [
           { required: true, message: "请上传图片", trigger: "blur" }
         ],
-        three: [
+        cmd: [
           { required: true, message: "请输入链接", trigger: "blur" }
         ],
-        four: [
+        notice_content: [
           { required: true, message: "请输入公告内容", trigger: "blur" }
         ],
       }
@@ -138,15 +136,32 @@ export default {
       // if (this.$refs.myQuillEditor) {
       //   this.$refs.myQuillEditor.changeContent(description);
       // }
+      this.formData.cover = 'http://uat.cdn.kyaoduo.com/upload/product/20230908/292043b2-2c00-49a1-8757-3a35e762c090.jpg';
       this.$refs.ruleForm.validate(valid => {
         if (valid) {
-          this.formData.lonAndLat = `${this.formData.longitude},${this.formData.latitude}`
-          // lonAndLatEdit(this.formData)
-          //   .then(res => {
-          //     this.$emit("updateList");
-          //     this.dialogVisible = false;
-          //   })
-          //   .catch(err => console.log(err));
+          publishnotice(this.formData)
+            .then(res => {
+              this.$emit("updateList");
+              this.dialogVisible = false;
+            })
+            .catch(err => console.log(err));
+        } else {
+          return false;
+        }
+      });
+    },
+    updateData() {
+      // if (this.$refs.myQuillEditor) {
+      //   this.$refs.myQuillEditor.changeContent(description);
+      // }
+      this.$refs.ruleForm.validate(valid => {
+        if (valid) {
+          publishnotice(this.formData)
+            .then(res => {
+              this.$emit("updateList");
+              this.dialogVisible = false;
+            })
+            .catch(err => console.log(err));
         } else {
           return false;
         }
@@ -165,8 +180,10 @@ export default {
     close () {
       this.$refs.ruleForm.clearValidate();
       Object.assign(this.formData, {
-        longitude: '',
-        latitude: '',
+        notice_type: 1,
+        cover: '',
+        cmd: '',
+        notice_content: '',
       });
       this.dialogVisible = false;
     }

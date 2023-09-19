@@ -40,7 +40,7 @@
                          prop="user_name">
           <template slot-scope="scope">
                <span class="flex pointer"  @click="handelDetail('detail', scope.row)">
-                <span class="header_img el-avatar--circle">
+                <span class="header_img el-avatar--circle mr5">
               <img :src="scope.row.portrait" alt=""/>
             </span>
             {{scope.row.user_name}}
@@ -73,7 +73,7 @@
                          prop="intro">
         </el-table-column>
         <el-table-column label="提交时间"
-                         min-width="120"
+                         min-width="150"
                          align="left"
                          prop="create_time" :formatter="formatTime">
         </el-table-column>
@@ -89,22 +89,22 @@
         </el-table-column>
         <el-table-column label="操作"
                          align="left"
-                         fixed="right"
-                         width="120"
+                         width="100"
                          prop="remarks">
           <template slot-scope="scope">
-            <el-button type="text"
-                       @click.stop="handelDetail('detail',scope.row)">详情</el-button>
-            <el-button type="text" :disabled="scope.row.result == 0"
-                       @click.stop="handelPass('update', scope.row)">同意</el-button>
+            <el-button type="text" @click.stop="handelPass( scope.row)">同意</el-button>
             <el-button type="text" @click.stop="handleReject(scope.row)">退回</el-button>
           </template>
         </el-table-column>
 
 
-        <template slot="empty" style="text-align: left;">
-<!--          <img :src="$imgUrl">-->
-<!--          暂无数据11</template>-->
+<!--        <template slot="empty">-->
+<!--&lt;!&ndash;          <img :src="$imgUrl">&ndash;&gt;-->
+<!--&lt;!&ndash;          暂无数据11</template>&ndash;&gt;-->
+<!--          <empty-table/>-->
+
+<!--        </template>-->
+        <template slot="empty">
           <empty-table/>
         </template>
       </el-table>
@@ -119,12 +119,17 @@
     <detail :showDialog.sync="showDetail"
                     :infoData='infoData'
                     @updateList='getList' />
+<!--    驳回-->
+    <rejectView :showDialog.sync="showReject"
+            :infoData='infoData'
+            @updateList='getList' />
   </div>
 </template>
 
 <script>
-import {getaudituserlist,} from "@/api/parent";
+import {getaudituserlist,audituserinfo} from "@/api/parent";
 import detail from './detail';
+import rejectView from './reject';
 export default {
   data () {
     return {
@@ -141,13 +146,14 @@ export default {
       dataList: [],
       tableHeight: 520,
       showDetail: false,
+      showReject:false,
       infoData: {
         type:'',
         option:{},
       },
     };
   },
-  components: {detail},
+  components: {detail,rejectView},
   computed: {},
   mounted () {
     this.$nextTick(() => {
@@ -175,11 +181,11 @@ export default {
     // 修改定位
     handelDetail (type, row) {
 
-      this.showDetail = true
+      this.showDetail = true;
       this.infoData = {
         type:type,
         option:row==''?{}:row,
-      }
+      };
       console.log(this.infoData)
     },
     // 获取客户列表
@@ -197,23 +203,30 @@ export default {
       this.getList()
     },
     // 同意
-    handelPass (id, index) {
-      this.$MyMessageBox(3,"<span style='margin-left: 35px;'>确定同意吗？</span>", "确定同意", {
+    async handelPass(row){
+      const res = await this.$confirm("<span style='margin-left: 35px;'>确定同意吗？</span>", "确定同意", {
         cancelButtonText: "取消",
         confirmButtonText: "确定",
         // type: "info",
         dangerouslyUseHTMLString: true,
         customClass:'del_confirm'
-      }).then(res => {
-        if (res) {
-          // deleteCustomer({ storeIds: [id] }).then(res => {
-          //   this.$message({ message: res.resp_msg, type: 'success' });
-          //   this.dataList.splice(index, 1);
-          // });
-        }}).catch();
-
+      }).catch((err)=>{console.log('err',err)})
+      if(res){
+        audituserinfo({ id: row.user_id,action:'pass' }).then(res => {
+          this.$message({ message: res.resp_msg, type: 'success' });
+          this.getList();
+        });
+        console.log('确定',res)
+      }
     },
-    handleReject(){},
+
+    handleReject(row){
+      this.showReject = true;
+      this.infoData = {
+        type:'reject',
+        option:row,
+      };
+    },
   },
 };
 </script>

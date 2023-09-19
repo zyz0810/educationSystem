@@ -99,6 +99,9 @@
             <el-button type="text" @click.stop="handelDetail('blacklist',scope.row)">移入黑名单</el-button>
           </template>
         </el-table-column>
+        <template slot="empty">
+          <empty-table/>
+        </template>
       </el-table>
       <pagination v-show="total > 0"
                   :total="total"

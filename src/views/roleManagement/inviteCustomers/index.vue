@@ -56,6 +56,9 @@
 <!--            <a class="pointer blue01" href="http://cdn.kyaoduo.com/upload/license/20220315/c4d2be84-6d5a-47ce-9a0e-7d12045e6d29.png" download>下载</a>-->
           </template>
         </el-table-column>
+        <template slot="empty">
+          <empty-table/>
+        </template>
       </el-table>
       <pagination v-show="total > 0"
                   :total="total"

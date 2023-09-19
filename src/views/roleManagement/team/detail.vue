@@ -72,7 +72,6 @@ export default {
         name: '',
         mobile: '',
       },
-      isChange:false,
       textMap: {
         update: '编辑团队用户',
         create: '新建团队用户',
@@ -153,8 +152,9 @@ export default {
     close () {
       this.$refs.ruleForm.clearValidate();
       Object.assign(this.formData, {
-        longitude: '',
-        latitude: '',
+        role: '',
+        name: '',
+        mobile: '',
       });
       this.dialogVisible = false;
     }

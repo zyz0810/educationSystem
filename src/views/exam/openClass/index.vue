@@ -89,6 +89,9 @@
             <el-button type="text" @click.stop="handleDel(scope.row)">驳回</el-button>
           </template>
         </el-table-column>
+        <template slot="empty">
+          <empty-table/>
+        </template>
       </el-table>
       <pagination v-show="total > 0"
                   :total="total"

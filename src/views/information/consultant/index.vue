@@ -92,7 +92,9 @@
                          min-width="150"
                          align="left"
                          prop="create_time"></el-table-column>
-
+        <template slot="empty">
+          <empty-table/>
+        </template>
 
       </el-table>
       <pagination v-show="total > 0"

@@ -56,6 +56,9 @@ const user = {
     SET_MOBILE: (state, crm_mobile) => {
       state.crm_mobile = crm_mobile
     },
+    SET_PERSONA: (state, persona) => {
+      state.persona = persona
+    },
     // 代办数
     SET_AGENT_NUMBER: (state, agent_number) => {
       state.agent_number = agent_number
@@ -179,8 +182,10 @@ const user = {
               removeToken()
               return
             }
-            commit('SET_ROLES', role)
-            commit('SET_PERMISSIONS', role)
+            commit('SET_ROLES', role);
+            commit('SET_PERMISSIONS', role);
+          commit('SET_NAME', res.data.name);
+          commit('SET_PERSONA', res.data.role);
 
 
 
@@ -217,8 +222,9 @@ const user = {
         }).then(() => {
           commit('SET_TOKEN', '')
           commit('SET_ID', '')
-          commit('SET_NAME', [])
-          commit('SET_AVATAR', [])
+          commit('SET_NAME', '')
+          commit('SET_PERSONA', '');
+          commit('SET_AVATAR', '')
           commit('SET_ROLES', [])
           commit('SET_PERMISSIONS', [])
           commit('SET_MOBILE', '')
@@ -238,15 +244,16 @@ const user = {
       commit
     }) {
       return new Promise(resolve => {
-        commit('SET_TOKEN', '')
-        commit('SET_ID', '')
-        commit('SET_NAME', [])
-        commit('SET_AVATAR', [])
-        commit('SET_ROLES', [])
-        commit('SET_PERMISSIONS', [])
-        commit('SET_MOBILE', '')
-        removeToken()
-        removeId()
+        commit('SET_TOKEN', '');
+        commit('SET_ID', '');
+        commit('SET_NAME', '');
+        commit('SET_PERSONA', '');
+        commit('SET_AVATAR', '');
+        commit('SET_ROLES', []);
+        commit('SET_PERMISSIONS', []);
+        commit('SET_MOBILE', '');
+        removeToken();
+        removeId();
         sessionStorage.setItem("pc_login_token", '');
         resolve()
       })

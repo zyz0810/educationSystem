@@ -5,11 +5,11 @@
       <el-form-item label="">
         <el-input v-model.trim="listQuery.keyword"
                   clearable suffix-icon="el-icon-search"
-                  @change="queryCustomerList"
+                  @change="queryGetList"
                   placeholder="搜索/ID/姓名/手机号" />
       </el-form-item>
       <el-form-item label="">
-          <el-select v-model="listQuery.channel" @change="queryCustomerList" placeholder="请选择">
+          <el-select v-model="listQuery.channel" @change="queryGetList" placeholder="请选择">
             <el-option v-for="(item, index) in channelList"
                        :key="index"
                        :label="item.name"
@@ -123,18 +123,23 @@
                   :total="total"
                   :page.sync="listQuery.pn"
                   :limit.sync="listQuery.rn"
-                  @pagination="customerList"
+                  @pagination="getList"
                   class="text-right" />
     </div>
     <detail :showDialog.sync="showDetail"
             :infoData='infoData'
-            @updateList='customerList' />
+            @updateList='getList' />
+    <!--    驳回-->
+    <rejectView :showDialog.sync="showReject"
+                :infoData='infoData'
+                @updateList='getList' />
   </div>
 </template>
 
 <script>
   import {getauditconsultlist,} from "@/api/counselor";
   import detail from './detail';
+  import rejectView from './reject';
   export default {
     data () {
       return {
@@ -150,6 +155,7 @@
         dataList: [],
         tableHeight: 520,
         showDetail: false,
+        showReject:false,
         infoData: {
           type:'',
           option:{},
@@ -157,7 +163,7 @@
         channelList:[{id:'',name:'全部渠道'},{id:1,name:'超级管理员'},{id:2,name:'管理员'},{id:3,name:'供应商'},{id:4,name:'客服审核员'}]
       };
     },
-    components: {detail},
+    components: {detail,rejectView},
     computed: {},
     mounted () {
       this.$nextTick(() => {
@@ -168,7 +174,7 @@
             window.innerHeight - this.$refs.activityTable.$el.offsetTop - 150;
         };
       });
-      this.customerList();
+      this.getList();
     },
     methods: {
       formatterStatus(cellValue){
@@ -191,7 +197,7 @@
         }
       },
       // 获取客户列表
-      customerList () {
+      getList () {
         getauditconsultlist({ ...this.listQuery, })
           .then(res => {
             this.dataList = res.data.list;
@@ -201,9 +207,9 @@
           .catch(err => console.log(err));
       },
 
-      queryCustomerList () {
+      queryGetList () {
         this.listQuery.pn = 1;
-        this.customerList();
+        this.getList();
       },
 
     },

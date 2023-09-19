@@ -98,6 +98,17 @@ export default {
   .nav_one{
     width: 147px;
     border-right: none !important;
+    .el-menu-item{
+      font-size: 12px;
+      font-weight: normal;
+      padding-left: 8px !important;
+      &:hover{
+        background-color: #283249 !important;
+      }
+    }
+    .svg-icon{
+      margin-right: 5px !important;
+    }
     .el-menu-item.is-active{
       background: #283249!important;
       svg{
@@ -110,6 +121,7 @@ export default {
     background: #fff;
     .el-menu-item{
       font-size: 12px;
+      padding-left: 10px !important;
     }
     .el-menu-item.is-active{
       background: #E6F5FF !important;

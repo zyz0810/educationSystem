@@ -40,12 +40,12 @@
         </el-table-column>
         <el-table-column label="详情/链接地址"
                          min-width="160"
-                         align="center"
+                         align="left"
                          prop="cmd">
         </el-table-column>
         <el-table-column label="发布日期"
                          min-width="150"
-                         align="center"
+                         align="left"
                          show-overflow-tooltip
                          prop="create_time">
           <template slot-scope="scope">
@@ -54,26 +54,23 @@
         </el-table-column>
         <el-table-column label="发布人"
                          width="100"
-                         align="center"
+                         align="left"
                          prop="publisher">
         </el-table-column>
         <el-table-column label="操作"
-                         align="center"
-                         fixed="right"
-                         width="160"
+                         align="left"
+                         width="120"
                          prop="remarks">
           <template slot-scope="scope">
             <el-button type="text"
                        @click.stop="handelDetail('detail',scope.row)">详情</el-button>
-            <el-button type="text"
-                       v-rules="{admin:'admin',ordinary:'customer:edit'}"
-                       :disabled="scope.row.result == 0"
-                       @click.stop="handelDetail('update', scope.row)">编辑</el-button>
-            <el-button type="text"
-                       v-rules="{admin:'admin',ordinary:'customer:update:location'}"
-                       @click.stop="handleDel(scope.row)">删除</el-button>
+            <el-button type="text" @click.stop="handelDetail('update', scope.row)">编辑</el-button>
+            <el-button type="text" @click.stop="handleDel(scope.row)">删除</el-button>
           </template>
         </el-table-column>
+        <template slot="empty">
+          <empty-table/>
+        </template>
       </el-table>
       <pagination v-show="total > 0"
                   :total="total"
@@ -138,9 +135,9 @@ export default {
     customerList () {
       noticelist({ ...this.listQuery, })
         .then(res => {
-          this.dataList = res.data;
+          this.dataList = res.data.notices;
           // this.dataList = [{id:1,storeName:'111',storeSn:'11',linkman:'张三',mobile:'18656547892'}];
-          this.total = res.data.count;
+          this.total = res.data.totalCount;
         })
         .catch(err => console.log(err));
     },

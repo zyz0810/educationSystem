@@ -56,6 +56,9 @@
 <!--            <el-button type="text" @click.stop="handleDel(scope.row)">删除</el-button>-->
           </template>
         </el-table-column>
+        <template slot="empty">
+          <empty-table/>
+        </template>
       </el-table>
     </div>
     <!--修改定位-->

@@ -17,10 +17,13 @@
         <template v-if="route.meta">
           <app-link :to="resolvePath(route,route.path)">
             <el-menu-item :index="route.path" :class="{'submenu-title-noDropdown':!isNest}">
-              <item
-                :icon="route.meta.icon||(route.meta&&route.meta.icon)"
-                :title="route.meta.title"
-              />
+<!--              <item-->
+<!--                :icon="route.meta.icon||(route.meta&&route.meta.icon)"-->
+<!--                :title="route.meta.title"-->
+<!--              />-->
+              <img class="menu_img" v-if="route.path == activePath" :src="require('@/assets/image/'+route.meta.icon+'-on.png')">
+              <img class="menu_img" v-else :src="require('@/assets/image/'+route.meta.icon+'.png')">
+              <span slot='title'>{{route.meta.title}}</span>
             </el-menu-item>
           </app-link>
         </template>
@@ -63,7 +66,8 @@ export default {
   data() {
     this.onlyOneChild = {};
     return {
-      isNest: true
+      isNest: true,
+      activePath:''
     };
   },
   watch:{
@@ -86,6 +90,7 @@ export default {
         str = `/${list[1]}`;
         this.set_route(str);
       }
+      this.activePath = str;
       const arr = this.permission_routes.find(item => item.path == str);
       this.set_route_List(arr.children || []);
     },
@@ -153,4 +158,8 @@ export default {
   /*background: #4682c6 !important;*/
   color: white !important;
 }
+  .menu_img{
+    width: 18px;
+    margin-right: 3px;
+  }
 </style>

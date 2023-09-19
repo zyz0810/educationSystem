@@ -62,19 +62,52 @@ export function logout() {
   })
 }
 
-// 获取验证码
-export function getCodeImg() {
+
+/* 忘记密码 - 发送验证码
+ * mobile
+ */
+export function sendverifycode(query) {
   return request({
-    url: '/captchaImage',
-    method: 'get'
+    url: '/pc/sendverifycode',
+    method: 'get',
+    params: query
   })
 }
 
-// 待办数
-export function backlog(data) {
+/* 忘记密码 - 验证码校验
+ * mobile 手机
+ * varify_code 验证码
+ */
+export function checkverifycode(query) {
   return request({
-    url: '/api-crm-system/crm/customer/backlog',
-    method: 'post',
-    data: Qs.stringify(data)
+    url: '/pc/checkverifycode',
+    method: 'get',
+    params: query
+  })
+}
+
+/* 忘记密码 - 修改密码
+ * passwd 密码
+ * confirm_passwd 确认密码
+ * temp_token 临时token
+ */
+export function changepasswd(query) {
+  return request({
+    url: '/pc/changepasswd',
+    method: 'get',
+    params: query
+  })
+}
+
+/* 修改密码 - 修改密码
+ * passwd 密码
+ * confirm_passwd 确认密码
+ * temp_token 临时token
+ */
+export function modifypasswd(query) {
+  return request({
+    url: '/pc/modifypasswd',
+    method: 'get',
+    params: query
   })
 }

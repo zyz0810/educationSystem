@@ -92,12 +92,14 @@
                          align="left"
                          prop="mobile">
         </el-table-column>
-
+        <template slot="empty">
+          <empty-table/>
+        </template>
       </el-table>
       <pagination v-show="total > 0"
                   :total="total"
-                  :page.sync="listQuery.page"
-                  :limit.sync="listQuery.limit"
+                  :page.sync="listQuery.pn"
+                  :limit.sync="listQuery.rn"
                   @pagination="customerList"
                   class="text-right" />
     </div>
@@ -106,16 +108,17 @@
 </template>
 
 <script>
-  // import {customerList,} from "@/api/customer/customer";
+  import {suppliers,} from "@/api/supplier";
 
   export default {
     data () {
       return {
         userList:[],
         listQuery: {
-          key: "",
-          limit: 10,
-          page: 1,
+          invite_code: "",
+          month:"",
+          rn: 10,
+          pn: 1,
         },
         total: 0,
         listLoading: false,
@@ -145,16 +148,16 @@
     methods: {
       // 获取客户列表
       customerList () {
-        // customerList({ ...this.listQuery, })
-        //   .then(res => {
-        //     // this.dataList = res.data.data;
-        //     this.dataList = [{id:1,storeName:'111',storeSn:'11',linkman:'张三',mobile:'18656547892'}];
-        //     this.total = res.data.count;
-        //   })
-        //   .catch(err => console.log(err));
+        suppliers({ ...this.listQuery, })
+          .then(res => {
+            this.dataList = res.data.data;
+            // this.dataList = [{id:1,storeName:'111',storeSn:'11',linkman:'张三',mobile:'18656547892'}];
+            this.total = res.data.count;
+          })
+          .catch(err => console.log(err));
       },
       queryCustomerList () {
-        this.listQuery.page = 1
+        this.listQuery.pn = 1
         this.customerList()
       },
     },

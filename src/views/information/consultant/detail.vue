@@ -174,18 +174,7 @@ export default {
   }
 
 }
-.info_content{
-  line-height: 2;
-  margin: 10px 10px 0;
-  .info_content_line{
-    font-size: 14px;
-    padding: 0 10px;
-    line-height: 2.3;
-  }
-  .info_txt{
-    color: #676C72;
-  }
-}
+
 .img_list{
   img{
     width: 50px;

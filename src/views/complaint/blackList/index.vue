@@ -37,13 +37,12 @@
                          width="150"
                          align="left">
           <template slot-scope="scope">
-            <span class="flex pointer">
-                <span class="header_img">
-              <img src="http://cdn.kyaoduo.com/upload/image/20200808/WechatIMG289.png" alt="邀请码"/>
-            </span>
+            <span class="flex">
+                <span class="header_img mr5">
+                  <img :src="scope.row.portrait" alt=""/>
+                </span>
             {{scope.row.consult_name}}
             </span>
-
           </template>
         </el-table-column>
 
@@ -85,16 +84,17 @@
                          align="left"
                          prop="reason"></el-table-column>
         <el-table-column label="操作"
-                         align="center"
-                         fixed="right"
-                         width="160"
+                         align="left"
+                         width="60"
                          prop="remarks">
           <template slot-scope="scope">
             <el-button type="text" @click.stop="handleDel(scope.row)">移除</el-button>
           </template>
         </el-table-column>
 
-
+        <template slot="empty">
+          <empty-table/>
+        </template>
       </el-table>
       <pagination v-show="total > 0"
                   :total="total"

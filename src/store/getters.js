@@ -8,6 +8,7 @@ const getters = {
   crm_id: state => state.user.crm_id,
   avatar: state => state.user.avatar,
   name: state => state.user.name,
+  persona: state => state.user.persona,
   introduction: state => state.user.introduction,
   roles: state => state.user.roles,
   crm_mobile: state => state.user.crm_mobile,

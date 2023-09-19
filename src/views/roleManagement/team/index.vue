@@ -44,13 +44,13 @@
                          align="left"
                          prop="remarks">
           <template slot-scope="scope">
-            <el-button type="text"
-                       :disabled="scope.row.result == 0"
-                       @click.stop="handelDetail('update', scope.row)">编辑</el-button>
-            <el-button type="text"
-                       @click.stop="handleDel(scope.row)">删除</el-button>
+            <el-button type="text" v-show="scope.row.role != 'super_manager'" @click.stop="handelDetail('update', scope.row)">编辑</el-button>
+            <el-button type="text" v-show="scope.row.role != 'super_manager'" @click.stop="handleDel(scope.row)">删除</el-button>
           </template>
         </el-table-column>
+        <template slot="empty">
+          <empty-table/>
+        </template>
       </el-table>
       <pagination v-show="total > 0"
                   :total="total"
@@ -125,7 +125,7 @@ export default {
       userlist({ ...this.listQuery, })
         .then(res => {
           this.dataList = res.data.user_list;
-          // this.total = res.data.count;
+          this.total = res.data.total_num;
         })
         .catch(err => console.log(err));
     },

@@ -1,15 +1,14 @@
 <template>
   <div class="login">
     <div class="n-background">
-<!--      <img width="100%"-->
-<!--           :src="crm_background"-->
-<!--           alt />-->
+     <img src="./../assets/logo/logo.png" class="login_logo"/>
       <p class="f32">快速获取用户心声，给予更真实的反馈</p>
       <p class="f16">调研方式多样，快速触达目标用户收集反馈</p>
       <p class="f16">丰富的调研视角，多类型的用户需求调研</p>
       <p class="f16">全渠道用户反馈，满足品牌自有渠道灵活投放</p>
       <p class="f16">所见即所得的回收数据，有效把控项目进度及质量</p>
-      <p class="f12">Copyright © 北京XXX数科技有限公司    京ICP备17027560号-2</p>
+      <img class="logo_img" src="./../assets/logo/logo_img01.png"/>
+      <p class="f12 p_footer">Copyright © 北京XXX数科技有限公司    京ICP备17027560号-2</p>
     </div>
     <el-form ref="loginForm"
              :model="loginForm"
@@ -176,18 +175,30 @@ export default {
 };
 </script>
 
-<style  lang="scss" scope>
+<style lang="scss" scoped>
+
 .login {
   display: flex;
   justify-content: center;
   align-items: center;
   // height: 100%;
   height: 100vh;
-  // background-image: url("../assets/image/login-background.jpg");
+  background-image: url("../assets/logo/logo_bg.png");
   background-size: cover;
-  background: linear-gradient(to bottom, #56ccf2, #2f80ed);
+  /*background: linear-gradient(to bottom, #56ccf2, #2f80ed);*/
   padding: 0px 100px;
   box-sizing: border-box;
+  .login_logo{
+    width: 60px;
+    height: 60px;
+  }
+  .logo_img{
+    width: 250px;
+    height: 70px !important;
+  }
+  .p_footer{
+    color: #707E98;
+  }
 }
 .title-h3 {
   font-family: AlibabaPuHuiTi-Medium;

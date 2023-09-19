@@ -14,14 +14,19 @@
       <el-dropdown class="avatar-container right-menu-item hover-effect"
                    trigger="click">
         <div class="avatar-wrapper">
-          <!--src="https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png"-->
-          <el-avatar size="small"
-                     v-bind:src="imgURL"></el-avatar>
-
-
+          <el-avatar size="small" v-bind:src="imgURL"></el-avatar>
+          <span class="login_name">{{name}}</span>
+          <i class="el-icon-arrow-down el-icon--right"></i>
         </div>
-        <el-dropdown-menu slot="dropdown">
-          <router-link to="/datum/datum">
+        <el-dropdown-menu slot="dropdown" class="my_account">
+          <div class="flex my_info">
+            <div class=""><el-avatar size="small" v-bind:src="imgURL" class="mr10"></el-avatar></div>
+              <div class="flex_bd">
+                <p>{{name}}</p>
+                <p class="my_info_role">{{formatter(persona)}}</p>
+              </div>
+          </div>
+          <router-link to="/roleManagement/team">
             <el-dropdown-item>账户设置</el-dropdown-item>
           </router-link>
           <router-link :to="{path: '/password', query: { type: 'update' }}">
@@ -61,7 +66,8 @@ export default {
       "will_effective_count",
       "provider_status",
       "provider_type",
-      "customer_store_ids"
+      "customer_store_ids",
+      "persona"
     ]),
     setting: {
       get () {
@@ -90,6 +96,10 @@ export default {
     // this.getBacklog();
   },
   methods: {
+    formatter(type){
+      // super_manager 超级管理员, manager 管理员, supplier 供应商, custom_service 客服
+      return type == 'super_manager' ? "超级管理员" : type == 'manager'? "管理员" : type == 'supplier'? "供应商" : type == 'custom_service'? "客服" : "";
+    },
     ...mapActions(["set_route", "set_route_List", ]),
     async logout () {
       this.$confirm("确定注销并退出系统吗？", "提示", {
@@ -213,8 +223,44 @@ export default {
       }
     }
   }
+.avatar-container{
+  font-size: 14px;
+  color: #2B3F66;
+  margin-right: 10px !important;
+  .el-icon-arrow-down{
+    font-size: 14px;
+    color: #2B3F66;
+  }
 }
+}
+.login_name{
+  font-size: 14px;
+  color: #2B3F66;
+}
+.my_account{
+  font-size: 14px;
+  color:#2C4068;
+  padding: 15px;
 
+  .my_info{
+    color:#2B3F66;
+    margin: 0 0 10px 0;
+    font-size: 14px;
+    .my_info_role{
+      font-size: 12px;
+      color: #AFB7C7;
+      margin-top: 8px;
+    }
+    p{
+      margin: 0;
+    }
+  }
+  .el-dropdown-menu__item{
+    font-size: 14px;
+    color:#2C4068;
+    line-height: 2.6;
+  }
+}
 .dropdown_item {
   min-width: 120px;
   display: flex;

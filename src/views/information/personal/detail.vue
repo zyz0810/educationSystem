@@ -15,7 +15,7 @@
 <!--          <i class="iconfont icon-nan blue02 ml5 f18" v-show="formData.sex == 1"></i>-->
 <!--          <i class="iconfont icon-nv red02 ml5 f18" v-show="formData.sex == 2"></i>-->
         </div>
-        <div class="mt5"><img class="phone_icon" src="./../../../assets/image/phone.png"/>{{formData.mobile}}</div>
+        <div class="mt5" v-show="formData.mobile != ''"><img class="phone_icon" src="./../../../assets/image/phone.png"/>{{formData.mobile}}</div>
       </div>
     </div>
     <div class="mt_10 info_content">
@@ -146,18 +146,7 @@
 </script>
 
 <style lang="scss">
-  .info_content{
-    line-height: 2;
-    margin: 10px 10px 0;
-    .info_content_line{
-      font-size: 14px;
-      padding: 0 10px;
-      line-height: 2.3;
-    }
-    .info_txt{
-      color: #676C72;
-    }
-  }
+
   .el-form {
     padding: 0 20px;
     .flex {

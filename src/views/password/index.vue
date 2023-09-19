@@ -17,10 +17,10 @@
                      placeholder="请输入手机号"/>
          </el-form-item>
          <el-form-item label=" "
-                       prop="verifyCode"
+                       prop="verify_code"
                        class="get_code">
            <el-input ref="username"
-                     v-model="passwordTemp.verifyCode"
+                     v-model="passwordTemp.verify_code"
                      placeholder="请输入验证码"
                      type="text"
                      autocomplete="on" />
@@ -29,7 +29,7 @@
                       :disabled="disabled">{{codeTxt}}</el-button>
          </el-form-item>
          <el-form-item label=" " class="submit">
-           <el-button type="warning" @click="nextStep(2)">下一步</el-button>
+           <el-button type="warning" @click="nextStep('forget',2)">下一步</el-button>
          </el-form-item>
        </el-form>
 <!--       <div class="submit">-->
@@ -45,16 +45,16 @@
                  label-width="0"
                  class="password_box"
                  :rules="rules">
-          <el-form-item label=" " prop="password">
-            <el-input v-model="passwordTemp.password"
+          <el-form-item label=" " prop="passwd">
+            <el-input v-model="passwordTemp.passwd"
                       :type="passwordType" ref="password"
                       clearable
                       placeholder="请输入密码" >
               <i slot="suffix" class="el-input__icon el-icon-view f16" @click.stop="showPwd"></i>
             </el-input>
           </el-form-item>
-          <el-form-item label=" " prop="confirmPassword" >
-            <el-input v-model="passwordTemp.confirmPassword"
+          <el-form-item label=" " prop="confirm_passwd" >
+            <el-input v-model="passwordTemp.confirm_passwd"
                       :type="passwordConfirmType" ref="confirmPassword"
                       clearable
                       placeholder="请再次输入密码" >
@@ -62,22 +62,19 @@
             </el-input>
           </el-form-item>
           <el-form-item label=" " class="submit">
-            <el-button type="warning" @click="nextStep(3)">下一步</el-button>
+            <el-button type="warning" @click="nextStep('forget',3)">下一步</el-button>
           </el-form-item>
         </el-form>
-<!--        <div class="submit">-->
-<!--          <el-button type="warning" @click="nextStep(3)">下一步</el-button>-->
-<!--        </div>-->
       </div>
 
-      <div class="step_one mt_20" style="padding-top: 50px"  v-if="(pageType == 'update' && pageStep == 2) || (pageType == 'forget' && pageStep == 3)">
+      <div class="step_one mt_20" style="padding-top: 50px"  v-if="pageStep == 3">
         <el-form ref="dataForm"
                  :inline="true"
                  :model="passwordTemp"
                  label-width="0"
                  class="password_box"
                  :rules="rules">
-          <el-form-item label=" " prop="confirmPassword" class="text-center">
+          <el-form-item label=" " class="text-center">
             <p><i class="iconfont icon-zhengque f76 green02"></i></p>
             <div class="f20">操作成功</div>
             <div class="f14">密码已经找回</div>
@@ -101,31 +98,35 @@
                  label-width="0"
                  class="password_box"
                  :rules="rules">
-          <el-form-item label=" " prop="password">
-            <el-input v-model="passwordTemp.password"
-                      type="password"
+          <el-form-item label=" " prop="old_passwd">
+            <el-input v-model="passwordTemp.old_passwd"
+                      :type="passwordOldType" ref="passwordOld"
                       clearable
-                      placeholder="请输入密码" />
+                      placeholder="请输入密码" >
+              <i slot="suffix" class="el-input__icon el-icon-view f16" @click.stop="showUpdatePwd(1)"></i>
+            </el-input>
           </el-form-item>
-          <el-form-item label=" " prop="password">
-            <el-input v-model="passwordTemp.password"
-                      type="password"
+          <el-form-item label=" " prop="passwd">
+            <el-input v-model="passwordTemp.passwd"
+                      :type="passwordNewType" ref="passwordNew"
                       clearable
-                      placeholder="请输入新的密码" />
+                      placeholder="请输入新的密码" >
+              <i slot="suffix" class="el-input__icon el-icon-view f16" @click.stop="showUpdatePwd(2)"></i>
+            </el-input>
           </el-form-item>
-          <el-form-item label=" " prop="confirmPassword" >
-            <el-input v-model="passwordTemp.confirmPassword"
-                      type="password"
+          <el-form-item label=" " prop="confirm_passwd" >
+            <el-input v-model="passwordTemp.confirm_passwd"
+                      :type="passwordNewConfirmType" ref="passwordNewConfirm"
                       clearable
-                      placeholder="请再次输入新的密码" />
+                      placeholder="请再次输入新的密码" >
+              <i slot="suffix" class="el-input__icon el-icon-view f16" @click.stop="showUpdatePwd(3)"></i>
+            </el-input>
           </el-form-item>
           <el-form-item label=" " class="submit">
-            <el-button type="warning" @click="updatePassword">确定</el-button>
+            <el-button type="warning" @click="nextStep('update',3)">确定</el-button>
           </el-form-item>
         </el-form>
-        <!--        <div class="submit">-->
-        <!--          <el-button type="warning" @click="nextStep(3)">下一步</el-button>-->
-        <!--        </div>-->
+
       </div>
 
 
@@ -134,7 +135,7 @@
 </template>
 
 <script>
-import { resetPassword } from "@/api/login";
+import { sendverifycode,checkverifycode,changepasswd,modifypasswd } from "@/api/login";
 import { getSmsCode } from "@/api/system/code";
 import {
   getToken,
@@ -151,31 +152,39 @@ export default {
     return {
       disabled: false,
       passwordTemp: {
-        confirmPassword: "",
+        confirm_passwd: "",
         mobile: '',
-        password: "",
-        verifyCode: ""
+        passwd: "",
+        verify_code: "",
+        temp_token:'',
+        old_passwd:'',
       },
       codeTxt: "获取验证码",
       passwordType:'password',
       passwordConfirmType:'password',
+      passwordOldType:'password',
+      passwordNewType:'password',
+      passwordNewConfirmType:'password',
       pageType:'',
       pageStep: 1,
       rules: {
-        confirmPassword: [
+        confirm_passwd: [
           { required: true, message: "请再次输入新密码", trigger: "change" },
           {validator: (rule, value, callback) =>
-              validateConfirmPassword(rule, value, callback, this.passwordTemp.password),},
+              validateConfirmPassword(rule, value, callback, this.passwordTemp.passwd),},
         ],
-        password: [
+        passwd: [
           { required: true, message: "请输入新密码", trigger: "change" },
           { validator: isPassword },
+        ],
+        old_passwd: [
+          { required: true, message: "请输入密码", trigger: "change" },
         ],
         mobile: [
           { required: true, message: "请输入手机号码", trigger: "change" },
           { validator: validatePhone },
         ],
-        verifyCode: [
+        verify_code: [
           { required: true, message: "请输入验证码", trigger: "change" }
         ]
       }
@@ -207,31 +216,84 @@ export default {
         this.$refs.confirmPassword.focus();
       });
     },
-    nextStep(type){
-      if(type == 2){
-        this.$refs.firstForm.validate((valid) => {
-          if (valid) {
-            this.pageStep = 2;
-            this.$refs.secondForm.clearValidate();
-          }
-        })
+    showUpdatePwd(type) {
+      if(type == 1){
+        if (this.passwordOldType === "password") {
+          this.passwordOldType = "";
+        } else {
+          this.passwordOldType = "password";
+        }
+        this.$nextTick(() => {
+          this.$refs.passwordOld.focus();
+        });
+      }else if(type == 2){
+        if (this.passwordNewType === "password") {
+          this.passwordNewType = "";
+        } else {
+          this.passwordNewType = "password";
+        }
+        this.$nextTick(() => {
+          this.$refs.passwordNew.focus();
+        });
       }else if(type == 3){
-        this.$refs.secondForm.validate((valid) => {
+        if (this.passwordNewConfirmType === "password") {
+          this.passwordNewConfirmType = "";
+        } else {
+          this.passwordNewConfirmType = "password";
+        }
+        this.$nextTick(() => {
+          this.$refs.passwordNewConfirm.focus();
+        });
+      }
+
+    },
+    nextStep(type,val){
+      if(type == 'forget'){
+        if(val == 2){
+          this.$refs.firstForm.validate((valid) => {
+            if (valid) {
+
+              checkverifycode({ mobile: this.passwordTemp.mobile, verify_code: this.passwordTemp.verify_code, }).then(res => {
+                if(res.errno == 0){
+                  console.log(res.data)
+                  this.passwordTemp.temp_token = res.data.temp_token;
+                  console.log('tokenaa：',this.passwordTemp.temp_token)
+                  this.pageStep = 2;
+                }
+              });
+              this.$refs.secondForm.clearValidate();
+            }
+          })
+        }else if(val == 3){
+          this.$refs.secondForm.validate((valid) => {
+            if (valid) {
+              changepasswd({ passwd: this.passwordTemp.passwd, confirm_passwd: this.passwordTemp.confirm_passwd, temp_token: this.passwordTemp.temp_token, }).then(res => {
+                if(res.errno == 0){
+                  this.pageStep = 3;
+                }
+              });
+            }
+          })
+        }
+      }else{
+        this.$refs.thirdForm.validate((valid) => {
           if (valid) {
-            this.pageStep = 3;
+            modifypasswd({ passwd: this.passwordTemp.passwd, confirm_passwd: this.passwordTemp.confirm_passwd, old_passwd: this.passwordTemp.old_passwd, }).then(res => {
+              if(res.errno == 0){
+                this.pageStep = 3;
+              }
+            });
           }
         })
       }
-    },
-    updatePassword(){
-      this.pageStep = 2;
+
     },
     handleIndex(){
       this.$router.push({path:'/'})
     },
     getCode () {
       if (this.passwordTemp.mobile != "") {
-        getSmsCode({ mobile: this.passwordTemp.mobile, type: 2 }).then(res => {
+        sendverifycode({ mobile: this.passwordTemp.mobile, }).then(res => {
           // this.publishOption = res.data
           // if(res.resp_code == 0){
           this.countdown2(this);
@@ -247,7 +309,7 @@ export default {
       }
     },
     countdown2 (that) {
-      let setTime = 60;
+      let setTime = 120;
       let time = setTime;
       let codeTxt = "获取验证码";
       return (function timeFn (o) {
@@ -268,31 +330,7 @@ export default {
         }
       })();
     },
-    resetPassword () {
-      this.$refs["dataForm"].validate(valid => {
-        if (valid) {
-          resetPassword(this.passwordTemp).then(res => {
-            if (res.resp_code == 0) {
-              this.dialogFormVisible = false;
-              this.$message({
-                message: "密码重置成功",
-                type: "success"
-              });
-            }
-          });
-        }
-      });
-    },
-    resetInfo () {
-      this.passwordTemp = {
-        confirmPassword: "",
-        mobile: '',
-        password: "",
-        verifyCode: ""
-      };
-      // this.$refs.dataForm.clearValidate()
-      // this.$refs.dataForm.clearValidate();
-    }
+
   }
 };
 </script>

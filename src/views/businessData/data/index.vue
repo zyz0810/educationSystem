@@ -36,6 +36,7 @@
                   type="date"
                   placeholder="选择日期"
                   value-format="yyyy-MM-dd"
+                  @change="handelTime"
                   :picker-options="pickerOptions">
                 </el-date-picker>
       </el-form-item>
@@ -45,6 +46,7 @@
           align="right"
           type="month"
           value-format="yyyy-MM"
+          @change="handelTime"
           placeholder="选择月份">
         </el-date-picker>
       </el-form-item>
@@ -301,8 +303,22 @@ export default {
   },
   methods: {
     handelType(e){
+
+      if(e == 2){
+        this.listQuery.date = this.$moment().format("YYYY-MM-DD");
+      }else if(e == 3){
+        this.listQuery.date = this.$moment().format('yyyy-MM');
+      }else{
+        this.listQuery.date = '';
+      }
+      console.log(e,this.listQuery.date )
+
+      this.customerList();
+    },
+    handelTime(e){
       console.log(e)
-      this.listQuery.date = '';
+      // this.listQuery.date = '';
+      this.customerList();
     },
     // 修改定位
     handelDetail (type, row) {
