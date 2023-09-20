@@ -17,9 +17,9 @@ export function getauditconsultlist(query) {
  * action pass通过，reject拒绝
  * reason 拒绝理由
 */
-export function getauditconsultlist1(query) {
+export function auditconsultinfo(query) {
   return request({
-    url: 'pc/getauditconsultlist',
+    url: '/pc/auditconsultinfo',
     method: 'get',
     params: query
   })

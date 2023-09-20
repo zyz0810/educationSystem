@@ -5,25 +5,23 @@
              @close="close"
              @open="open"
              top="15vh"
-             title="退回">
+             title="驳回">
     <el-form ref="ruleForm"
              :model="formData"
              label-width="120px"
              :rules="rules"
              class="formList">
-      <el-form-item label="退回原因：" prop="reason">
-        <el-radio-group v-model="formData.reason">
-          <el-radio :label="1">违规个人昵称</el-radio>
-          <el-radio :label="2">违禁头像</el-radio>
-          <el-radio :label="3">违规个人信息</el-radio>
+      <el-form-item label="驳回原因：" prop="reason">
+        <el-radio-group v-model="formData.reason" class="consultant_reason">
+          <el-radio v-for="(item,index) in reasonList" :key="index" :label="item">{{item}}</el-radio>
         </el-radio-group>
       </el-form-item>
-      <el-form-item label="驳回内容：" prop="four">
+      <el-form-item label="驳回内容：" prop="content">
         <el-input
           type="textarea"
           :autosize="{ minRows: 10, maxRows: 20}"
           placeholder="请输入内容"
-          v-model="formData.content" v-show="!isCanView">
+          v-model="formData.content">
         </el-input>
       </el-form-item>
     </el-form>
@@ -35,7 +33,7 @@
   </my-dialog>
 </template>
 <script>
-  import {audituserinfo} from "@/api/parent";
+  import {auditconsultinfo} from "@/api/counselor";
   export default {
     props: {
       showDialog: {
@@ -54,10 +52,11 @@
     },
     data () {
       return {
+        reasonList:['证书与资质不符合','证书未列入范围','违禁个人昵称','违禁头像','违禁个人信息','其他原因'],
         formData: {
           id: '',
           action: 'reject',
-          reason: 1,
+          reason: '',
           content: '',
         },
         rules: {
@@ -79,13 +78,12 @@
       },
     },
     methods: {
-
-      // 修改定位
       save () {
         this.$refs.ruleForm.validate(valid => {
           if (valid) {
-            audituserinfo(this.formData)
+            auditconsultinfo(this.formData)
               .then(res => {
+                this.$message({ message: res.resp_msg, type: 'success' });
                 this.$emit("updateList");
                 this.dialogVisible = false;
               })
@@ -103,31 +101,20 @@
         Object.assign(this.formData, {
           id: '',
           action: 'reject',
-          reason: 1,
+          reason: '',
           content: '',
         });
+        this.reasonList = ['违规个人昵称','违禁头像','违规个人信息'];
         this.dialogVisible = false;
       }
     }
   };
 </script>
 
-<style lang="scss">
-  .el-form {
-    padding: 0 20px;
-    .flex {
-      display: flex;
-    }
-
-  }
-  .notice_banner{
-    img{
-      height: 100px;
-    }
-  }
-  .uploader {
-    .el-upload--picture-card {
-      display: none;
+<style lang="scss" scoped>
+  .consultant_reason{
+    .el-radio{
+      line-height: 2;
     }
   }
 </style>

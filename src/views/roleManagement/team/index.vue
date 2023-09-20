@@ -27,7 +27,6 @@
         "
                 highlight-current-row>
         <el-table-column label="姓名"
-                         fixed="left"
                          align="left"
                          show-overflow-tooltip
                          prop="name"></el-table-column>
@@ -42,6 +41,7 @@
         </el-table-column>
         <el-table-column label="操作"
                          align="left"
+                         width="100"
                          prop="remarks">
           <template slot-scope="scope">
             <el-button type="text" v-show="scope.row.role != 'super_manager'" @click.stop="handelDetail('update', scope.row)">编辑</el-button>

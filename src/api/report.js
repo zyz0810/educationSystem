@@ -7,7 +7,7 @@ import Qs from 'qs'
 */
 export function complaintlists(query) {
   return request({
-    url: 'consult/complaintlists',
+    url: 'pc/complaintlists',
     method: 'get',
     params: query
   })
@@ -18,7 +18,7 @@ export function complaintlists(query) {
 */
 export function complaintstatus(query) {
   return request({
-    url: 'consult/complaintstatus',
+    url: 'pc/complaintstatus',
     method: 'get',
     params: query
   })

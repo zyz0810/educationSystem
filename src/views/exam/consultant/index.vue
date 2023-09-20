@@ -37,7 +37,7 @@
                          align="left">
           <template slot-scope="scope">
             <span class="flex pointer"  @click="handelDetail('detail', scope.row)">
-                <span class="header_img">
+                <span class="header_img mr5">
               <img :src="scope.row.portrait" alt=""/>
             </span>
             {{scope.row.user_name}}
@@ -56,10 +56,10 @@
                          align="left"
                          prop="mobile">
         </el-table-column>
-        <el-table-column label="性别无字段"
+        <el-table-column label="性别"
                          min-width="100"
                          align="left"
-                         prop="mobile"></el-table-column>
+                         prop="sex" :formatter="formatterSex"></el-table-column>
         <el-table-column label="咨询费"
                          min-width="100"
                          align="left"
@@ -71,22 +71,28 @@
         <el-table-column label="个人简介"
                          min-width="130"
                          align="left"
-                         prop="intro"></el-table-column>
-        <el-table-column label=""
-                         min-width="150"
-                         align="left"
-                         prop="label">
+                         prop="intro">
           <template slot-scope="scope">
-            <span class="person_tag">幼育</span>
-            <span class="person_tag">幼儿教育</span>
-            <span class="f16 bold yellow02">…</span>
+            <span class="mr10">{{scope.row.intro}}</span>
+            <span class="person_tag" v-for="(item,index) in scope.row.label">{{item}}</span>
+            <span class="f16 bold yellow02" v-show="scope.row.label.length > 2">…</span>
           </template>
         </el-table-column>
+<!--        <el-table-column label=""-->
+<!--                         min-width="150"-->
+<!--                         align="left"-->
+<!--                         prop="label">-->
+<!--          <template slot-scope="scope">-->
+<!--            <span class="person_tag">幼育</span>-->
+<!--            <span class="person_tag">幼儿教育</span>-->
+<!--            <span class="f16 bold yellow02">…</span>-->
+<!--          </template>-->
+<!--        </el-table-column>-->
 
-        <el-table-column label="提交时间无字段"
-                         min-width="130"
+        <el-table-column label="提交时间"
+                         min-width="150"
                          align="left"
-                         prop="mobile"></el-table-column>
+                         prop="create_time"></el-table-column>
 
         <el-table-column label="状态和审核意见"
                          min-width="160"
@@ -100,14 +106,11 @@
         </el-table-column>
         <el-table-column label="操作"
                          align="left"
-                         fixed="right"
-                         width="120"
+                         width="100"
                          prop="remarks">
           <template slot-scope="scope">
-            <el-button type="text"
-                       @click.stop="handelDetail('detail',scope.row)">详情</el-button>
             <el-button type="text" :disabled="scope.row.result == 0"
-                       @click.stop="handelPass('update', scope.row)">同意</el-button>
+                       @click.stop="handelPass( scope.row)">同意</el-button>
             <el-button type="text" @click.stop="handleReject(scope.row)">退回</el-button>
           </template>
         </el-table-column>
@@ -137,8 +140,8 @@
 </template>
 
 <script>
-  import {getauditconsultlist,} from "@/api/counselor";
-  import detail from './detail';
+  import {getauditconsultlist,auditconsultinfo} from "@/api/counselor";
+  import detail from './../../information/consultant/detail';
   import rejectView from './reject';
   export default {
     data () {
@@ -211,7 +214,31 @@
         this.listQuery.pn = 1;
         this.getList();
       },
+// 同意
+      async handelPass(row){
+        const res = await this.$confirm("<span style='margin-left: 35px;'>确定审核通过吗？</span>", "确定同意", {
+          cancelButtonText: "取消",
+          confirmButtonText: "确定",
+          // type: "info",
+          dangerouslyUseHTMLString: true,
+          customClass:'del_confirm'
+        }).catch((err)=>{console.log('err',err)})
+        if(res){
+          auditconsultinfo({ id: row.id,action:'pass' }).then(res => {
+            this.$message({ message: res.resp_msg, type: 'success' });
+            this.getList();
+          });
+          console.log('确定',res)
+        }
+      },
 
+      handleReject(row){
+        this.showReject = true;
+        this.infoData = {
+          type:'reject',
+          option:row,
+        };
+      },
     },
   };
 </script>

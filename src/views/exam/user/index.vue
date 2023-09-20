@@ -128,7 +128,7 @@
 
 <script>
 import {getaudituserlist,audituserinfo} from "@/api/parent";
-import detail from './detail';
+import detail from './../../information/personal/detail';
 import rejectView from './reject';
 export default {
   data () {

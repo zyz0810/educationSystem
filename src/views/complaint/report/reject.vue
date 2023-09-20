@@ -13,15 +13,25 @@
              class="formList">
       <el-form-item label="退回原因：" prop="reason">
         <el-radio-group v-model="formData.reason">
-          <el-radio v-for="(item,index) in reasonList" :key="index" :label="item">{{item}}</el-radio>
+          <el-radio :label="1">违规个人昵称</el-radio>
+          <el-radio :label="2">违禁头像</el-radio>
+          <el-radio :label="3">违规个人信息</el-radio>
         </el-radio-group>
+        <el-select v-model="formData.reason" placeholder="请选择">
+          <el-option
+            v-for="item in options"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value">
+          </el-option>
+        </el-select>
       </el-form-item>
-      <el-form-item label="驳回内容：" prop="content">
+      <el-form-item label="驳回内容：" prop="four">
         <el-input
           type="textarea"
           :autosize="{ minRows: 10, maxRows: 20}"
           placeholder="请输入内容"
-          v-model="formData.content">
+          v-model="formData.content" v-show="!isCanView">
         </el-input>
       </el-form-item>
     </el-form>
@@ -52,11 +62,10 @@
     },
     data () {
       return {
-        reasonList:['违规个人昵称','违禁头像','违规个人信息'],
         formData: {
           id: '',
           action: 'reject',
-          reason: '',
+          reason: 1,
           content: '',
         },
         rules: {
@@ -78,12 +87,13 @@
       },
     },
     methods: {
+
+      // 修改定位
       save () {
         this.$refs.ruleForm.validate(valid => {
           if (valid) {
             audituserinfo(this.formData)
               .then(res => {
-                this.$message({ message: res.resp_msg, type: 'success' });
                 this.$emit("updateList");
                 this.dialogVisible = false;
               })
@@ -101,10 +111,9 @@
         Object.assign(this.formData, {
           id: '',
           action: 'reject',
-          reason: '',
+          reason: 1,
           content: '',
         });
-        this.reasonList = ['违规个人昵称','违禁头像','违规个人信息'];
         this.dialogVisible = false;
       }
     }

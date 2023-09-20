@@ -25,7 +25,6 @@
         "
                 highlight-current-row>
         <el-table-column label="关于我们"
-                         fixed="left"
                          min-width="200"
                          align="left"
                          show-overflow-tooltip
@@ -45,18 +44,17 @@
 
         <el-table-column label="更新日期"
                          min-width="160"
-                         align="center"
+                         align="left"
                          show-overflow-tooltip
                          prop="update_time" :formatter="formatTime"></el-table-column>
         <el-table-column label="发布人"
                          min-width="100"
-                         align="center"
+                         align="left"
                          prop="operator">
         </el-table-column>
         <el-table-column label="操作"
-                         align="center"
-                         fixed="right"
-                         width="160"
+                         align="left"
+                         width="100"
                          prop="remarks">
           <template slot-scope="scope">
             <el-button type="text" @click.stop="handelDetail('detail',scope.row)">详情</el-button>

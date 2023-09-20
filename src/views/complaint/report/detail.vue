@@ -1,34 +1,34 @@
 <template>
   <my-dialog :visible.sync="dialogVisible"
              :close-on-click-modal="false"
-             width="36%"
+             width="500px"
              @close="close"
              @open="open"
              top="15vh"
              :title="textMap[dialogStatus]">
     <el-form ref="ruleForm"
              :model="formData"
-             label-width="120px"
+             label-width="80px"
              :rules="rules"
              class="formList">
 
-      <el-form-item :label="textMap[dialogStatus]"
-                    prop="one">
-        <el-select v-model="formData.one" placeholder="请选择">
+      <el-form-item :label="titleMap[dialogStatus]+'原因'"
+                    prop="reason">
+        <el-select v-model="formData.reason" placeholder="请选择">
           <el-option v-for="(item, index) in reasonList"
                      :key="index"
-                     :label="item.name"
-                     :value="item.id"></el-option>
+                     :label="item"
+                     :value="item"></el-option>
         </el-select>
 
       </el-form-item>
       <el-form-item label="备注内容"
-                    prop="two">
+                    prop="content">
         <el-input
           type="textarea"
           :autosize="{ minRows: 6, maxRows: 10}"
           placeholder="请输入内容"
-          v-model="formData.two">
+          v-model="formData.content">
         </el-input>
 
       </el-form-item>
@@ -41,9 +41,7 @@
   </my-dialog>
 </template>
 <script>
-// import {
-//   lonAndLatEdit
-// } from "@/api/customer/customer";
+import {complaintstatus} from "@/api/report";
 export default {
   props: {
     showDialog: {
@@ -68,30 +66,25 @@ export default {
   data () {
     return {
       formData: {
-        one: 1,
-        two: 'https://cdn.kyaoduo.com/upload/file/202307/feb5e6bc-0083-4eed-95be-ac7cf82bf11b.jpeg',
-        three: '12',
-        four: '<p style="color:red;">2222</p>',
+        id: '',
+        action: '',
+        reason: '',
+        content: '',
       },
-      isChange:false,
       textMap: {
         reject: '驳回',
         warn: '警告',
-        blacklist:'移入黑名单'
+        black:'移入黑名单'
+      },
+      titleMap: {
+        reject: '驳回',
+        warn: '警告',
+        black:'拉黑'
       },
       dialogStatus: '',
       rules: {
-        one: [
+        reason: [
           { required: true, message: "请选择类型", trigger: "blur" }
-        ],
-        two: [
-          { required: true, message: "请上传图片", trigger: "blur" }
-        ],
-        three: [
-          { required: true, message: "请输入链接", trigger: "blur" }
-        ],
-        four: [
-          { required: true, message: "请输入公告内容", trigger: "blur" }
         ],
       }
     };
@@ -106,28 +99,18 @@ export default {
         this.$emit("update:show-dialog", value);
       }
     },
-    isCanView(){
-      return this.dialogStatus == 'detail'
-    }
   },
   methods: {
-    hasImgSrc(val) {
-      this.formData.two = val;
-    },
     // 修改定位
     save () {
-      // if (this.$refs.myQuillEditor) {
-      //   this.$refs.myQuillEditor.changeContent(description);
-      // }
       this.$refs.ruleForm.validate(valid => {
         if (valid) {
-          this.formData.lonAndLat = `${this.formData.longitude},${this.formData.latitude}`
-          // lonAndLatEdit(this.formData)
-          //   .then(res => {
-          //     this.$emit("updateList");
-          //     this.dialogVisible = false;
-          //   })
-          //   .catch(err => console.log(err));
+          complaintstatus(this.formData)
+            .then(res => {
+              this.$emit("updateList");
+              this.dialogVisible = false;
+            })
+            .catch(err => console.log(err));
         } else {
           return false;
         }
@@ -135,19 +118,16 @@ export default {
     },
     open () {
       this.formData.id = this.infoData.option.id;
+      this.formData.action = this.infoData.type;
       this.dialogStatus = this.infoData.type;
-      this.$nextTick(()=>{
-        if (this.$refs.myQuillEditor) {
-          this.$refs.myQuillEditor.changeContent(this.formData.four);
-        }
-      });
-
     },
     close () {
       this.$refs.ruleForm.clearValidate();
       Object.assign(this.formData, {
-        longitude: '',
-        latitude: '',
+        id: '',
+        action: '',
+        reason: '',
+        content: '',
       });
       this.dialogVisible = false;
     }

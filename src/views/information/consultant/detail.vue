@@ -13,7 +13,7 @@
           <img src="./../../../assets/image/male.png" class="sex_icon ml5" v-show="formData.sex == 1"/>
           <img src="./../../../assets/image/female.png" class="sex_icon ml5" v-show="formData.sex == 2"/>
         </div>
-        <div class="mt5"><img class="phone_icon" src="./../../../assets/image/phone.png"/>{{formData.mobile}}</div>
+        <div class="mt5" v-show="formData.mobile != ''"><img class="phone_icon" src="./../../../assets/image/phone.png"/>{{formData.mobile}}</div>
       </div>
     </div>
     <div class="mt_10 info_content">
@@ -42,26 +42,30 @@
     <div class="mt_10 info_content">
       <div class="detail_title">资质标签</div>
       <div class="tag_list">
-        <span class="person_tag" v-for="(item,index) in formData.label">{{item}}</span>
+        <p v-if=" formData.pictures.length<1" class="f12 gray01">暂无</p>
+        <span class="person_tag" v-for="(item,index) in formData.label" :key="index">{{item}}</span>
       </div>
     </div>
 
     <div class="mt_10 info_content">
-      <div class="detail_title">证书无字段</div>
+      <div class="detail_title">证书</div>
       <div class="img_list">
-        <img :src="formData.portrait">
+        <p v-if=" formData.pictures.length<1" class="f12 gray01">暂无</p>
+        <img v-for="(item,index) in formData.cert" :key="index" :src="item">
       </div>
     </div>
     <div class="mt_10 info_content">
       <div class="detail_title">认证资料</div>
       <div class="img_list">
-        <img :src="formData.portrait">
+        <p v-if=" formData.pictures.length<1" class="f12 gray01">暂无</p>
+        <img v-for="(item,index) in formData.ren_zheng" :key="index" :src="item">
       </div>
     </div>
     <div class="mt_10 info_content">
       <div class="detail_title">形象照</div>
       <div class="img_list">
-        <img :src="formData.portrait">
+        <p v-if=" formData.pictures.length<1" class="f12 gray01">暂无</p>
+        <img v-for="(item,index) in formData.pictures" :key="index" :src="item">
       </div>
     </div>
     <span slot="footer"
@@ -103,13 +107,16 @@ export default {
         intro:'',
         sex:'',
         price:'',
-        label:''
+        label:'',
+        cert:[],
+        ren_zheng:[],
+        pictures:[],
       },
       isChange:false,
       textMap: {
-        update: '编辑家长信息',
-        create: '新建家长信息',
-        detail:'家长信息'
+        update: '编辑咨询师信息',
+        create: '新建咨询师信息',
+        detail:'咨询师信息'
       },
       dialogStatus: '',
     };
@@ -151,14 +158,25 @@ export default {
     open () {
       this.formData.id = this.infoData.option.id;
       this.dialogStatus = this.infoData.type;
-      const {id,portrait,user_name,mobile,user_id,city,intro,sex,price,label,} = this.infoData.option;
-      this.formData = {id,portrait,user_name,mobile,user_id,city,intro,sex,price,label,};
+      const {id,portrait,user_name,mobile,user_id,city,intro,sex,price,label,cert,ren_zheng,pictures,} = this.infoData.option;
+      this.formData = {id,portrait,user_name,mobile,user_id,city,intro,sex,price,label,cert,ren_zheng,pictures,};
     },
     close () {
       this.$refs.ruleForm.clearValidate();
       Object.assign(this.formData, {
-        longitude: '',
-        latitude: '',
+        id:'',
+        portrait:'',
+        user_name:'',
+        mobile:'',
+        user_id:'',
+        city:'',
+        intro:'',
+        sex:'',
+        price:'',
+        label:'',
+        cert:[],
+        ren_zheng:[],
+        pictures:[],
       });
       this.dialogVisible = false;
     }

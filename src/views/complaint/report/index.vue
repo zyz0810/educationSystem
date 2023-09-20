@@ -5,11 +5,11 @@
       <el-form-item label="">
         <el-input v-model.trim="listQuery.keyword"
                   clearable suffix-icon="el-icon-search"
-                  @change="queryCustomerList"
+                  @change="queryGetList"
                   placeholder="标题/关键词" />
       </el-form-item>
       <el-form-item label="">
-        <el-select v-model="listQuery.one" placeholder="请选择" @change="queryCustomerList">
+        <el-select v-model="listQuery.one" placeholder="请选择" @change="queryGetList">
           <el-option label="全部" value=""></el-option>
           <el-option v-for="(item, index) in userList"
                      :key="index"
@@ -33,60 +33,63 @@
         "
                 highlight-current-row>
         <el-table-column label="举报人"
-                         min-width="120"
+                         min-width="140"
                          align="left"
                          show-overflow-tooltip
-                         prop="storeName">
+                         prop="">
           <template slot-scope="scope">
-            <a class="link link_a link_b"
-               @click="toDetail(scope.row)">
-              {{ scope.row.storeName }}
-            </a>
+            <span class="flex">
+              <span class="header_img"><img :src="scope.row.complaint_user_portrait" alt=""/></span>
+              {{scope.row.complaint_user_name}}（{{scope.row.complaint_user_id}}）
+            </span>
           </template>
         </el-table-column>
         <el-table-column label="被投诉人"
-                         min-width="120"
+                         min-width="140"
                          align="left"
                          show-overflow-tooltip
-                         prop="storeName">
+                         prop="complaint_user_id">
           <template slot-scope="scope">
-            <a class="link link_a link_b"
-               @click="toDetail(scope.row)">
-              {{ scope.row.storeName }}
-            </a>
+            <span class="flex">
+              <span class="header_img"><img :src="scope.row.consult_portrait" alt=""/></span>
+              {{scope.row.consult_name}}（{{scope.row.consult_id}}）
+            </span>
           </template>
         </el-table-column>
         <el-table-column label="举报订单"
                          min-width="160"
                          align="left"
                          prop="storeSn">
+          <template slot-scope="scope">
+             订单： {{scope.row.order_id}}
+          </template>
         </el-table-column>
         <el-table-column label="投诉原因"
                          min-width="100"
                          align="left"
                          show-overflow-tooltip
-                         prop="linkman"></el-table-column>
+                         prop="reject_reason"></el-table-column>
         <el-table-column label="备注"
                          width="100"
                          align="left"
-                         prop="mobile">
+                         prop="content">
         </el-table-column>
         <el-table-column label="证据"
                          min-width="100"
                          align="left"
                          prop="mobile">
           <template slot-scope="scope">
-            <viewer :images="['http://cdn.kyaoduo.com/upload/license/20220315/c4d2be84-6d5a-47ce-9a0e-7d12045e6d29.png']">
-            <span class="report_img">
-              <img src="http://cdn.kyaoduo.com/upload/license/20220315/c4d2be84-6d5a-47ce-9a0e-7d12045e6d29.png" alt="邀请码"/>
-            </span>
+            <viewer :images="scope.row.pictures">
+              <span class="report_img" v-for="(item,index) in scope.row.pictures" :key="index">
+                <img :src="item" />
+              </span>
             </viewer>
           </template>
         </el-table-column>
         <el-table-column label="举报时间"
-                         width="100"
+                         min-width="160"
                          align="left"
-                         prop="mobile">
+                         prop="create_time" :formatter="formatTime">
         </el-table-column>
         <el-table-column label="操作"
                          align="left"
@@ -96,7 +99,7 @@
           <template slot-scope="scope">
             <el-button type="text" @click.stop="handelDetail('reject',scope.row)">驳回</el-button>
             <el-button type="text" @click.stop="handelDetail('warn', scope.row)">警告</el-button>
-            <el-button type="text" @click.stop="handelDetail('blacklist',scope.row)">移入黑名单</el-button>
+            <el-button type="text" @click.stop="handelDetail('black',scope.row)">移入黑名单</el-button>
           </template>
         </el-table-column>
         <template slot="empty">
@@ -107,13 +110,13 @@
                   :total="total"
                   :page.sync="listQuery.pn"
                   :limit.sync="listQuery.rn"
-                  @pagination="customerList"
+                  @pagination="getList"
                   class="text-right" />
     </div>
     <!--修改定位-->
     <detail :showDialog.sync="showDetail"
                     :infoData='infoData' :reasonList="reasonList"
-                    @updateList='customerList' />
+                    @updateList='getList' />
   </div>
 </template>
 
@@ -134,12 +137,13 @@ export default {
       dataList: [],
       tableHeight: 520,
       showDetail: false,
+      showReject:false,
       infoData: {
         type:'',
         option:{},
       },
       userList:[],
-      reasonList:[{id:1,name:'接单时不专心'},{id:2,name:'恶意骚扰'},{id:3,name:'色情/性骚扰'},{id:4,name:'涉及政治'},{id:5,name:'诈骗'},{id:6,name:'其它'},]
+      reasonList:['接单时不专心','恶意骚扰','色情/性骚扰','涉及政治','诈骗','其它',]
     };
   },
   components: {detail},
@@ -153,9 +157,15 @@ export default {
           window.innerHeight - this.$refs.activityTable.$el.offsetTop - 150;
       };
     });
-    this.customerList();
+    this.getList();
   },
   methods: {
+    formatTime (row, column, cellValue, index) {
+      // let aa = cellValue
+      // let aa = Number(this.$moment(Number(cellValue)).format("X"))//X大写代表秒x代表毫秒
+      let aa = cellValue + '000';
+      return this.$moment(Number(aa)).format("YYYY-MM-DD HH:mm:ss");
+    },
     // 修改定位
     handelDetail (type, row) {
       this.showDetail = true
@@ -165,19 +175,19 @@ export default {
       }
     },
     // 获取客户列表
-    customerList () {
+    getList () {
       complaintlists({ ...this.listQuery, })
         .then(res => {
-          // this.dataList = res.data.data;
-          this.dataList = [{id:1,storeName:'111',storeSn:'11',linkman:'张三',mobile:'18656547892'}];
-          this.total = res.data.count;
+          this.dataList = res.data.complaints;
+          // this.dataList = [{id:1,storeName:'111',storeSn:'11',linkman:'张三',mobile:'18656547892'}];
+          this.total = res.data.total;
         })
         .catch(err => console.log(err));
     },
 
-    queryCustomerList () {
+    queryGetList () {
       this.listQuery.pn = 1
-      this.customerList()
+      this.getList()
     },
 
   },
