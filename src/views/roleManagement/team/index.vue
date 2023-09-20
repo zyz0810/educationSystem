@@ -39,6 +39,7 @@
                          align="left"
                          prop="role" :formatter="formatterRole">
         </el-table-column>
+
         <el-table-column label="操作"
                          align="left"
                          width="100"
