@@ -26,3 +26,28 @@ export function publishnotice(query) {
     params: query
   })
 }
+/* 编辑公告
+ * id
+ * notice_type 公告类型
+ * imgs 图片数组
+ * notice_content 公告内容
+ * cover banner封面图片
+ * cmd 链接cmd跳转
+*/
+export function editnotice(query) {
+  return request({
+    url: 'pc/editnotice',
+    method: 'get',
+    params: query
+  })
+}
+/* 删除公告
+ * id
+*/
+export function removenotice(query) {
+  return request({
+    url: 'pc/removenotice',
+    method: 'get',
+    params: query
+  })
+}

@@ -83,7 +83,7 @@
           if (valid) {
             auditconsultinfo(this.formData)
               .then(res => {
-                this.$message({ message: res.resp_msg, type: 'success' });
+                this.$message({ message: res.errmsg, type: 'success' });
                 this.$emit("updateList");
                 this.dialogVisible = false;
               })
@@ -94,7 +94,7 @@
         });
       },
       open () {
-        this.formData.id = this.infoData.option.user_id;
+        this.formData.id = this.infoData.option.id;
       },
       close () {
         this.$refs.ruleForm.clearValidate();
@@ -104,7 +104,7 @@
           reason: '',
           content: '',
         });
-        this.reasonList = ['违规个人昵称','违禁头像','违规个人信息'];
+        this.reasonList = ['证书与资质不符合','证书未列入范围','违禁个人昵称','违禁头像','违禁个人信息','其他原因'];
         this.dialogVisible = false;
       }
     }

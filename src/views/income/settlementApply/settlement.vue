@@ -12,25 +12,25 @@
              :rules="rules"
              class="formList">
       <el-form-item label="结算结果"
-                    prop="one">
-        <el-radio-group v-model="formData.one">
-          <el-radio :label="1">结算成功</el-radio>
-          <el-radio :label="2">结算失败</el-radio>
+                    prop="status">
+        <el-radio-group v-model="formData.status">
+          <el-radio :label="4">结算成功</el-radio>
+          <el-radio :label="5">结算失败</el-radio>
         </el-radio-group>
       </el-form-item>
-      <el-form-item label="失败原因" v-show="formData.one == 2">
-        <el-checkbox-group v-model="formData.two">
-          <el-checkbox :label="1">姓名有误</el-checkbox>
-          <el-checkbox :label="2">开户行错误</el-checkbox>
-          <el-checkbox :label="3">银行卡错误</el-checkbox>
-          <el-checkbox :label="4">手机号错误</el-checkbox>
-          <el-checkbox :label="5">其他原因</el-checkbox>
+      <el-form-item label="失败原因" prop="reason" v-if="formData.status == 5">
+        <el-checkbox-group v-model="formData.reason">
+          <el-checkbox label="姓名有误"></el-checkbox>
+          <el-checkbox label="开户行错误"></el-checkbox>
+          <el-checkbox label="银行卡错误"></el-checkbox>
+          <el-checkbox label="手机号错误"></el-checkbox>
+          <el-checkbox label="其他原因"></el-checkbox>
         </el-checkbox-group>
         <el-input style="width: 90%;"
           type="textarea"
           :autosize="{ minRows: 4, maxRows: 10}"
           placeholder="请输入失败原因"
-          v-model="formData.three">
+          v-model="formData.content">
         </el-input>
       </el-form-item>
 
@@ -43,9 +43,7 @@
 </template>
 
 <script>
-// import {
-//   clueDetail
-// } from "@/api/clue";
+  import {updateapply} from "@/api/income";
 export default {
   props: {
     showDialog: {
@@ -62,16 +60,17 @@ export default {
   data () {
     return {
       formData: {
-        one: 1,
-        two: [],
-        three: '',
+        id:'',
+        status: 4,
+        reason: [],
+        content: '',
       },
       rules: {
-        one: [
-          { required: true, message: "请输入线索名称", trigger: "blur" }
+        status: [
+          { required: true, message: "请选择结算结果", trigger: "blur" }
         ],
-        two: [
-          { required: true, message: "请输入线索名称", trigger: "blur" }
+        reason: [
+          { required: true, message: "请选择失败原因", trigger: "blur" }
         ],
       },
     };
@@ -87,16 +86,29 @@ export default {
     }
   },
   methods: {
-    save(){},
+    save(){
+      this.$refs.ruleForm.validate(valid => {
+        if (valid) {
+          const {id,status}=this.formData;
+          let reason = this.formData.reason.join(',')
+          updateapply({id,status,reason:reason+this.formData.content}).then(res => {
+            this.$message({message: res.errmsg, type: 'success'});
+            this.$emit("success");
+            this.dialogVisible = false;
+          });
+        }
+      });
+    },
     open () {
-      // this.clueDetail()
+      this.formData.id = this.infoData.id;
     },
     close () {
       this.$refs.ruleForm.clearValidate();
       this.formData= {
-        one: 1,
-        two: [],
-        three: '',
+        id:'',
+        status: 4,
+        reason: [],
+        content: '',
       };
       this.dialogVisible = false;
     }

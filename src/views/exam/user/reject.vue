@@ -83,7 +83,7 @@
           if (valid) {
             audituserinfo(this.formData)
               .then(res => {
-                this.$message({ message: res.resp_msg, type: 'success' });
+                this.$message({ message: res.errmsg, type: 'success' });
                 this.$emit("updateList");
                 this.dialogVisible = false;
               })
@@ -94,7 +94,8 @@
         });
       },
       open () {
-        this.formData.id = this.infoData.option.user_id;
+        // this.formData.id = this.infoData.option.user_id;
+        this.formData.id = this.infoData.option.id;
       },
       close () {
         this.$refs.ruleForm.clearValidate();

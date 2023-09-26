@@ -5,7 +5,7 @@
       <el-form-item label="">
         <el-input v-model.trim="listQuery.keyword"
                   clearable suffix-icon="el-icon-search"
-                  @change="queryCustomerList"
+                  @change="queryGetList"
                   placeholder="标题/关键词" />
       </el-form-item>
       <el-button type="primary" class="fr mt_10" @click="handelDetail('create', '')">新建公告</el-button>
@@ -76,18 +76,18 @@
                   :total="total"
                   :page.sync="listQuery.pn"
                   :limit.sync="listQuery.rn"
-                  @pagination="customerList"
+                  @pagination="getList"
                   class="text-right" />
     </div>
     <!--修改定位-->
     <detail :showDialog.sync="showDetail"
                     :infoData='infoData'
-                    @updateList='customerList' />
+                    @updateList='getList' />
   </div>
 </template>
 
 <script>
-import {noticelist,} from "@/api/notice";
+import {noticelist,removenotice} from "@/api/notice";
 import detail from './detail';
 export default {
   data () {
@@ -120,7 +120,7 @@ export default {
           window.innerHeight - this.$refs.activityTable.$el.offsetTop - 150;
       };
     });
-    this.customerList();
+    this.getList();
   },
   methods: {
     // 修改定位
@@ -132,7 +132,7 @@ export default {
       }
     },
     // 获取客户列表
-    customerList () {
+    getList () {
       noticelist({ ...this.listQuery, })
         .then(res => {
           this.dataList = res.data.notices;
@@ -142,28 +142,27 @@ export default {
         .catch(err => console.log(err));
     },
 
-    queryCustomerList () {
+    queryGetList () {
       this.listQuery.pn = 1
-      this.customerList()
+      this.getList()
     },
     // 删除单个
-    handleDel (id, index) {
-      // type,msg,title,option,callback
-
-      this.$MyMessageBox(3,"<span style='margin-left: 35px;'>确定删除该项目？</span>", "确定删除", {
+    async  handleDel(row){
+      const res = await this.$confirm("<span style='margin-left: 35px;'>确定删除该项目？</span>", "确定删除", {
         cancelButtonText: "取消",
         confirmButtonText: "确定",
         // type: "info",
         dangerouslyUseHTMLString: true,
         customClass:'del_confirm'
-      }).then(res => {
-        if (res) {
-          // deleteCustomer({ storeIds: [id] }).then(res => {
-          //   this.$message({ message: res.resp_msg, type: 'success' });
-          //   this.dataList.splice(index, 1);
-          // });
-        }}).catch();
-
+      }).catch((err)=>{console.log('err',err)})
+      if(res){
+        // this.$success("你确认惹删除！")
+        removenotice({ id: row.id }).then(res => {
+          this.$message({ message: res.errmsg, type: 'success' });
+          this.getList();
+        });
+        console.log('确定',res)
+      }
     },
   },
 };

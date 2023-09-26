@@ -41,9 +41,8 @@
   </my-dialog>
 </template>
 <script>
-import {
-  adduser,updateuser
-} from "@/api/role";
+import {adduser,updateuser} from "@/api/role";
+import { validatePhone, } from "@/utils/validate";
 export default {
   props: {
     showDialog: {
@@ -86,7 +85,8 @@ export default {
           { required: true, message: "请输入姓名", trigger: "blur" }
         ],
         mobile: [
-          { required: true, message: "请输入手机号", trigger: "blur" }
+          { required: true, message: "请输入手机号", trigger: "blur" },
+          { validator: validatePhone },
         ],
       }
     };

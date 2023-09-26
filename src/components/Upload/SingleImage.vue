@@ -42,7 +42,7 @@
 
 <script>
 import store from "@/store";
-import { uploadFile } from "@/api/common";
+import { uploadfile } from "@/api/upLoad";
 
 export default {
   name: "SingleImageUpload",
@@ -120,9 +120,9 @@ export default {
       //   }
       // }
       // uploadImg(file,config)
-      uploadFile(file)
+      uploadfile(file)
         .then((res) => {
-          this.emitInput(res.picUrl);
+          this.emitInput(res);
           // this.tempUrl = res.picUrl;
         })
         .catch((e) => {

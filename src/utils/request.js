@@ -12,7 +12,7 @@ let requestUrl ='http://118.195.250.220:8200/'  //测试环境1
 
 switch (process.env.VUE_APP_MODE) {
  case 'development':
-  requestUrl ='http://123.60.145.79:9200/' //dev环境
+  requestUrl ='http://118.195.250.220:8200/' //dev环境
   break;
  case 'production':
  requestUrl ='https://crm.kyaoduo.com/'
@@ -21,7 +21,7 @@ switch (process.env.VUE_APP_MODE) {
  requestUrl ='http://uat.crm.kyaoduo.com/'
  break;
  case 'test':
- requestUrl ='http://test.crm.kyaoduo.com/'
+ requestUrl ='hhttp://118.195.250.220:8200/'
  break;
  default:
   // requestUrl ='http://123.60.163.221:9200/'   //测试环境

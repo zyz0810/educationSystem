@@ -19,10 +19,12 @@
                          min-width="120"
                          align="left">
           <template slot-scope="scope">
-            <span class="header_img">
-              <img src="http://cdn.kyaoduo.com/upload/image/20200808/WechatIMG289.png" alt="邀请码"/>
+            <span class="flex">
+              <span class="header_img mr5">
+              <img src="./../../../assets/image/head Portrait.png" alt="邀请码"/>
             </span>
-            张三
+              {{scope.row.name}}
+            </span>
           </template>
         </el-table-column>
         <el-table-column label="手机"
@@ -33,65 +35,61 @@
         <el-table-column label="邀请码"
                          min-width="100"
                          align="left"
-                         prop="mobile"></el-table-column>
-        <el-table-column label="邀请二维码"
-                         min-width="200"
-                         align="left"
-                         prop="mobile">
-          <template slot-scope="scope">
-            <viewer :images="['http://cdn.kyaoduo.com/upload/license/20220315/c4d2be84-6d5a-47ce-9a0e-7d12045e6d29.png']">
-            <span class="invite_ewm">
-              <img src="http://cdn.kyaoduo.com/upload/license/20220315/c4d2be84-6d5a-47ce-9a0e-7d12045e6d29.png" alt="邀请码"/>
-            </span>
-            </viewer>
-          </template>
-        </el-table-column>
-        <el-table-column label="操作"
-                         align="left"
-                         width="60"
-                         prop="remarks">
-          <template slot-scope="scope">
-            <el-button type="text"
-                       @click.stop="handelDownLoad('http://cdn.kyaoduo.com/upload/license/20220315/c4d2be84-6d5a-47ce-9a0e-7d12045e6d29.png','邀请码')">下载</el-button>
-<!--            <a class="pointer blue01" href="http://cdn.kyaoduo.com/upload/license/20220315/c4d2be84-6d5a-47ce-9a0e-7d12045e6d29.png" download>下载</a>-->
-          </template>
-        </el-table-column>
+                         prop="invite_code"></el-table-column>
+<!--        <el-table-column label="邀请二维码"-->
+<!--                         min-width="200"-->
+<!--                         align="left"-->
+<!--                         prop="invite_code">-->
+<!--          <template slot-scope="scope">-->
+<!--            <viewer v-if="scope.row.invite_code!=''&&scope.row.invite_code!=null" :images="[scope.row.invite_code]">-->
+<!--              <span class="invite_ewm">-->
+<!--                <img :src="scope.row.invite_code" alt=""/>-->
+<!--              </span>-->
+<!--            </viewer>-->
+<!--          </template>-->
+<!--        </el-table-column>-->
+<!--        <el-table-column label="操作"-->
+<!--                         align="left"-->
+<!--                         width="60"-->
+<!--                         prop="remarks">-->
+<!--          <template slot-scope="scope">-->
+<!--            <el-button type="text"-->
+<!--                       @click.stop="handelDownLoad('http://cdn.kyaoduo.com/upload/license/20220315/c4d2be84-6d5a-47ce-9a0e-7d12045e6d29.png','邀请码')">下载</el-button>-->
+<!--&lt;!&ndash;            <a class="pointer blue01" href="http://cdn.kyaoduo.com/upload/license/20220315/c4d2be84-6d5a-47ce-9a0e-7d12045e6d29.png" download>下载</a>&ndash;&gt;-->
+<!--          </template>-->
+<!--        </el-table-column>-->
         <template slot="empty">
           <empty-table/>
         </template>
       </el-table>
       <pagination v-show="total > 0"
                   :total="total"
-                  :page.sync="listQuery.page"
-                  :limit.sync="listQuery.limit"
-                  @pagination="customerList"
+                  :page.sync="listQuery.pn"
+                  :limit.sync="listQuery.rn"
+                  @pagination="getList"
                   class="text-right" />
     </div>
   </div>
 </template>
 
 <script>
-  // import {customerList,} from "@/api/customer/customer";
+  import {invitecode,} from "@/api/invite";
   export default {
     data () {
       return {
         listQuery: {
-          key: "",
-          role:"",
-          limit: 10,
-          page: 1,
+          rn: 10,
+          pn: 1,
         },
         total: 0,
         listLoading: false,
         selectList: [],
         dataList: [],
         tableHeight: 520,
-        showDetail: false,
         infoData: {
           type:'',
           option:{},
         },
-        roleList:[{id:'',name:'全部'},{id:1,name:'超级管理员'},{id:2,name:'管理员'},{id:3,name:'供应商'},{id:4,name:'客服审核员'}]
       };
     },
     computed: {},
@@ -104,7 +102,7 @@
             window.innerHeight - this.$refs.activityTable.$el.offsetTop - 150;
         };
       });
-      this.customerList();
+      this.getList();
     },
     methods: {
       // 下载图片
@@ -132,25 +130,14 @@
 
       },
       // 获取客户列表
-      customerList () {
-        // customerList({ ...this.listQuery, })
-        //   .then(res => {
-        //     // this.dataList = res.data.data;
-        //     this.dataList = [{id:1,storeName:'111',storeSn:'11',linkman:'张三',mobile:'18656547892'}];
-        //     this.total = res.data.count;
-        //   })
-        //   .catch(err => console.log(err));
-      },
-
-      queryCustomerList () {
-        this.listQuery.page = 1;
-        this.customerList();
-      },
-      queryList(role){
-        this.listQuery.role = role;
-        this.listQuery.page = 1;
-        this.customerList();
-        console.log('11')
+      getList () {
+        invitecode()
+          .then(res => {
+            // this.dataList = res.data.data;
+            this.dataList = [{name:res.data.name,mobile:res.data.mobile,invite_code:res.data.invite_code,}];
+            // this.total = res.data.count;
+          })
+          .catch(err => console.log(err));
       },
       // 删除单个
       handleDel (id, index) {

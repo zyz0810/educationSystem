@@ -155,7 +155,7 @@ export default {
       if(res){
         // this.$success("你确认惹删除！")
           deleteuser({ id: row.id }).then(res => {
-            this.$message({ message: res.resp_msg, type: 'success' });
+            this.$message({ message: res.errmsg, type: 'success' });
             this.getList();
           });
         console.log('确定',res)

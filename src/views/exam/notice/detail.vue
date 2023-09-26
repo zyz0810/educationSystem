@@ -42,7 +42,7 @@
         <span v-show="isCanView">{{formData.cmd}}</span>
       </el-form-item>
       <el-form-item label="公告内容："  v-if="formData.notice_type == 2"
-                    prop="four">
+                    prop="notice_content">
         <quillEditor ref="myQuillEditor" v-show="!isCanView"
                      :isChange.sync="isChange"
                      :isProductDetail="true"
@@ -61,7 +61,7 @@
   </my-dialog>
 </template>
 <script>
-import {publishnotice} from "@/api/notice";
+import {publishnotice,editnotice} from "@/api/notice";
 import SingleImage from "@/components/Upload/SingleImage.vue"; // waves directive
 import quillEditor from "@/components/quillEditor/quillEditorProductDetail.vue";
 export default {
@@ -102,12 +102,12 @@ export default {
         cover: [
           { required: true, message: "请上传图片", trigger: "blur" }
         ],
-        cmd: [
-          { required: true, message: "请输入链接", trigger: "blur" }
-        ],
-        notice_content: [
-          { required: true, message: "请输入公告内容", trigger: "blur" }
-        ],
+        // cmd: [
+        //   { required: true, message: "请输入链接", trigger: "blur" }
+        // ],
+        // notice_content: [
+        //   { required: true, message: "请输入公告内容", trigger: "blur" }
+        // ],
       }
     };
   },
@@ -129,18 +129,26 @@ export default {
   },
   methods: {
     hasImgSrc(val) {
-      this.formData.two = val;
+      console.log('图片',val)
+      this.formData.cover = val;
     },
     // 修改定位
     save () {
       // if (this.$refs.myQuillEditor) {
       //   this.$refs.myQuillEditor.changeContent(description);
       // }
-      this.formData.cover = 'http://uat.cdn.kyaoduo.com/upload/product/20230908/292043b2-2c00-49a1-8757-3a35e762c090.jpg';
       this.$refs.ruleForm.validate(valid => {
         if (valid) {
-          publishnotice(this.formData)
+          let formData = {};
+          const {id,notice_type,cover,cmd,notice_content} = this.formData;
+          if(this.formData.notice_type == 1){
+            formData = {id,notice_type,cover,cmd};
+          }else{
+            formData = {id,notice_type,cover,notice_content};
+          }
+          publishnotice(formData)
             .then(res => {
+              this.$message({ message: res.errmsg, type: 'success' });
               this.$emit("updateList");
               this.dialogVisible = false;
             })
@@ -156,8 +164,16 @@ export default {
       // }
       this.$refs.ruleForm.validate(valid => {
         if (valid) {
-          publishnotice(this.formData)
+          let formData = {};
+          const {id,notice_type,cover,cmd,notice_content} = this.formData;
+          if(this.formData.notice_type == 1){
+            formData = {id,notice_type,cover,cmd};
+          }else{
+            formData = {id,notice_type,cover,notice_content};
+          }
+          editnotice(formData)
             .then(res => {
+              this.$message({ message: res.errmsg, type: 'success' });
               this.$emit("updateList");
               this.dialogVisible = false;
             })
@@ -168,7 +184,10 @@ export default {
       });
     },
     open () {
-      this.formData.id = this.infoData.option.id;
+      if(this.infoData.type != 'create'){
+        const {id,type,cover,cmd,notice_content} = this.infoData.option;
+        this.formData = {id,notice_type:type,cover,cmd,notice_content};
+      }
       this.dialogStatus = this.infoData.type;
       this.$nextTick(()=>{
         if (this.$refs.myQuillEditor) {

@@ -36,7 +36,7 @@
                          width="150"
                          align="left">
           <template slot-scope="scope">
-            <span class="flex pointer"  @click="handelDetail('detail', scope.row)">
+            <span class="flex pointer blue01"  @click="handelDetail('detail', scope.row)">
                 <span class="header_img mr5">
               <img :src="scope.row.portrait" alt=""/>
             </span>
@@ -109,9 +109,8 @@
                          width="100"
                          prop="remarks">
           <template slot-scope="scope">
-            <el-button type="text" :disabled="scope.row.result == 0"
-                       @click.stop="handelPass( scope.row)">同意</el-button>
-            <el-button type="text" @click.stop="handleReject(scope.row)">退回</el-button>
+            <el-button type="text" v-show="scope.row.status == 1" @click.stop="handelPass( scope.row)">同意</el-button>
+            <el-button type="text" v-show="scope.row.status == 1" @click.stop="handleReject(scope.row)">退回</el-button>
           </template>
         </el-table-column>
 
@@ -225,7 +224,7 @@
         }).catch((err)=>{console.log('err',err)})
         if(res){
           auditconsultinfo({ id: row.id,action:'pass' }).then(res => {
-            this.$message({ message: res.resp_msg, type: 'success' });
+            this.$message({ message: res.errmsg, type: 'success' });
             this.getList();
           });
           console.log('确定',res)

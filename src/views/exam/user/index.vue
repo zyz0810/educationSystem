@@ -39,7 +39,7 @@
                          show-overflow-tooltip
                          prop="user_name">
           <template slot-scope="scope">
-               <span class="flex pointer"  @click="handelDetail('detail', scope.row)">
+               <span class="flex pointer blue01"  @click="handelDetail('detail', scope.row)">
                 <span class="header_img el-avatar--circle mr5">
               <img :src="scope.row.portrait" alt=""/>
             </span>
@@ -83,7 +83,7 @@
                          prop="status">
           <template slot-scope="scope">
 <!--            状态，1待审核 2通过 3拒绝-->
-            <span :class="{'orange01':scope.row.status == 1,'green01':scope.row.status == 2,'red01':scope.row.status == 3}">{{formatterStatus(scope.row.status)}}</span>
+            <span :class="{'orange01 mr5':scope.row.status == 1,'green01 mr5':scope.row.status == 2,'red01 mr5':scope.row.status == 3,}">{{formatterStatus(scope.row.status)}}</span>
             <span v-if="scope.row.status == 3">{{scope.row.reason}}</span>
           </template>
         </el-table-column>
@@ -92,8 +92,8 @@
                          width="100"
                          prop="remarks">
           <template slot-scope="scope">
-            <el-button type="text" @click.stop="handelPass( scope.row)">同意</el-button>
-            <el-button type="text" @click.stop="handleReject(scope.row)">退回</el-button>
+            <el-button type="text" v-show="scope.row.status == 1" @click.stop="handelPass( scope.row)">同意</el-button>
+            <el-button type="text" v-show="scope.row.status == 1" @click.stop="handleReject(scope.row)">退回</el-button>
           </template>
         </el-table-column>
 
@@ -169,7 +169,7 @@ export default {
   methods: {
     formatterStatus(cellValue){
       //状态，1待审核 2通过 3拒绝
-      return cellValue == 1 ? "1待审核" : cellValue == 2? "通过" : cellValue == 3? "拒绝" : "";
+      return cellValue == 1 ? "待审核" : cellValue == 2? "通过" : cellValue == 3? "拒绝" : "";
     },
     formatterSex (row, column, cellValue, index) {
       // 1男 2女
@@ -212,8 +212,8 @@ export default {
         customClass:'del_confirm'
       }).catch((err)=>{console.log('err',err)})
       if(res){
-        audituserinfo({ id: row.user_id,action:'pass' }).then(res => {
-          this.$message({ message: res.resp_msg, type: 'success' });
+        audituserinfo({ id: row.id,action:'pass' }).then(res => {
+          this.$message({ message: res.errmsg, type: 'success' });
           this.getList();
         });
         console.log('确定',res)

@@ -109,7 +109,7 @@ export default {
       userUpdate({ id, nickname, sex, username }).then(res => {
         if (res.resp_code == 0) {
           this.$message({
-            message: res.resp_msg,
+            message: res.errmsg,
             type: "success"
           });
         }

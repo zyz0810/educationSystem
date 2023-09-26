@@ -28,7 +28,7 @@ export function addblacklist(query) {
 */
 export function removebacklist(query) {
   return request({
-    url: 'userinfo/removebacklist',
+    url: '/pc/removeblacklist',
     method: 'get',
     params: query
   })

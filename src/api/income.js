@@ -17,10 +17,12 @@ export function getProfits(query) {
 /* 更新收益申请的状态
  * apply_id 申请发放的id 数组
  * status 更新到目的态
+ * reason 结算失败 tag+ content
  */
-export function update_apply() {
+export function updateapply(query) {
   return request({
     url: 'pc/updateapply',
     method: 'get',
+    params: query
   })
 }

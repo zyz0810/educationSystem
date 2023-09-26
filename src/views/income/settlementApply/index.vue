@@ -27,7 +27,7 @@
 <!--          收益单的状态 (1: 待审核， 2 审核中， 3: 结算中，4已结算， 5: 结算失败)-->
           <el-option label="全部状态" value=""></el-option>
           <el-option label="待审核" :value="1"></el-option>
-          <el-option label="审核中" :value="2"></el-option>
+<!--          <el-option label="审核中" :value="2"></el-option>-->
           <el-option label="结算中" :value="3"></el-option>
           <el-option label="已结算" :value="4"></el-option>
           <el-option label="结算失败" :value="5"></el-option>
@@ -37,8 +37,8 @@
     <div class="container mt_10">
       <div v-if="selectList.length > 0" class="mb_10">
         <span class="mr10 f12 choose_span">已选择<span class="blue01 bold choose_num">{{selectList.length}}</span>条<i class="el-icon-close gray01 ml5"></i></span>
-        <el-button type="primary" plain>批量同意</el-button>
-        <el-button type="primary" plain>批量结算</el-button>
+<!--        <el-button type="primary" plain>批量同意</el-button>-->
+<!--        <el-button type="primary" plain>批量结算</el-button>-->
         <el-button type="primary" plain>批量导出</el-button>
       </div>
       <el-table v-loading="listLoading"
@@ -109,8 +109,10 @@
                          width="120"
                          prop="remarks">
           <template slot-scope="scope">
-            <el-button type="text" @click.stop="handelPass(scope.row)">同意</el-button>
-            <el-button type="text" @click.stop="handelSettlement( scope.row)">结算</el-button>
+            <el-button type="text" v-show="scope.row.status == 1" @click.stop="handelPass(scope.row)">同意</el-button>
+            <span class="mr10" v-show="scope.row.status == 3 || scope.row.status == 4 || scope.row.status == 5">已同意</span>
+            <el-button type="text" v-show="scope.row.status == 3" @click.stop="handelSettlement( scope.row)">结算</el-button>
+<!--            <el-button type="text" @click.stop="handelSettlement( scope.row)">结算</el-button>-->
           </template>
         </el-table-column>
         <template slot="empty">
@@ -125,12 +127,12 @@
                   class="text-right" />
     </div>
 
-    <settlement :showDialog.sync="showSettlementDialog" :infoData="infoData"></settlement>
+    <settlement :showDialog.sync="showSettlementDialog" :infoData="infoData" @success="getList"></settlement>
   </div>
 </template>
 
 <script>
-  import {getProfits,} from "@/api/income";
+  import {getProfits,updateapply} from "@/api/income";
   import settlement from "./settlement";
   export default {
     data () {
@@ -173,7 +175,7 @@
         total: 0,
         listLoading: false,
         selectList: [],
-        dataList: [{id:1,storeName:'111',storeSn:'11',linkman:'张三',mobile:'18656547892'}],
+        dataList: [],
         tableHeight: 520,
         showSettlementDialog:false,
         infoData:{},
@@ -215,7 +217,7 @@
       // 收益单的状态 (1: 待审核， 2 审核中， 3: 结算中，4已结算， 5: 结算失败)
       formatterStatus (row, column, cellValue, index) {
         // 1男 2女
-        return cellValue == 1 ? "待审核" : cellValue == 2? "审核中" : cellValue == 3? "结算中" : cellValue == 4? "已结算" : cellValue == 5? "结算失败" : "--";
+        return cellValue == 1 ? "待审核" : cellValue == 3? "结算中" : cellValue == 4? "已结算" : cellValue == 5? "结算失败" : "--";
       },
       formatTime (row, column, cellValue, index) {
         return this.$moment(cellValue).format("YYYY-MM-DD HH:mm:ss");
@@ -247,8 +249,8 @@
         }).catch((err)=>{console.log('err',err)})
         if(res){
           // this.$success("你确认惹删除！")
-          deleteuser({ id: row.id }).then(res => {
-            this.$message({ message: res.resp_msg, type: 'success' });
+          updateapply({ id: row.id,status:3 }).then(res => {
+            this.$message({ message: res.errmsg, type: 'success' });
             this.getList();
           });
           console.log('确定',res)

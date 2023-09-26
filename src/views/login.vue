@@ -1,26 +1,23 @@
 <template>
   <div class="login">
-    <div class="n-background">
+    <el-row :gutter="10">
+      <el-col :xs="24" :sm="24" :md="22" :lg="22" :xl="20" class="n-background">
      <img src="./../assets/logo/logo.png" class="login_logo"/>
-      <p class="f32">快速获取用户心声，给予更真实的反馈</p>
-      <p class="f16">调研方式多样，快速触达目标用户收集反馈</p>
-      <p class="f16">丰富的调研视角，多类型的用户需求调研</p>
-      <p class="f16">全渠道用户反馈，满足品牌自有渠道灵活投放</p>
-      <p class="f16">所见即所得的回收数据，有效把控项目进度及质量</p>
+      <p class="f32 bold logon_title">家庭教育的重要性，影响孩子一生</p>
+      <p class="f16">调父母是孩子的第一任老师</p>
+      <p class="f16">家庭氛围对孩子的影响</p>
+      <p class="f16">家庭教育需要科学引导</p>
+      <p class="f16">我们也需要注重家庭氛围的营造，为孩子创造一个稳定、和谐的成长环境。只有这样，我们才能让孩子健康、快乐地成长</p>
       <img class="logo_img" src="./../assets/logo/logo_img01.png"/>
       <p class="f12 p_footer">Copyright © 北京XXX数科技有限公司    京ICP备17027560号-2</p>
-    </div>
+      </el-col>
+    </el-row>
     <el-form ref="loginForm"
              :model="loginForm"
              :rules="loginRules"
              class="login-form">
-      <!--
-        <el-avatar shape="square"
-                 :size="100"
-                 class="avatar"
-                 :src="crm_icon"></el-avatar>
-     -->
-      <h3 class="title-h3">欢迎来到<br/>康药麦麦访销管理后台</h3>
+      <h3 class="title-h3">欢迎来到<br/>
+        鑫规泽咨询管理平台</h3>
       <el-form-item prop="username">
         <el-input v-model.trim="loginForm.username"
                   type="text"
@@ -195,6 +192,7 @@ export default {
   .logo_img{
     width: 250px;
     height: 70px !important;
+    margin-top: 20px;
   }
   .p_footer{
     color: #707E98;
@@ -217,11 +215,6 @@ export default {
   opacity: 0.54;
   margin: 30px 0px 50px 0px;
 }
-.avatar {
-  margin-top: 30px;
-  color: #0079fe;
-  margin: auto;
-}
 .el-input__prefix {
   top: 5px;
 }
@@ -232,14 +225,18 @@ export default {
   /*height: calc(100vh - 180px);*/
   text-align: center;
   /*flex: 0.5;*/
-  padding: 0;
+  padding: 10px 20px;
   .el-form-item__error {
     width: 100% !important;
   }
-  .el-input {
+  /deep/.el-input {
     height: 40px;
     line-height: 40px;
     width: 472px !important;
+    .el-input__inner{
+      height: 40px;
+      line-height: 40px;
+    }
     input {
       height: 40px;
       border-radius: 4px;
@@ -307,8 +304,17 @@ export default {
   display: flex;
   flex-direction: column;
   justify-content: center;
+  padding: 0 180px 30px;
   img {
     height: 100%;
+  }
+  p{
+    margin: 10px 0;
+    line-height: 1.6;
+    color:#2B3F66;
+    &.logon_title{
+      margin: 30px 0 20px;
+    }
   }
 }
 </style>
