@@ -6,7 +6,7 @@ function resolve(dir) {
   return path.join(__dirname, dir)
 }
 
-const name = defaultSettings.title || '康药麦麦' // 标题
+const name = defaultSettings.title || '鑫规泽教育' // 标题
 
 const port = process.env.port || process.env.npm_config_port || 80 // 端口
 
@@ -21,7 +21,7 @@ module.exports = {
   // 在npm run build 或 yarn build 时 ，生成文件的目录名称（要和baseUrl的生产环境路径一致）（默认dist）
   outputDir: 'dist',
   // 用于放置生成的静态资源 (js、css、img、fonts) 的；（项目打包之后，静态资源会放在这个文件夹下）
-  assetsDir: 'static',
+  assetsDir: 'staticAdmin',
   // 是否开启eslint保存检测，有效值：ture | false | 'error'
   lintOnSave: process.env.NODE_ENV === 'development',
   // 如果你不需要生产环境的 source map，可以将其设置为 false 以加速生产环境构建。
@@ -32,52 +32,17 @@ module.exports = {
     port: port,
     open: false,
     proxy: {
-      // detail: https://cli.vuejs.org/config/#devserver-proxy
+
+
+
+
       // [process.env.VUE_APP_BASE_API]: {
-      //   target: `http://localhost:8080`,
+      //   target: `http://118.195.250.220:8200`,
       //   changeOrigin: true,
       //   pathRewrite: {
       //     ['^' + process.env.VUE_APP_BASE_API]: ''
       //   }
       // },
-
-
-      // '/api': {
-      //   target: 'http://118.195.250.220:8200', //设置调用接口域名和端口号别忘了加http
-      //   changeOrigin: true,
-      //   pathRewrite: {// 如果接口本身没有/api需要通过pathRewrite来重写了地址
-      //     '^/api': '' //这里理解成用‘/api’代替target里面的地址，组件中我们调接口时直接用/api代替
-      //     // 比如我要调用'http://0.0:300/user/add'，直接写‘/api/user/add’即可 代理后地址栏显示/
-      //
-      //   },
-      // },
-
-      [process.env.VUE_APP_BASE_API]: {
-        target: `http://118.195.250.220:8200`,
-        changeOrigin: true,
-        pathRewrite: {
-          ['^' + process.env.VUE_APP_BASE_API]: ''
-        }
-      },
-      //
-      // "/api": {
-      //   target: "http://118.195.250.220:8200",
-      //   changeOrigin: true,
-      //   // ws: true,//websocket支持
-      //   secure: false,
-      //   pathRewrite: {
-      //     '^/api': '/'    //代理的路径
-      //   },
-      //   onProxyRes(proxyRes, req, res) {
-      //     if(proxyRes.headers['set-cookie']) {
-      //       proxyRes.headers['set-cookie'] = proxyRes.headers['set-cookie'].map(v => {
-      //         // /coss/app是后端服务设置的上下文跟， 由于是本地所以需要添加一个代理/api（于proxy端口的代理是一样的）
-      //         return v.replace('/coss/app', '/api/coss/app')
-      //       })
-      //     }
-      //   }
-      // },
-
 
     },
     disableHostCheck: true

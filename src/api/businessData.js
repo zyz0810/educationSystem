@@ -7,7 +7,7 @@ import Qs from 'qs'
  */
 export function summerys(query) {
   return request({
-    url: 'pc/summerys',
+    url: '/pc/summerys',
     method: 'get',
     params: query
   })

@@ -8,7 +8,7 @@ import Qs from 'qs'
  */
 export function getProfits(query) {
   return request({
-    url: 'pc/profits',
+    url: '/pc/profits',
     method: 'get',
     params: query
   })
@@ -21,7 +21,7 @@ export function getProfits(query) {
  */
 export function updateapply(query) {
   return request({
-    url: 'pc/updateapply',
+    url: '/pc/updateapply',
     method: 'get',
     params: query
   })

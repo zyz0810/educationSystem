@@ -7,7 +7,7 @@ import Qs from 'qs'
 */
 export function noticelist(query) {
   return request({
-    url: 'pc/noticelist',
+    url: '/pc/noticelist',
     method: 'get',
     params: query
   })
@@ -21,7 +21,7 @@ export function noticelist(query) {
 */
 export function publishnotice(query) {
   return request({
-    url: 'pc/publishnotice',
+    url: '/pc/publishnotice',
     method: 'get',
     params: query
   })
@@ -36,7 +36,7 @@ export function publishnotice(query) {
 */
 export function editnotice(query) {
   return request({
-    url: 'pc/editnotice',
+    url: '/pc/editnotice',
     method: 'get',
     params: query
   })
@@ -46,7 +46,7 @@ export function editnotice(query) {
 */
 export function removenotice(query) {
   return request({
-    url: 'pc/removenotice',
+    url: '/pc/removenotice',
     method: 'get',
     params: query
   })

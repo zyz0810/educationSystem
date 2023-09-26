@@ -18,7 +18,7 @@ export function getblacklist(query) {
 */
 export function addblacklist(query) {
   return request({
-    url: 'pc/addblacklist',
+    url: '/pc/addblacklist',
     method: 'get',
     params: query
   })

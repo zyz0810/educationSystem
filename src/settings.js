@@ -1,5 +1,5 @@
 module.exports = {
-  title: '康药麦麦',
+  title: '鑫规泽教育',
 
   /**
    * 是否系统布局配置

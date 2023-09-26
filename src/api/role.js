@@ -19,7 +19,7 @@ export function userlist(query) {
 */
 export function adduser(query) {
   return request({
-    url: 'perm/adduser',
+    url: '/perm/adduser',
     method: 'get',
     params: query
   })

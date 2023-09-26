@@ -20,7 +20,7 @@ export function suppliers(query) {
 */
 export function addblacklist(query) {
   return request({
-    url: 'pc/addblacklist',
+    url: '/pc/addblacklist',
     method: 'get',
     params: query
   })
@@ -30,7 +30,7 @@ export function addblacklist(query) {
 */
 export function removebacklist(query) {
   return request({
-    url: 'userinfo/removebacklist',
+    url: '/userinfo/removebacklist',
     method: 'get',
     params: query
   })

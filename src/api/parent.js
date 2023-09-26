@@ -19,7 +19,7 @@ export function getaudituserlist(query) {
 */
 export function audituserinfo(query) {
   return request({
-    url: 'pc/audituserinfo',
+    url: '/pc/audituserinfo',
     method: 'get',
     params: query
   })

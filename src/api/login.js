@@ -57,7 +57,7 @@ export function resetPassword(data) {
  */
 export function logout() {
   return request({
-    url: 'pc/logout',
+    url: '/pc/logout',
     method: 'get',
   })
 }
