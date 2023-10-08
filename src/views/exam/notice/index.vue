@@ -25,7 +25,6 @@
         "
                 highlight-current-row>
         <el-table-column label="公告banner"
-                         fixed="left"
                          min-width="120"
                          align="left"
                          show-overflow-tooltip
@@ -56,6 +55,11 @@
                          width="100"
                          align="left"
                          prop="publisher">
+        </el-table-column>
+        <el-table-column label="用户端 无字段"
+                         width="100"
+                         align="left"
+                         prop="">
         </el-table-column>
         <el-table-column label="操作"
                          align="left"
@@ -135,7 +139,7 @@ export default {
     getList () {
       noticelist({ ...this.listQuery, })
         .then(res => {
-          this.dataList = res.data.notices;
+          this.dataList = res.data.totalCount == 0 ? [] : res.data.notices;
           // this.dataList = [{id:1,storeName:'111',storeSn:'11',linkman:'张三',mobile:'18656547892'}];
           this.total = res.data.totalCount;
         })

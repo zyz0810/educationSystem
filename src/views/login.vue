@@ -4,7 +4,7 @@
       <el-col :xs="24" :sm="24" :md="22" :lg="22" :xl="20" class="n-background">
      <img src="./../assets/logo/logo.png" class="login_logo"/>
       <p class="f32 bold logon_title">家庭教育的重要性，影响孩子一生</p>
-      <p class="f16">调父母是孩子的第一任老师</p>
+      <p class="f16">父母是孩子的第一任老师</p>
       <p class="f16">家庭氛围对孩子的影响</p>
       <p class="f16">家庭教育需要科学引导</p>
       <p class="f16">我们也需要注重家庭氛围的营造，为孩子创造一个稳定、和谐的成长环境。只有这样，我们才能让孩子健康、快乐地成长</p>

@@ -9,12 +9,12 @@
                   placeholder="标题/关键词" />
       </el-form-item>
       <el-form-item label="">
-        <el-select v-model="listQuery.channel" placeholder="请选择" @change="queryList">
+        <el-select v-model="listQuery.status" clearable placeholder="请选择" @change="queryList">
           <el-option label="全部" value=""></el-option>
-          <el-option v-for="(item, index) in userList"
-                     :key="index"
-                     :label="item.name"
-                     :value="item.id"></el-option>
+<!--          1待审核 2通过 3拒绝-->
+          <el-option label="待审核" :value="1"></el-option>
+          <el-option label="通过" :value="2"></el-option>
+          <el-option label="拒绝" :value="3"></el-option>
         </el-select>
       </el-form-item>
     </el-form>
@@ -136,7 +136,7 @@ export default {
       userList:[],
       listQuery: {
         keyword: "",
-        channel:"",
+        status:"",
         rn: 10,
         pn: 1,
       },
@@ -192,7 +192,7 @@ export default {
     getList () {
       getaudituserlist({ ...this.listQuery, })
         .then(res => {
-          this.dataList = res.data.list;
+          this.dataList = res.data.total_num == 0 ? [] : res.data.list;
           this.total = res.data.total_num;
         })
         .catch(err => console.log(err));

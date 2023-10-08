@@ -33,3 +33,12 @@ export function removebacklist(query) {
     params: query
   })
 }
+/* 黑名单列表筛选条件（下拉列表） -- 原因
+*/
+export function complaintlabels(query) {
+  return request({
+    url: '/pc/complaintlabels',
+    method: 'get',
+    params: query
+  })
+}

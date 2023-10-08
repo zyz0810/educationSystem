@@ -3,10 +3,7 @@ import Qs from 'qs'
 import { MessageBox, Message, Confirm } from 'element-ui'
 import store from '@/store'
 import { getToken } from '@/utils/auth'
-// let requestUrl ='http://123.60.163.221:9200/'  //测试环境
-let requestUrl ='http://118.195.250.220:8200/'  //测试环境1
-// let requestUrl ='http://192.168.2.125:9200' //尚学文
-// let requestUrl ='http://192.168.2.164:9200' //舒逸
+let requestUrl ='http://118.195.250.220:8200/'  //测试环境
 // let requestUrl ='http://23.60.185.194:9200/'  //UAT环境
 // let requestUrl ='http://123.60.145.79:9200/'  //dev环境
 
@@ -21,40 +18,37 @@ switch (process.env.VUE_APP_MODE) {
  requestUrl ='http://uat.crm.kyaoduo.com/'
  break;
  case 'test':
- requestUrl ='hhttp://118.195.250.220:8200/'
+ requestUrl ='http://118.195.250.220:8200/'
  break;
  default:
-  // requestUrl ='http://123.60.163.221:9200/'   //测试环境
-   requestUrl ='http://118.195.250.220:8200/'  //测试环境1
-  // requestUrl ='http://192.168.2.125:9200' //尚学文
-  //  requestUrl ='http://192.168.2.164:9200' //舒逸
+   requestUrl ='http://118.195.250.220:8200/'  //测试环境
   // requestUrl ='http://23.60.185.194:9200/'   //UAT环境
   // requestUrl ='http://123.60.145.79:9200/' //dev环境
   break;
 }
 // create an axios instance
 const service = axios.create({
-  baseURL: process.env.VUE_APP_BASE_API,
+  // baseURL: process.env.VUE_APP_BASE_API,
   // withCredentials: false, // send cookies when cross-domain requests
   // timeout: 10000 // request timeout
   // withCredentials: true // 允许携带cookie
 })
-axios.defaults.headers['Content-Type'] =
-  'application/x-www-form-urlencoded;charset=UTF-8'
+axios.defaults.headers['Content-Type'] = 'application/x-www-form-urlencoded;charset=UTF-8'
 // axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=UTF-8'
 // axios.defaults.withCredentials=true;
 // axios.defaults.headers[withCredentials]=true;
 // request interceptor
 service.interceptors.request.use(
   config => {
-    // config.baseURL = requestUrl
+    config.baseURL = requestUrl
+
     // config.headers['client_id'] = 'crmWebApp'
     // config.headers['client_secret'] = 'crmWebApp'
     // config.withCredentials = true;
-    if (store.getters.crm_token) {
-      // config.headers.Cookie = 'pc_login_token=' + store.getters.crm_token
-      // config.params['pc_login_token'] = 'pc_login_token=' + store.getters.crm_token
-    }
+    // if (store.getters.crm_token) {
+    //   // config.headers.Cookie = 'pc_login_token=' + store.getters.crm_token
+    //   // config.params['pc_login_token'] = 'pc_login_token=' + store.getters.crm_token
+    // }
     return config
   },
 

@@ -9,12 +9,12 @@
                   placeholder="标题/关键词" />
       </el-form-item>
       <el-form-item label="">
-        <el-select v-model="listQuery.one" placeholder="请选择" @change="queryList">
+        <el-select v-model="listQuery.label" clearable placeholder="请选择" @change="queryList">
           <el-option label="全部" value=""></el-option>
-          <el-option v-for="(item, index) in userList"
+          <el-option v-for="(item, index) in reasonList"
                      :key="index"
-                     :label="item.name"
-                     :value="item.id"></el-option>
+                     :label="item"
+                     :value="item"></el-option>
         </el-select>
       </el-form-item>
     </el-form>
@@ -108,14 +108,14 @@
 </template>
 
 <script>
-  import {getblacklist,removebacklist} from "@/api/blackList";
+  import {getblacklist,removebacklist,complaintlabels} from "@/api/blackList";
   export default {
     data () {
       return {
-        userList:[],
+        reasonList:[],
         listQuery: {
           keyword: "",
-          role:"",
+          label:"",
           rn: 10,
           pn: 1,
         },
@@ -144,8 +144,18 @@
         };
       });
       this.getList();
+      this.getReasonList();
     },
     methods: {
+      // reasonList
+      // 获取客户列表
+      getReasonList () {
+        complaintlabels()
+          .then(res => {
+            this.reasonList = res.data;
+          })
+          .catch(err => console.log(err));
+      },
       formatterSex (row, column, cellValue, index) {
         // 1男 2女
         return cellValue == 1 ? "男" : cellValue == 2? "女" : "";
@@ -172,7 +182,7 @@
       getList () {
         getblacklist({ ...this.listQuery, })
           .then(res => {
-            this.dataList = res.data.black_list;
+            this.dataList = res.data.totalCount == 0 ? [] : res.data.black_list;
             this.total = res.data.totalCount;
           })
           .catch(err => console.log(err));

@@ -9,11 +9,12 @@
                   placeholder="搜索/ID/姓名/手机号" />
       </el-form-item>
       <el-form-item label="">
-          <el-select v-model="listQuery.channel" @change="queryGetList" placeholder="请选择">
-            <el-option v-for="(item, index) in channelList"
-                       :key="index"
-                       :label="item.name"
-                       :value="item.id"></el-option>
+          <el-select v-model="listQuery.status" clearable @change="queryGetList" placeholder="请选择">
+<!--            1待审核 2通过 3拒绝-->
+            <el-option label="全部" value=""></el-option>
+            <el-option label="待审核" :value="1"></el-option>
+            <el-option label="通过" :value="2"></el-option>
+            <el-option label="拒绝" :value="3"></el-option>
           </el-select>
       </el-form-item>
     </el-form>
@@ -147,7 +148,7 @@
       return {
         listQuery: {
           keyword: "",
-          channel:"",
+          status:"",
           rn: 10,
           pn: 1,
         },
@@ -162,7 +163,6 @@
           type:'',
           option:{},
         },
-        channelList:[{id:'',name:'全部渠道'},{id:1,name:'超级管理员'},{id:2,name:'管理员'},{id:3,name:'供应商'},{id:4,name:'客服审核员'}]
       };
     },
     components: {detail,rejectView},
@@ -202,7 +202,7 @@
       getList () {
         getauditconsultlist({ ...this.listQuery, })
           .then(res => {
-            this.dataList = res.data.list;
+            this.dataList = res.data.total_num == 0? [] : res.data.list;
             // this.dataList = [{id:1,storeName:'111',storeSn:'11',linkman:'张三',mobile:'18656547892'}];
             this.total = res.data.total_num;
           })

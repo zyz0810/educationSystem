@@ -18,6 +18,12 @@
           <el-radio-button :label="2">图文</el-radio-button>
         </el-radio-group>
       </el-form-item>
+      <el-form-item label="用户端：无字段" v-if="dialogStatus == 'create'" prop="">
+        <el-radio-group v-model="formData.notice_type" :disabled="isCanView">
+          <el-radio-button :label="1">家长端</el-radio-button>
+          <el-radio-button :label="2">咨询师端</el-radio-button>
+        </el-radio-group>
+      </el-form-item>
       <el-form-item label="公告Banner："
                     prop="cover">
 <!--        <el-input v-model.trim="formData.two" v-if="!isCanView"-->
@@ -33,6 +39,10 @@
               <img :src="formData.cover" />
             </span>
         </viewer>
+        <div class="upload_img_tip">
+          <p>格式为：jpg/png；不超过1M</p>
+          <p>建议尺寸：750x280/1500x560</p>
+        </div>
       </el-form-item>
       <el-form-item label="链接：" v-if="formData.notice_type == 1"
                     prop="cmd">
@@ -228,4 +238,12 @@ export default {
     display: none;
   }
 }
+  .upload_img_tip{
+    color: #999999;
+    font-size: 12px;
+    p{
+      margin: 0;
+      line-height: 1.6;
+    }
+  }
 </style>

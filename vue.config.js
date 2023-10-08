@@ -32,18 +32,13 @@ module.exports = {
     port: port,
     open: false,
     proxy: {
-
-
-
-
-      // [process.env.VUE_APP_BASE_API]: {
-      //   target: `http://118.195.250.220:8200`,
-      //   changeOrigin: true,
-      //   pathRewrite: {
-      //     ['^' + process.env.VUE_APP_BASE_API]: ''
-      //   }
-      // },
-
+      [process.env.VUE_APP_BASE_API]: {
+        target: `http://118.195.250.220:8200`,
+        changeOrigin: true,
+        pathRewrite: {
+          ['^' + process.env.VUE_APP_BASE_API]: ''
+        }
+      },
     },
     disableHostCheck: true
   },

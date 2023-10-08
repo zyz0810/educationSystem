@@ -3,37 +3,37 @@
     <el-form :inline="true"
              class="search_box">
       <el-form-item label="">
-        <el-input v-model.trim="listQuery.key"
+        <el-input v-model.trim="listQuery.search_key"
                   clearable suffix-icon="el-icon-search"
                   @change="queryCustomerList"
                   placeholder="请输入" />
       </el-form-item>
       <el-form-item label="">
         <el-date-picker
-          v-model="listQuery.key"
+          v-model="listQuery.month" value-format="yyyy-MM"
           @change="queryCustomerList"
           type="month"
           placeholder="选择月">
         </el-date-picker>
       </el-form-item>
       <el-form-item label="">
-        <el-select v-model="listQuery.one" placeholder="请选择" @change="queryCustomerList">
-          <el-option label="所有用户" value=""></el-option>
+        <el-select v-model="listQuery.user_type" clearable placeholder="请选择" @change="queryCustomerList">
+<!--          <el-option label="所有用户" value=""></el-option>-->
           <el-option v-for="(item, index) in userList"
                      :key="index"
                      :label="item.name"
                      :value="item.id"></el-option>
         </el-select>
       </el-form-item>
-      <el-form-item label="">
-        <el-select v-model="listQuery.one" placeholder="请选择" @change="queryCustomerList">
-          <el-option label="邀请人" value=""></el-option>
-          <el-option v-for="(item, index) in userList"
-                     :key="index"
-                     :label="item.name"
-                     :value="item.id"></el-option>
-        </el-select>
-      </el-form-item>
+<!--      <el-form-item label="">-->
+<!--        <el-select v-model="listQuery.one" placeholder="请选择" @change="queryCustomerList">-->
+<!--          <el-option label="邀请人" value=""></el-option>-->
+<!--          <el-option v-for="(item, index) in userList"-->
+<!--                     :key="index"-->
+<!--                     :label="item.name"-->
+<!--                     :value="item.id"></el-option>-->
+<!--        </el-select>-->
+<!--      </el-form-item>-->
     </el-form>
     <div class="container mt_10">
       <el-table v-loading="listLoading"
@@ -50,47 +50,50 @@
         "
                 highlight-current-row>
         <el-table-column label="个人姓名"
-                         width="150"
+                         min-width="150"
                          align="left">
           <template slot-scope="scope">
-            <span class="flex pointer blue01"  @click="handelDetail('detail', scope.row)">
+            <span class="flex">
                 <span class="header_img mr5">
                   <img :src="scope.row.portrait" alt=""/>
                 </span>
-            {{scope.row.user_name}}
+            {{scope.row.name}}
             </span>
 
           </template>
         </el-table-column>
         <el-table-column label="ID"
-                         min-width="60"
+                         min-width="70"
                          align="left"
-                         prop="storeSn">
+                         prop="user_id">
         </el-table-column>
         <el-table-column label="手机"
                          min-width="100"
                          align="left"
                          show-overflow-tooltip
-                         prop="linkman"></el-table-column>
+                         prop="mobile"></el-table-column>
         <el-table-column label="收入金额"
                          min-width="100"
                          align="left"
-                         prop="mobile">
+                         prop="incoming_count">
         </el-table-column>
-        <el-table-column label="本月汇总"
+        <el-table-column label="本月汇总没字段"
                          min-width="100"
                          align="left"
-                         prop="mobile">
+                         prop="">
         </el-table-column>
         <el-table-column label="注册日期"
                          min-width="150"
                          align="left"
-                         prop="mobile">
+                         prop="create_time">
         </el-table-column>
         <el-table-column label="邀请人"
-                         min-width="100"
+                         min-width="120"
                          align="left"
-                         prop="mobile">
+                         prop="invitor_name">
+          <template slot-scope="scope">
+            {{scope.row.invitor_name}}（{{scope.row.invitor_Id}}）
+          </template>
         </el-table-column>
         <template slot="empty">
           <empty-table/>
@@ -113,10 +116,12 @@
   export default {
     data () {
       return {
-        userList:[],
+        // 0: all. 1: consult(咨询师) 2: user (普通家长)
+        userList:[{id:0,name:'所有用户'},{id:1,name:'咨询师'},{id:2,name:'普通家长'},],
         listQuery: {
-          invite_code: "",
+          search_key: "",
           month:"",
+          user_type:0,
           rn: 10,
           pn: 1,
         },
@@ -150,9 +155,9 @@
       customerList () {
         suppliers({ ...this.listQuery, })
           .then(res => {
-            this.dataList = res.data.data;
+            this.dataList = res.data.total_num == 0 ? [] : res.data.users;
             // this.dataList = [{id:1,storeName:'111',storeSn:'11',linkman:'张三',mobile:'18656547892'}];
-            this.total = res.data.count;
+            this.total = res.data.total_num;
           })
           .catch(err => console.log(err));
       },

@@ -9,12 +9,12 @@
                   placeholder="标题/关键词" />
       </el-form-item>
       <el-form-item label="">
-        <el-select v-model="listQuery.one" placeholder="请选择" @change="queryGetList">
+        <el-select v-model="listQuery.label" clearable placeholder="请选择" @change="queryGetList">
           <el-option label="全部" value=""></el-option>
-          <el-option v-for="(item, index) in userList"
+          <el-option v-for="(item, index) in reasonList"
                      :key="index"
-                     :label="item.name"
-                     :value="item.id"></el-option>
+                     :label="item"
+                     :value="item"></el-option>
         </el-select>
       </el-form-item>
     </el-form>
@@ -56,7 +56,7 @@
             </span>
           </template>
         </el-table-column>
-        <el-table-column label="举报订单"
+        <el-table-column label="举报订单无字段"
                          min-width="160"
                          align="left"
                          prop="storeSn">
@@ -122,12 +122,14 @@
 
 <script>
 import {complaintlists,} from "@/api/report";
+import {complaintlabels} from "@/api/blackList";
 import detail from './detail';
 export default {
   data () {
     return {
       listQuery: {
         keyword: "",
+        label:"",
         rn: 10,
         pn: 1,
       },
@@ -142,8 +144,8 @@ export default {
         type:'',
         option:{},
       },
-      userList:[],
-      reasonList:['接单时不专心','恶意骚扰','色情/性骚扰','涉及政治','诈骗','其它',]
+      reasonList:[],
+      // reasonList:['接单时不专心','恶意骚扰','色情/性骚扰','涉及政治','诈骗','其它',]
     };
   },
   components: {detail},
@@ -158,8 +160,16 @@ export default {
       };
     });
     this.getList();
+    this.getReasonList();
   },
   methods: {
+    getReasonList () {
+      complaintlabels()
+        .then(res => {
+          this.reasonList = res.data;
+        })
+        .catch(err => console.log(err));
+    },
     formatTime (row, column, cellValue, index) {
       // let aa = cellValue
       // let aa = Number(this.$moment(Number(cellValue)).format("X"))//X大写代表秒x代表毫秒
@@ -178,7 +188,7 @@ export default {
     getList () {
       complaintlists({ ...this.listQuery, })
         .then(res => {
-          this.dataList = res.data.complaints;
+          this.dataList = res.data.total == 0 ? [] : res.data.complaints;
           // this.dataList = [{id:1,storeName:'111',storeSn:'11',linkman:'张三',mobile:'18656547892'}];
           this.total = res.data.total;
         })

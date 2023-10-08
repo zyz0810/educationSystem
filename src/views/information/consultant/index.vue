@@ -9,11 +9,12 @@
                   placeholder="搜索/ID/姓名/手机号" />
       </el-form-item>
       <el-form-item label="">
-          <el-select v-model="listQuery.channel" @change="queryCustomerList" placeholder="请选择">
-            <el-option v-for="(item, index) in channelList"
-                       :key="index"
-                       :label="item.name"
-                       :value="item.id"></el-option>
+          <el-select v-model="listQuery.channel" clearable @change="queryCustomerList" placeholder="请选择">
+            <el-option label="渠道无值" value=""></el-option>
+<!--            <el-option v-for="(item, index) in channelList"-->
+<!--                       :key="index"-->
+<!--                       :label="item.name"-->
+<!--                       :value="item.id"></el-option>-->
           </el-select>
       </el-form-item>
     </el-form>
@@ -164,7 +165,7 @@
       customerList () {
         getauditconsultlist({ ...this.listQuery, })
           .then(res => {
-            this.dataList = res.data.list;
+            this.dataList = res.data.total_num == 0 ? [] : res.data.list;
             // this.dataList = [{id:1,storeName:'111',storeSn:'11',linkman:'张三',mobile:'18656547892'}];
             this.total = res.data.total_num;
           })

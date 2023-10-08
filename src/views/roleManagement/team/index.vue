@@ -126,7 +126,7 @@ export default {
     getList () {
       userlist({ ...this.listQuery, })
         .then(res => {
-          this.dataList = res.data.user_list;
+          this.dataList = res.data.total_num == 0 ? [] : res.data.user_list;
           this.total = res.data.total_num;
         })
         .catch(err => console.log(err));

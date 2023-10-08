@@ -113,11 +113,11 @@ export const asyncRoutes = [
     component: Layout,
     // redirect: 'dashboard',
     redirect: 'noRedirect',
-    name: '客户管理',
-    // name: '资料审核',
+    // name: '客户管理',
+    name: '资料审核',
     meta: {
-      title: '客户管理',
-      // title: '资料审核',
+      // title: '客户管理',
+      title: '资料审核',
       icon: 'icon-01',
       roles: [
         'can_audit_user',

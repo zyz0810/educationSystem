@@ -26,3 +26,31 @@ export function updateapply(query) {
     params: query
   })
 }
+/* 导出收益记录
+ * ids 收益记录的ids
+ */
+export function exportprofits(query) {
+  return request({
+    url: '/pc/exportprofits',
+    method: 'get',
+    params: query,
+    // data: Qs.stringify(query, {
+    //   arrayFormat: "indices",
+    //   allowDots: true
+    // })
+    // params: Qs.stringify(query, { arrayFormat: "repeat" }),
+    // params: Qs.stringify(query, { indices: false }),
+    paramsSerializer: function (params) {
+      return Qs.stringify(params, { indices: false })
+    },
+    responseType: "blob"
+  })
+}
+// export function exportprofits(params) {
+//   return request
+//     .get('/pc/exportprofits', Qs.stringify(params, {
+//       indices: false
+//     }), {
+//       responseType: "blob"
+//     })
+// }

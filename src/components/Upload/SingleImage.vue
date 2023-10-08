@@ -8,6 +8,7 @@
       action=""
       :on-preview="handlePictureCardPreview"
       :on-remove="handleRemove"
+      :before-upload="beforeImgUpload"
       :http-request="uploadImg"
       :file-list="imgArr"
       :limit="1"
@@ -89,6 +90,21 @@ export default {
     }
   },
   methods: {
+    beforeImgUpload(file) {
+      const isJPG = file.type == 'image/png' || file.type == 'image/jpg' || file.type == 'image/jpeg';
+      const isLt2M = file.size / 1024 <= 1024;
+      // const isLt2M = file.size / 1024 <= 74;
+      // if (!["image/jpg", "image/jpeg", "image/png"].includes(file.type)) {
+      //   this.$message.error('上传头像图片只能是jpg、jpeg、png格式!');
+      // }
+      if (!isJPG) {
+        this.$message.error('上传图片只能是jpg、jpeg、png格式!');
+      }
+      if (!isLt2M) {
+        this.$message.error('上传图片大小不能超过 1M!');
+      }
+      return isJPG && isLt2M;
+    },
     exceedSize() {
       this.$message({ message: "最多只能上传一张图片", type: "warning" });
     },
@@ -112,6 +128,10 @@ export default {
     // },
     uploadImg(e) {
       const file = e.file;
+      // productImageList
+      const isJPG = file.type == 'image/png' || file.type == 'image/jpg' || file.type == 'image/jpeg';
+      const isLt2M = file.size / 1024 <= 1024;
+      // const isLt2M = file.size / 1024 <= 74;
       // let config = {
       //   onUploadProgress: progressEvent => {
       //     // progressEvent.loaded:已上传文件大小
@@ -120,14 +140,16 @@ export default {
       //   }
       // }
       // uploadImg(file,config)
-      uploadfile(file)
-        .then((res) => {
-          this.emitInput(res);
-          // this.tempUrl = res.picUrl;
-        })
-        .catch((e) => {
-          this.$message({ message: "上传图片失败", type: "warning" });
-        });
+      if(isJPG && isLt2M) {
+        uploadfile(file)
+          .then((res) => {
+            this.emitInput(res);
+            // this.tempUrl = res.picUrl;
+          })
+          .catch((e) => {
+            this.$message({message: "上传图片失败", type: "warning"});
+          });
+      }
     },
     beforeUpload() {
       const _self = this;

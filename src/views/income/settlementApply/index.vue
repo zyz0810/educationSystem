@@ -12,9 +12,10 @@
         <el-date-picker
           v-model="dateTime"
           type="daterange"
-          value-format="yyyy-MM-dd HH:mm:ss"
+          value-format="yyyy-MM-dd"
           align="right"
           unlink-panels
+          @change="queryGetList"
           range-separator="至"
           start-placeholder="开始日期"
           end-placeholder="结束日期"
@@ -22,8 +23,8 @@
         </el-date-picker>
       </el-form-item>
       <el-form-item label="">
-        <el-select v-model="listQuery.status" placeholder="请选择" @change="queryGetList">
-          <el-option label="全部状态" value=""></el-option>
+        <el-select v-model="listQuery.status" clearable placeholder="请选择" @change="queryGetList">
+<!--          <el-option label="全部状态" value=""></el-option>-->
 <!--          收益单的状态 (1: 待审核， 2 审核中， 3: 结算中，4已结算， 5: 结算失败)-->
           <el-option label="全部状态" value=""></el-option>
           <el-option label="待审核" :value="1"></el-option>
@@ -39,7 +40,7 @@
         <span class="mr10 f12 choose_span">已选择<span class="blue01 bold choose_num">{{selectList.length}}</span>条<i class="el-icon-close gray01 ml5"></i></span>
 <!--        <el-button type="primary" plain>批量同意</el-button>-->
 <!--        <el-button type="primary" plain>批量结算</el-button>-->
-        <el-button type="primary" plain>批量导出</el-button>
+        <el-button type="primary" plain :loading="exportLoading" @click="handleExport">批量导出</el-button>
       </div>
       <el-table v-loading="listLoading"
                 :data="dataList"
@@ -56,7 +57,6 @@
         "
                 highlight-current-row>
         <el-table-column :reserve-selection="true"
-                         fixed
                          type="selection"></el-table-column>
         <el-table-column label="个人姓名"
                          min-width="120"
@@ -64,7 +64,7 @@
                          show-overflow-tooltip
                          prop="storeName">
           <template slot-scope="scope">
-            <span class="flex pointer blue01" >
+            <span class="flex pointer" >
                 <span class="header_img mr5">
                   <img :src="scope.row.apply_user_portrait" alt=""/>
                 </span>
@@ -110,7 +110,10 @@
                          prop="remarks">
           <template slot-scope="scope">
             <el-button type="text" v-show="scope.row.status == 1" @click.stop="handelPass(scope.row)">同意</el-button>
-            <span class="mr10" v-show="scope.row.status == 3 || scope.row.status == 4 || scope.row.status == 5">已同意</span>
+<!--            (1: 待审核，  3: 结算中，4已结算， 5: 结算失败)-->
+            <span class="mr10" v-show="scope.row.status == 3">已同意</span>
+            <span class="mr10" v-show="scope.row.status == 4">已结算</span>
+            <span class="mr10 red01" v-show="scope.row.status == 5">结算失败</span>
             <el-button type="text" v-show="scope.row.status == 3" @click.stop="handelSettlement( scope.row)">结算</el-button>
 <!--            <el-button type="text" @click.stop="handelSettlement( scope.row)">结算</el-button>-->
           </template>
@@ -126,13 +129,13 @@
                   @pagination="getList"
                   class="text-right" />
     </div>
-
+    <a v-show="false" :href="downLoadUrl" id="fileDownload"></a>
     <settlement :showDialog.sync="showSettlementDialog" :infoData="infoData" @success="getList"></settlement>
   </div>
 </template>
 
 <script>
-  import {getProfits,updateapply} from "@/api/income";
+  import {getProfits,updateapply,exportprofits} from "@/api/income";
   import settlement from "./settlement";
   export default {
     data () {
@@ -179,6 +182,8 @@
         tableHeight: 520,
         showSettlementDialog:false,
         infoData:{},
+        downLoadUrl:'',
+        exportLoading:false,
       };
     },
     components:{settlement},
@@ -196,6 +201,7 @@
             this.listQuery.start_time = "";
             this.listQuery.end_time = "";
           } else {
+
             this.listQuery.start_time = v[0];
             this.listQuery.end_time = v[1];
           }
@@ -214,6 +220,69 @@
       this.getList();
     },
     methods: {
+
+      // getUrl(){
+      //   // this.downLoadUrl=this.global.domainName + 'api/Export/dataList?street='+this.listQuery.street+'&scale_type='+this.listQuery.scale_type+'&cook_type='+this.listQuery.cook_type
+      //   //   +'&super_status='+this.listQuery.super_status + '&key_word='+this.listQuery.key_word + '&city_id='+this.listQuery.city_id;
+      //
+      //   let ids = this.selectList.map(item=>{ return item.id});
+      //   // exportprofits({ids:ids})
+      //   //   .then(res => {
+      //   //     this.exportLoading = false;
+      //   //     this.downLoadUrl = res.data.excel_url;
+      //   //     console.log(this.downLoadUrl)
+      //   //     debugger
+      //   //   })
+      //   //   .catch(err => {
+      //   //     this.exportLoading = false;
+      //   //     console.log(err)
+      //   //   });
+      //
+      //   exportprofits({ids:ids})
+      //     .then(res => {
+      //       this.exportLoading = false;
+      //       // this.downLoadUrl = res.data.excel_url;
+      //       console.log('ds',this.downLoadUrl,res)
+      //       // debugger
+      //
+      //
+      //       const blob = new Blob([res]);
+      //       let myDate = new Date();
+      //       let timename = myDate
+      //         .toLocaleDateString()
+      //         .split("/")
+      //         .join("-");
+      //       const str = "申请结算汇总";
+      //       const fileName = str + timename + ".xls";
+      //       const linkNode = document.createElement("a");
+      //       linkNode.download = fileName; //a标签的download属性规定下载文件的名称
+      //       linkNode.style.display = "none";
+      //       linkNode.href = URL.createObjectURL(blob); //生成一个Blob URL
+      //       document.body.appendChild(linkNode);
+      //       linkNode.click(); //模拟在按钮上的一次鼠标单击
+      //       URL.revokeObjectURL(linkNode.href); // 释放URL 对象
+      //       document.body.removeChild(linkNode);
+      //
+      //     })
+      //     .catch(err => {
+      //       this.exportLoading = false;
+      //       console.log(err)
+      //     });
+      //
+      //
+      //
+      //   },
+      getUrl(){
+        this.downLoadUrl = this.global.domainName + '/pc/exportprofits';
+        this.exportLoading = false;
+      },
+
+      async handleExport(){
+        this.exportLoading = true;
+        await this.getUrl();
+        // debugger
+        document.getElementById("fileDownload").click();
+      },
       // 收益单的状态 (1: 待审核， 2 审核中， 3: 结算中，4已结算， 5: 结算失败)
       formatterStatus (row, column, cellValue, index) {
         // 1男 2女
@@ -226,7 +295,7 @@
       getList () {
         getProfits({ ...this.listQuery, })
           .then(res => {
-            this.dataList = res.data.list;
+            this.dataList = res.data.totalCount == 0 ? [] : res.data.list;
             this.total = res.data.totalCount;
           })
           .catch(err => console.log(err));
