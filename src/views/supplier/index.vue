@@ -71,7 +71,11 @@
                          min-width="100"
                          align="left"
                          show-overflow-tooltip
-                         prop="mobile"></el-table-column>
+                         prop="mobile">
+          <template slot-scope="scope">
+            {{scope.row.mobile | phoneStart}}
+          </template>
+        </el-table-column>
         <el-table-column label="收入金额"
                          min-width="100"
                          align="left"

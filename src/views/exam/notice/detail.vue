@@ -41,7 +41,7 @@
         </viewer>
         <div class="upload_img_tip">
           <p>格式为：jpg/png；不超过1M</p>
-          <p>建议尺寸：750x280/1500x560</p>
+          <p>建议尺寸：1420x400</p>
         </div>
       </el-form-item>
       <el-form-item label="链接：" v-if="formData.notice_type == 1"

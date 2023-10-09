@@ -126,7 +126,14 @@ Vue.prototype.$confirm= (text,title,option) => {
   })
 }
 
-
+// 手机号脱敏
+Vue.filter('phoneStart', (value) => {
+  if (!value) return ''
+  const reg = /(\d{4})\d*(\d{3})/
+  let str = value
+  str = str.replace(reg, '$1****$2')
+  return str
+})
 
 
 // 全局组件挂载

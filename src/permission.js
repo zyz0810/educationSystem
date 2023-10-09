@@ -72,6 +72,7 @@ router.beforeEach((to, from, next) => {
             })
           })
         } catch (error) {
+          console.log('开始进入登录界面')
           // remove token and go to login page to re-login
           store.dispatch('FedLogOut')
           Message.error(error || 'Has Error')

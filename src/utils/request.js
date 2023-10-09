@@ -28,7 +28,7 @@ switch (process.env.VUE_APP_MODE) {
 }
 // create an axios instance
 const service = axios.create({
-  // baseURL: process.env.VUE_APP_BASE_API,
+  baseURL: process.env.VUE_APP_BASE_API,
   // withCredentials: false, // send cookies when cross-domain requests
   // timeout: 10000 // request timeout
   // withCredentials: true // 允许携带cookie
@@ -40,7 +40,7 @@ axios.defaults.headers['Content-Type'] = 'application/x-www-form-urlencoded;char
 // request interceptor
 service.interceptors.request.use(
   config => {
-    config.baseURL = requestUrl
+    // config.baseURL = requestUrl
 
     // config.headers['client_id'] = 'crmWebApp'
     // config.headers['client_secret'] = 'crmWebApp'
@@ -74,7 +74,7 @@ service.interceptors.response.use(
     if (res.errno === 0 || !res.errno) {
       return res
     }
-    if (res.errno === 401) {
+    if (res.errno === 3007) {
       // to re-login
       // MessageBox.confirm('您已注销，您可以取消以停留在此页，或重新登录', '确认注销', {
       //   confirmButtonText: '重新登录',
