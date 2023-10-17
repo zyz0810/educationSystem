@@ -3,32 +3,32 @@ import Qs from 'qs'
 import { MessageBox, Message, Confirm } from 'element-ui'
 import store from '@/store'
 import { getToken } from '@/utils/auth'
-let requestUrl ='http://118.195.250.220:8200/'  //测试环境
+let requestUrl ='https://xcx.xgzjj365.com/'  //测试环境
 // let requestUrl ='http://23.60.185.194:9200/'  //UAT环境
 // let requestUrl ='http://123.60.145.79:9200/'  //dev环境
 
 switch (process.env.VUE_APP_MODE) {
  case 'development':
-  requestUrl ='http://118.195.250.220:8200/' //dev环境
+  requestUrl ='https://xcx.xgzjj365.com/' //dev环境
   break;
  case 'production':
- requestUrl ='https://crm.kyaoduo.com/'
+ requestUrl ='https://xcx.xgzjj365.com/'
  break;
  case 'staging':
- requestUrl ='http://uat.crm.kyaoduo.com/'
+ requestUrl ='https://xcx.xgzjj365.com/'
  break;
  case 'test':
- requestUrl ='http://118.195.250.220:8200/'
+ requestUrl ='https://xcx.xgzjj365.com/'
  break;
  default:
-   requestUrl ='http://118.195.250.220:8200/'  //测试环境
+   requestUrl ='https://xcx.xgzjj365.com/'  //测试环境
   // requestUrl ='http://23.60.185.194:9200/'   //UAT环境
   // requestUrl ='http://123.60.145.79:9200/' //dev环境
   break;
 }
 // create an axios instance
 const service = axios.create({
-  baseURL: process.env.VUE_APP_BASE_API,
+  baseURL: process.env.VUE_APP_BASE_API, //本地环境启动
   // withCredentials: false, // send cookies when cross-domain requests
   // timeout: 10000 // request timeout
   // withCredentials: true // 允许携带cookie
@@ -40,7 +40,7 @@ axios.defaults.headers['Content-Type'] = 'application/x-www-form-urlencoded;char
 // request interceptor
 service.interceptors.request.use(
   config => {
-    // config.baseURL = requestUrl
+    // config.baseURL = requestUrl  //发布测试、线上环境
 
     // config.headers['client_id'] = 'crmWebApp'
     // config.headers['client_secret'] = 'crmWebApp'

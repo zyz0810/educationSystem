@@ -69,18 +69,18 @@ import {
   handleTree
 } from '@/utils/ruoyi'
 // 自定义表格工具扩展
-import RightToolbar from '@/components/RightToolbar'
+// import RightToolbar from '@/components/RightToolbar'
 import Sortable from 'sortablejs'
 // 全局方法挂载
-Vue.prototype.getDicts = getDicts
-Vue.prototype.getConfigKey = getConfigKey
-Vue.prototype.parseTime = parseTime
-Vue.prototype.resetForm = resetForm
-Vue.prototype.addDateRange = addDateRange
-Vue.prototype.selectDictLabel = selectDictLabel
-Vue.prototype.selectDictLabels = selectDictLabels
-Vue.prototype.download = download
-Vue.prototype.handleTree = handleTree
+// Vue.prototype.getDicts = getDicts
+// Vue.prototype.getConfigKey = getConfigKey
+// Vue.prototype.parseTime = parseTime
+// Vue.prototype.resetForm = resetForm
+// Vue.prototype.addDateRange = addDateRange
+// Vue.prototype.selectDictLabel = selectDictLabel
+// Vue.prototype.selectDictLabels = selectDictLabels
+// Vue.prototype.download = download
+// Vue.prototype.handleTree = handleTree
 
 import Viewer from 'v-viewer'
 import 'viewerjs/dist/viewer.css'
@@ -137,7 +137,7 @@ Vue.filter('phoneStart', (value) => {
 
 
 // 全局组件挂载
-Vue.component('RightToolbar', RightToolbar)
+// Vue.component('RightToolbar', RightToolbar)
 
 Vue.use(VueQuillEditor)
 Vue.use(directive)

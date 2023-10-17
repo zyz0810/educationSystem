@@ -75,8 +75,11 @@
                          prop="intro">
           <template slot-scope="scope">
             <span class="mr10">{{scope.row.intro}}</span>
-            <span class="person_tag" v-for="(item,index) in scope.row.label">{{item}}</span>
+            <span v-if="scope.row.label != null && scope.row.label != [] && scope.row.label.length > 0">
+               <span class="person_tag" v-for="(item,index) in scope.row.label">{{item}}</span>
             <span class="f16 bold yellow02" v-show="scope.row.label.length > 2">…</span>
+            </span>
+
           </template>
         </el-table-column>
 <!--        <el-table-column label=""-->
@@ -101,7 +104,7 @@
                          prop="status">
           <template slot-scope="scope">
             <!--            状态，1待审核 2通过 3拒绝-->
-            <span :class="{'orange01':scope.row.status == 1,'green01':scope.row.status == 2,'red01':scope.row.status == 3}">{{formatterStatus(scope.row.status)}}</span>
+            <span class="mr5" :class="{'orange01':scope.row.status == 1,'green01':scope.row.status == 2,'red01':scope.row.status == 3}">{{formatterStatus(scope.row.status)}}</span>
             <span v-if="scope.row.status == 3">{{scope.row.reason}}</span>
           </template>
         </el-table-column>
@@ -181,7 +184,7 @@
     methods: {
       formatterStatus(cellValue){
         //状态，1待审核 2通过 3拒绝
-        return cellValue == 1 ? "1待审核" : cellValue == 2? "通过" : cellValue == 3? "拒绝" : "";
+        return cellValue == 1 ? "待审核" : cellValue == 2? "通过" : cellValue == 3? "拒绝" : "";
       },
       formatterSex (row, column, cellValue, index) {
         // 1男 2女
