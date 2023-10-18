@@ -42,7 +42,7 @@
     <div class="mt_10 info_content">
       <div class="detail_title">资质标签</div>
       <div class="tag_list">
-        <p v-if=" formData.pictures.length<1" class="f12 gray01">暂无</p>
+        <p v-if="formData.label == null || formData.label.length < 1" class="f12 gray01">暂无</p>
         <span class="person_tag" v-for="(item,index) in formData.label" :key="index">{{item}}</span>
       </div>
     </div>
@@ -50,22 +50,37 @@
     <div class="mt_10 info_content">
       <div class="detail_title">证书</div>
       <div class="img_list">
-        <p v-if=" formData.pictures.length<1" class="f12 gray01">暂无</p>
-        <img v-for="(item,index) in formData.cert" :key="index" :src="item">
+        <p v-if="formData.cert == null || formData.cert.length < 1" class="f12 gray01">暂无</p>
+<!--        <img v-for="(item,index) in formData.cert" :key="index" :src="item">-->
+        <viewer v-else-if="formData.cert != null && formData.cert.length > 0" :images="formData.cert">
+              <span v-for="(item,index) in formData.cert" :key="'cert'+index">
+                <img :src="item" />
+              </span>
+        </viewer>
       </div>
     </div>
     <div class="mt_10 info_content">
       <div class="detail_title">认证资料</div>
       <div class="img_list">
-        <p v-if=" formData.pictures.length<1" class="f12 gray01">暂无</p>
-        <img v-for="(item,index) in formData.ren_zheng" :key="index" :src="item">
+        <p v-if="formData.ren_zheng == null || formData.ren_zheng.length < 1" class="f12 gray01">暂无</p>
+<!--        <img v-for="(item,index) in formData.ren_zheng" :key="index" :src="item">-->
+        <viewer v-else-if="formData.ren_zheng != null && formData.ren_zheng.length > 0" :images="formData.ren_zheng">
+              <span v-for="(item,index) in formData.cert" :key="'ren_zheng'+index">
+                <img :src="item" />
+              </span>
+        </viewer>
       </div>
     </div>
     <div class="mt_10 info_content">
       <div class="detail_title">形象照</div>
       <div class="img_list">
-        <p v-if=" formData.pictures.length<1" class="f12 gray01">暂无</p>
-        <img v-for="(item,index) in formData.pictures" :key="index" :src="item">
+        <p v-if="formData.pictures == null || formData.pictures.length<1" class="f12 gray01">暂无</p>
+<!--        <img v-for="(item,index) in formData.pictures" :key="index" :src="item">-->
+        <viewer v-else-if="formData.pictures != null && formData.pictures.length > 0" :images="formData.cert">
+              <span v-for="(item,index) in formData.cert" :key="'pictures'+index">
+                <img :src="item" />
+              </span>
+        </viewer>
       </div>
     </div>
     <span slot="footer"
