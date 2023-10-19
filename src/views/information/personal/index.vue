@@ -50,28 +50,34 @@
         <el-table-column label="ID"
                          min-width="100"
                          align="left"
+                         show-overflow-tooltip
                          prop="user_id">
         </el-table-column>
         <el-table-column label="手机"
                          min-width="100"
+                         show-overflow-tooltip
                          align="left"
                          prop="mobile">
         </el-table-column>
         <el-table-column label="性别"
                          min-width="100"
+                         show-overflow-tooltip
                          align="left"
                          prop="sex" :formatter="formatterSex"></el-table-column>
         <el-table-column label="地域"
                          min-width="100"
                          align="left"
+                         show-overflow-tooltip
                          prop="city"></el-table-column>
         <el-table-column label="个人简介"
-                         min-width="130"
+                         min-width="180"
                          align="left"
+                         show-overflow-tooltip
                          prop="intro"></el-table-column>
         <el-table-column label="注册来源"
                          min-width="130"
                          align="left"
+                         show-overflow-tooltip
                          prop="channel"></el-table-column>
         <el-table-column label="提交时间"
                          min-width="150"

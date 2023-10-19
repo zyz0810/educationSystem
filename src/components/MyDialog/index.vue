@@ -121,4 +121,8 @@ export default {
     z-index: 2;
   }
 }
+/deep/.el-drawer__body{
+  overflow: auto;
+}
+
 </style>

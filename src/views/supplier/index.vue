@@ -65,6 +65,7 @@
         <el-table-column label="ID"
                          min-width="70"
                          align="left"
+                         show-overflow-tooltip
                          prop="user_id">
         </el-table-column>
         <el-table-column label="手机"
@@ -79,21 +80,25 @@
         <el-table-column label="收入金额"
                          min-width="100"
                          align="left"
+                         show-overflow-tooltip
                          prop="incoming_count">
         </el-table-column>
         <el-table-column label="本月汇总没字段"
                          min-width="100"
                          align="left"
+                         show-overflow-tooltip
                          prop="">
         </el-table-column>
         <el-table-column label="注册日期"
                          min-width="150"
                          align="left"
+                         show-overflow-tooltip
                          prop="create_time">
         </el-table-column>
         <el-table-column label="邀请人"
                          min-width="120"
                          align="left"
+                         show-overflow-tooltip
                          prop="invitor_name">
           <template slot-scope="scope">
             {{scope.row.invitor_name}}（{{scope.row.invitor_Id}}）

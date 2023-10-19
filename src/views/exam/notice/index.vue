@@ -39,6 +39,7 @@
         </el-table-column>
         <el-table-column label="详情/链接地址"
                          min-width="160"
+                         show-overflow-tooltip
                          align="left"
                          prop="cmd">
         </el-table-column>
@@ -46,18 +47,20 @@
                          min-width="150"
                          align="left"
                          show-overflow-tooltip
-                         prop="create_time">
-          <template slot-scope="scope">
-            <span>{{$moment(scope.row.create_time).format('YYYY-MM-DD HH:mm:ss')}}</span>
-          </template>
+                         prop="create_time" :formatter="formatTime">
+<!--          <template slot-scope="scope">-->
+<!--            <span>{{$moment(scope.row.create_time).format('YYYY-MM-DD HH:mm:ss')}}</span>-->
+<!--          </template>-->
         </el-table-column>
         <el-table-column label="发布人"
                          width="100"
                          align="left"
+                         show-overflow-tooltip
                          prop="publisher">
         </el-table-column>
         <el-table-column label="用户端 无字段"
-                         width="100"
+                         min-width="100"
+                         show-overflow-tooltip
                          align="left"
                          prop="">
         </el-table-column>
@@ -127,6 +130,9 @@ export default {
     this.getList();
   },
   methods: {
+    formatTime (row, column, cellValue, index) {
+      return this.$moment(cellValue).format("YYYY-MM-DD HH:mm:ss");
+    },
     // 修改定位
     handelDetail (type, row) {
       this.showDetail = true

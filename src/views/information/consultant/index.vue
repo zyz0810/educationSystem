@@ -49,30 +49,62 @@
 
         <el-table-column label="ID"
                          min-width="100"
+                         show-overflow-tooltip
                          align="left"
                          prop="user_id">
         </el-table-column>
         <el-table-column label="手机"
                          min-width="100"
+                         show-overflow-tooltip
                          align="left"
                          prop="mobile">
         </el-table-column>
         <el-table-column label="性别"
                          min-width="100"
+                         show-overflow-tooltip
                          align="left"
                          prop="sex" :formatter="formatterSex"></el-table-column>
         <el-table-column label="城市"
                          min-width="100"
+                         show-overflow-tooltip
                          align="left"
                          prop="city"></el-table-column>
+<!--        <el-table-column label="个人简介"-->
+<!--                         min-width="180"-->
+<!--                         align="left"-->
+<!--                         show-overflow-tooltip-->
+<!--                         prop="intro">-->
+<!--          <template slot-scope="scope">-->
+<!--            <span class="mr10">{{scope.row.intro}}</span>-->
+<!--            <span class="person_tag" v-for="(item,index) in scope.row.label">{{item}}</span>-->
+<!--            <span class="f16 bold yellow02" v-show="scope.row.label.length > 2">…</span>-->
+<!--          </template>-->
+<!--        </el-table-column>-->
         <el-table-column label="个人简介"
-                         min-width="130"
+                         min-width="200"
+                         show-overflow-tooltip
+                         align="left"
+                         prop="intro">
+          <!--          <template slot-scope="scope">-->
+          <!--            <span class="mr10">{{scope.row.intro}}</span>-->
+          <!--            <span v-if="scope.row.label != null && scope.row.label != [] && scope.row.label.length > 0">-->
+          <!--               <span class="person_tag" v-for="(item,index) in scope.row.label">{{item}}</span>-->
+          <!--            <span class="f16 bold yellow02" v-show="scope.row.label.length > 2">…</span>-->
+          <!--            </span>-->
+
+          <!--          </template>-->
+        </el-table-column>
+        <el-table-column label="分类"
+                         width="180"
                          align="left"
                          prop="intro">
           <template slot-scope="scope">
-            <span class="mr10">{{scope.row.intro}}</span>
-            <span class="person_tag" v-for="(item,index) in scope.row.label">{{item}}</span>
-            <span class="f16 bold yellow02" v-show="scope.row.label.length > 2">…</span>
+            <!--            <span class="mr10">{{scope.row.intro}}</span>-->
+            <span v-if="scope.row.label != null && scope.row.label != [] && scope.row.label.length > 0">
+              <span class="person_tag" v-for="(item,index) in scope.row.label" :index="index" v-show="index < 2">{{item}}</span>
+              <span class="f16 bold yellow02" v-show="scope.row.label!=null && scope.row.label.length > 2">…</span>
+            </span>
+
           </template>
         </el-table-column>
 <!--        <el-table-column label=""-->
@@ -88,10 +120,12 @@
         <el-table-column label="注册来源无字段"
                          min-width="130"
                          align="left"
+                         show-overflow-tooltip
                          prop="mobile"></el-table-column>
         <el-table-column label="提交时间"
                          min-width="150"
                          align="left"
+                         show-overflow-tooltip
                          prop="create_time"></el-table-column>
         <template slot="empty">
           <empty-table/>

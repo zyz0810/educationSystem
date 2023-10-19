@@ -76,6 +76,7 @@
         <el-table-column label="ID"
                          min-width="100"
                          align="left"
+                         show-overflow-tooltip
                          prop="apply_user_id">
         </el-table-column>
         <el-table-column label="手机"
@@ -86,21 +87,25 @@
         <el-table-column label="申请金额"
                          min-width="100"
                          align="left"
+                         show-overflow-tooltip
                          prop="apply_cash">
         </el-table-column>
         <el-table-column label="结算金额"
                          min-width="100"
                          align="left"
+                         show-overflow-tooltip
                          prop="settlement_cash">
         </el-table-column>
         <el-table-column label="申请时间"
                          min-width="160"
                          align="left"
+                         show-overflow-tooltip
                          prop="apply_time" :formatter="formatTime">
         </el-table-column>
         <el-table-column label="状态"
                          min-width="100"
                          align="left"
+                         show-overflow-tooltip
                          prop="status" :formatter="formatterStatus">
 <!--          收益单的状态 (1: 待审核， 2 审核中， 3: 结算中，4已结算， 5: 结算失败)-->
         </el-table-column>

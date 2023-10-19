@@ -49,39 +49,46 @@
         <el-table-column label="ID"
                          min-width="100"
                          align="left"
+                         show-overflow-tooltip
                          prop="consult_id">
         </el-table-column>
         <el-table-column label="手机"
                          min-width="100"
+                         show-overflow-tooltip
                          align="left"
                          prop="mobile">
         </el-table-column>
         <el-table-column label="性别"
                          min-width="100"
                          align="left"
+                         show-overflow-tooltip
                          prop="sex" :formatter="formatterSex"></el-table-column>
         <el-table-column label="城市"
                          min-width="100"
                          align="left"
+                         show-overflow-tooltip
                          prop="city"></el-table-column>
         <el-table-column label="个人简介"
-                         min-width="130"
+                         min-width="180"
                          align="left"
-                         prop="into">
-          <template slot-scope="scope">
-            <span class="mr10">{{scope.row.intro}}</span>
-<!--            <span class="person_tag" v-for="(item,index) in scope.row.label">{{item}}</span>-->
-<!--            <span class="f16 bold yellow02" v-show="scope.row.label.length > 2">…</span>-->
-          </template>
+                         show-overflow-tooltip
+                         prop="intro">
+<!--          <template slot-scope="scope">-->
+<!--            <span class="mr10">{{scope.row.intro}}</span>-->
+<!--&lt;!&ndash;            <span class="person_tag" v-for="(item,index) in scope.row.label">{{item}}</span>&ndash;&gt;-->
+<!--&lt;!&ndash;            <span class="f16 bold yellow02" v-show="scope.row.label.length > 2">…</span>&ndash;&gt;-->
+<!--          </template>-->
         </el-table-column>
         <el-table-column label="提交时间"
                          min-width="130"
                          align="left"
+                         show-overflow-tooltip
                          prop="create_time"></el-table-column>
 
         <el-table-column label="违规/拉黑原因"
                          min-width="130"
                          align="left"
+                         show-overflow-tooltip
                          prop="reason"></el-table-column>
         <el-table-column label="操作"
                          align="left"

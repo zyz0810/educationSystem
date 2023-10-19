@@ -32,11 +32,13 @@
                          prop="name"></el-table-column>
         <el-table-column label="手机号"
                          align="left"
+                         show-overflow-tooltip
                          prop="mobile">
         </el-table-column>
 
         <el-table-column label="角色"
                          align="left"
+                         show-overflow-tooltip
                          prop="role" :formatter="formatterRole">
         </el-table-column>
 

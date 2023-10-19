@@ -50,6 +50,7 @@
         <el-table-column label="发布人"
                          min-width="100"
                          align="left"
+                         show-overflow-tooltip
                          prop="operator">
         </el-table-column>
         <el-table-column label="操作"

@@ -59,6 +59,7 @@
         <el-table-column label="举报订单无字段"
                          min-width="160"
                          align="left"
+                         show-overflow-tooltip
                          prop="storeSn">
           <template slot-scope="scope">
              订单： {{scope.row.order_id}}
@@ -72,11 +73,13 @@
         <el-table-column label="备注"
                          width="100"
                          align="left"
+                         show-overflow-tooltip
                          prop="content">
         </el-table-column>
         <el-table-column label="证据"
                          min-width="100"
                          align="left"
+                         show-overflow-tooltip
                          prop="mobile">
           <template slot-scope="scope">
             <viewer :images="scope.row.pictures">
@@ -89,6 +92,7 @@
         <el-table-column label="举报时间"
                          min-width="160"
                          align="left"
+                         show-overflow-tooltip
                          prop="create_time" :formatter="formatTime">
         </el-table-column>
         <el-table-column label="操作"

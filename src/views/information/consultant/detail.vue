@@ -7,7 +7,7 @@
              top="15vh"
              :title="textMap[dialogStatus]">
     <div class="flex mr10 ml_10">
-      <div class="flex_hd"><img class="head_img_detail" :src="formData.portrait"/></div>
+      <div class="flex_hd mr5"><img class="head_img_detail" :src="formData.portrait"/></div>
       <div class="flex_bd">
         <div class="f14 flex ">{{formData.user_name}}
           <img src="./../../../assets/image/male.png" class="sex_icon ml5" v-show="formData.sex == 1"/>
@@ -65,7 +65,7 @@
         <p v-if="formData.ren_zheng == null || formData.ren_zheng.length < 1" class="f12 gray01">暂无</p>
 <!--        <img v-for="(item,index) in formData.ren_zheng" :key="index" :src="item">-->
         <viewer v-else-if="formData.ren_zheng != null && formData.ren_zheng.length > 0" :images="formData.ren_zheng">
-              <span v-for="(item,index) in formData.cert" :key="'ren_zheng'+index">
+              <span v-for="(item,index) in formData.ren_zheng" :key="'ren_zheng'+index">
                 <img :src="item" />
               </span>
         </viewer>
@@ -76,8 +76,8 @@
       <div class="img_list">
         <p v-if="formData.pictures == null || formData.pictures.length<1" class="f12 gray01">暂无</p>
 <!--        <img v-for="(item,index) in formData.pictures" :key="index" :src="item">-->
-        <viewer v-else-if="formData.pictures != null && formData.pictures.length > 0" :images="formData.cert">
-              <span v-for="(item,index) in formData.cert" :key="'pictures'+index">
+        <viewer v-else-if="formData.pictures != null && formData.pictures.length > 0" :images="formData.pictures">
+              <span v-for="(item,index) in formData.pictures" :key="'pictures'+index">
                 <img :src="item" />
               </span>
         </viewer>
@@ -209,9 +209,10 @@ export default {
 }
 
 .img_list{
+  font-size: 0;
   img{
-    width: 50px;
-    margin-right: 5px;
+    width: 80px;
+    margin: 5px 5px 5px 0;
   }
 }
 .notice_banner{
