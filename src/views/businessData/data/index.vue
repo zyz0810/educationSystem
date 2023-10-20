@@ -247,14 +247,14 @@
             trigger="hover"
           >
             <div class="hover_list">
-              <div class="flex" v-for="(itemA,indexA) in arr" :key="indexA">
+              <div class="flex" v-for="(itemA,indexA) in item.newuser_source" :key="'newuser_source'+index+indexA">
                 <div class="flex_bd">{{itemA.name}}</div>
-                <div>{{itemA.num}}</div>
+                <div>{{itemA.value}}</div>
               </div>
             </div>
             <i slot="reference" class="iconfont icon-tips gray01 f12 "></i>
           </el-popover></p>
-          <p class="f26 bold"> <CountTo :startVal='0' :endVal='item.value' :duration='2000' /></p>
+          <p class="f26 bold"> <CountTo :startVal='0' :endVal='Number(item.value)' :duration='2000' /></p>
         </div>
       </div>
 
@@ -281,7 +281,7 @@
 
           <div v-for="(item,index) in arrList" :class="['flex_item', 'statistics_item',(item.name == '本月平台收入(元)'||item.name == '本月平台收益(元)')&&listQuery.type == 2?'visibility':'',(item.name == '今日平台收入(元)'||item.name == '今日平台收益(元)')&&listQuery.type == 3?'visibility':'']">
             <p class="f14">{{item.name}}</p>
-            <p class="f26 bold"> <CountTo :startVal='0' :endVal='item.value' :duration='2000' :decimals="2"/></p>
+            <p class="f26 bold"> <CountTo :startVal='0' :endVal='Number(item.value)' :duration='2000' :decimals="2"/></p>
           </div>
 
 
@@ -307,7 +307,7 @@
 
         <div v-for="(item,index) in brrList" :class="['flex_item', 'statistics_item',listQuery.type == 3?'visibility':'']">
           <p class="f14">{{item.name}}</p>
-          <p class="f26 bold"> <CountTo :startVal='0' :endVal='item.value' :duration='2000' :decimals="2"/></p>
+          <p class="f26 bold"> <CountTo :startVal='0' :endVal='Number(item.value)' :duration='2000' :decimals="2"/></p>
         </div>
 
       </div>
@@ -321,7 +321,7 @@
 
           <div v-for="(item,index) in dataList.voice" :key="index" :class="['flex_item', 'statistics_item',item.name == '本月下单数量'&&listQuery.type == 2?'visibility':'',item.name == '今日下单数量'&&listQuery.type == 3?'visibility':'']">
             <p class="f14">{{item.name}}</p>
-            <p class="f26 bold"> <CountTo :startVal='0' :endVal='item.value' :duration='2000' /></p>
+            <p class="f26 bold"> <CountTo :startVal='0' :endVal='Number(item.value)' :duration='2000' /></p>
           </div>
 
 <!--          <div :class="['flex_item', 'statistics_item',listQuery.type == 3?'visibility':'']">-->
@@ -343,7 +343,7 @@
         <div class="statistics_cont flex">
           <div v-for="(item,index) in dataList.video_lesson" :key="index" :class="['flex_item', 'statistics_item',item.name == '本月下单数量'&&listQuery.type == 2?'visibility':'',item.name == '今日下单数量'&&listQuery.type == 3?'visibility':'']">
             <p class="f14">{{item.name}}</p>
-            <p class="f26 bold"> <CountTo :startVal='0' :endVal='item.value' :duration='2000' /></p>
+            <p class="f26 bold"> <CountTo :startVal='0' :endVal='Number(item.value)' :duration='2000' /></p>
           </div>
 
 

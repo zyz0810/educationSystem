@@ -278,13 +278,22 @@
       //
       //   },
       getUrl(){
-        this.downLoadUrl = this.global.domainName + '/pc/exportprofits';
+        // key_word: "",
+        //   start_time:'',
+        //   end_time:'',
+        //   status:'',
+        // if()
+        // this.downLoadUrl = this.global.domainName + '/pc/exportprofits?street='+this.listQuery.key_word+'&start_time='+this.listQuery.start_time+
+        //   '&end_time='+this.listQuery.end_time + '&status='+this.listQuery.status;
+        let ids = this.selectList.map(item=>{ return item.id});
+        this.downLoadUrl = this.global.domainName + '/pc/exportprofits?ids='+ids;
         this.exportLoading = false;
       },
 
       async handleExport(){
         this.exportLoading = true;
         await this.getUrl();
+        console.log('this.downLoadUrl:',this.downLoadUrl)
         // debugger
         document.getElementById("fileDownload").click();
       },

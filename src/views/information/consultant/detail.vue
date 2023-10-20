@@ -36,7 +36,7 @@
       </div>
       <div class="flex border_bottom1 info_content_line">
         <div class="info_txt">个人简介</div>
-        <div class="flex_bd text-right">{{formData.intro}}</div>
+        <div class="flex_bd text-right detail_intro">{{formData.intro}}</div>
       </div>
     </div>
     <div class="mt_10 info_content">
@@ -225,4 +225,8 @@ export default {
     display: none;
   }
 }
+  .detail_intro{
+    line-height: 1.5;
+    text-align: left;
+  }
 </style>

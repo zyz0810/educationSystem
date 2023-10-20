@@ -19,7 +19,7 @@
         </el-radio-group>
       </el-form-item>
       <el-form-item label="用户端：无字段" v-if="dialogStatus == 'create'" prop="">
-        <el-radio-group v-model="formData.notice_type" :disabled="isCanView">
+        <el-radio-group v-model="formData.notice_type1" :disabled="isCanView">
           <el-radio-button :label="1">家长端</el-radio-button>
           <el-radio-button :label="2">咨询师端</el-radio-button>
         </el-radio-group>
