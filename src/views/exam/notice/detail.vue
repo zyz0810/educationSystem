@@ -18,10 +18,10 @@
           <el-radio-button :label="2">图文</el-radio-button>
         </el-radio-group>
       </el-form-item>
-      <el-form-item label="用户端：无字段" v-if="dialogStatus == 'create'" prop="">
-        <el-radio-group v-model="formData.notice_type1" :disabled="isCanView">
-          <el-radio-button :label="1">家长端</el-radio-button>
-          <el-radio-button :label="2">咨询师端</el-radio-button>
+      <el-form-item label="用户端" prop="is_consult">
+        <el-radio-group v-model="formData.is_consult" :disabled="isCanView">
+          <el-radio-button :label="0">家长端</el-radio-button>
+          <el-radio-button :label="1">咨询师端</el-radio-button>
         </el-radio-group>
       </el-form-item>
       <el-form-item label="公告Banner："
@@ -97,6 +97,7 @@ export default {
         cover: '',
         cmd: '',
         notice_content: '',
+        is_consult:0,
       },
       isChange:false,
       textMap: {
@@ -150,11 +151,11 @@ export default {
       this.$refs.ruleForm.validate(valid => {
         if (valid) {
           let formData = {};
-          const {id,notice_type,cover,cmd,notice_content} = this.formData;
+          const {id,notice_type,cover,cmd,notice_content,is_consult} = this.formData;
           if(this.formData.notice_type == 1){
-            formData = {id,notice_type,cover,cmd};
+            formData = {id,notice_type,cover,cmd,is_consult};
           }else{
-            formData = {id,notice_type,cover,notice_content};
+            formData = {id,notice_type,cover,notice_content,is_consult};
           }
           publishnotice(formData)
             .then(res => {
@@ -175,11 +176,11 @@ export default {
       this.$refs.ruleForm.validate(valid => {
         if (valid) {
           let formData = {};
-          const {id,notice_type,cover,cmd,notice_content} = this.formData;
+          const {id,notice_type,cover,cmd,notice_content,is_consult} = this.formData;
           if(this.formData.notice_type == 1){
-            formData = {id,notice_type,cover,cmd};
+            formData = {id,notice_type,cover,cmd,is_consult};
           }else{
-            formData = {id,notice_type,cover,notice_content};
+            formData = {id,notice_type,cover,notice_content,is_consult};
           }
           editnotice(formData)
             .then(res => {
@@ -195,13 +196,13 @@ export default {
     },
     open () {
       if(this.infoData.type != 'create'){
-        const {id,type,cover,cmd,notice_content} = this.infoData.option;
-        this.formData = {id,notice_type:type,cover,cmd,notice_content};
+        const {id,type,cover,cmd,content,is_consult} = this.infoData.option;
+        this.formData = {id,notice_type:type,cover,cmd,notice_content:content,is_consult};
       }
       this.dialogStatus = this.infoData.type;
       this.$nextTick(()=>{
         if (this.$refs.myQuillEditor) {
-          this.$refs.myQuillEditor.changeContent(this.formData.four);
+          this.$refs.myQuillEditor.changeContent(this.formData.notice_content);
         }
       });
 
@@ -213,6 +214,7 @@ export default {
         cover: '',
         cmd: '',
         notice_content: '',
+        is_consult:0,
       });
       this.dialogVisible = false;
     }

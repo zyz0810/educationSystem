@@ -28,7 +28,7 @@ switch (process.env.VUE_APP_MODE) {
 }
 // create an axios instance
 const service = axios.create({
-  // baseURL: process.env.VUE_APP_BASE_API, //本地环境启动
+  baseURL: process.env.VUE_APP_BASE_API, //本地环境启动
   // withCredentials: false, // send cookies when cross-domain requests
   // timeout: 10000 // request timeout
   // withCredentials: true // 允许携带cookie
@@ -40,7 +40,7 @@ axios.defaults.headers['Content-Type'] = 'application/x-www-form-urlencoded;char
 // request interceptor
 service.interceptors.request.use(
   config => {
-    config.baseURL = requestUrl  //发布测试、线上环境
+    // config.baseURL = requestUrl  //发布测试、线上环境
 
     // config.headers['client_id'] = 'crmWebApp'
     // config.headers['client_secret'] = 'crmWebApp'

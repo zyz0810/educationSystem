@@ -249,20 +249,21 @@ export const asyncRoutes = [
             'can_deal_comlaint',
           ]
         }
-      },{
-        path: 'online',
-        component: resolve => require(['@/views//complaint/online/index'], resolve),
-        name: 'online',
-        meta: {
-          title: '人工在线客服',
-          noCache: true,
-          icon: '',
-          // affix: true,
-          roles: [
-            'can_deal_comlaint',
-          ]
-        }
       },
+      // {
+      //   path: 'online',
+      //   component: resolve => require(['@/views//complaint/online/index'], resolve),
+      //   name: 'online',
+      //   meta: {
+      //     title: '人工在线客服',
+      //     noCache: true,
+      //     icon: '',
+      //     // affix: true,
+      //     roles: [
+      //       'can_deal_comlaint',
+      //     ]
+      //   }
+      // },
 
     ]
   },

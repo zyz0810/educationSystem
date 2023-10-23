@@ -632,3 +632,17 @@ ul,ul li {
     margin-right: 10px;
   }
 }
+.over_one{
+  //display: inline-block;
+  white-space: nowrap;
+  width: 100%;
+  overflow: hidden;
+  text-overflow:ellipsis;
+}
+//.over_two{
+//  display: inline-block;
+//  white-space: nowrap;
+//  width: 100%;
+//  overflow: hidden;
+//  text-overflow:ellipsis;
+//}

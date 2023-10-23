@@ -41,10 +41,22 @@
                          min-width="160"
                          show-overflow-tooltip
                          align="left"
-                         prop="cmd">
+                         prop="">
+                    <template slot-scope="scope">
+<!--                      1：链接，2：图文-->
+                      <div class="over_one" v-if="scope.row.type == 1">{{scope.row.cmd}}</div>
+                      <div class="over_html" v-if="scope.row.type == 2" v-html="scope.row.content"></div>
+<!--                      <el-popover v-if="scope.row.type == 2"-->
+<!--                        width="800"-->
+<!--                        trigger="hover">-->
+<!--                        <span slot="reference"><span class="over_one" v-html="scope.row.content"></span></span>-->
+<!--                        <div v-html="scope.row.content"></div>-->
+<!--                      </el-popover>-->
+
+                    </template>
         </el-table-column>
         <el-table-column label="发布日期"
-                         min-width="150"
+                         width="180"
                          align="left"
                          show-overflow-tooltip
                          prop="create_time" :formatter="formatTime">
@@ -58,11 +70,11 @@
                          show-overflow-tooltip
                          prop="publisher">
         </el-table-column>
-        <el-table-column label="用户端 无字段"
-                         min-width="100"
+        <el-table-column label="用户端"
+                         width="120"
                          show-overflow-tooltip
                          align="left"
-                         prop="">
+                         prop="is_consult" :formatter="formatConsult">
         </el-table-column>
         <el-table-column label="操作"
                          align="left"
@@ -133,6 +145,10 @@ export default {
     formatTime (row, column, cellValue, index) {
       return this.$moment(cellValue).format("YYYY-MM-DD HH:mm:ss");
     },
+    formatConsult (row, column, cellValue, index) {
+      //1: 是咨询师， 0: 普通用户
+      return cellValue == 1 ? "咨询师" : cellValue == 0? "普通用户" : "";
+    },
     // 修改定位
     handelDetail (type, row) {
       this.showDetail = true
@@ -201,4 +217,13 @@ export default {
 /deep/.search_box .el-form-item {
   float: none;
 }
+  .over_html{
+    /deep/p,div,span{
+      white-space: nowrap;
+      width: 100%;
+      overflow: hidden;
+      text-overflow:ellipsis;
+    }
+
+  }
 </style>
