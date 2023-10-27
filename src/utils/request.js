@@ -20,6 +20,7 @@ switch (process.env.VUE_APP_MODE) {
  case 'test':
  requestUrl ='https://xcx.xgzjj365.com/'
  break;
+
  default:
    requestUrl ='https://xcx.xgzjj365.com/'  //测试环境
   // requestUrl ='http://23.60.185.194:9200/'   //UAT环境

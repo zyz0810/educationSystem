@@ -59,7 +59,8 @@
 <script>
 import $ from "jquery";
 // import { uploadImg } from "@/api/upload";
-import { uploadFile } from "@/api/common";
+// import { uploadFile } from "@/api/common";
+import { uploadfile } from "@/api/upLoad";
 const toolbarOptions = [
   ["bold", "italic", "underline", "strike"], // 加粗 斜体 下划线 删除线 -----['bold', 'italic', 'underline', 'strike']
   ["blockquote", "code-block"], // 引用  代码块-----['blockquote', 'code-block']
@@ -146,33 +147,33 @@ export default {
       if (typeof oFile === "undefined") {
         return;
       }
-      // const name = e.target.files[0].name; // 文件扩展名
+     // // const name = e.target.files[0].name; // 文件扩展名
       const name = e.file.name; // 文件扩展名
       const type = name.split(".").pop();
       let sfileType = "image"; // 上传文件类型
-      if (!["jpg", "jpeg", "png",].includes(type)) {
-        this.$alert("上传图片只能是jpg、jpeg、png格式!", "提示", {
-          confirmButtonText: "确定",
-        });
-        return;
-      }
-      // const isLt2M = e.target.files[0].size / 1024 < 800;
+      // if (!["jpg", "jpeg", "png",].includes(type)) {
+      //   this.$alert("上传图片只能是jpg、jpeg、png格式!", "提示", {
+      //     confirmButtonText: "确定",
+      //   });
+      //   return;
+      // }
+     // // const isLt2M = e.target.files[0].size / 1024 < 800;
       const isLt2M = e.file.size / 1024 <= 800;
-      if(this.isProductDetail && !isLt2M){
-        this.$alert("图片不能超过800KB", "提示", {
-          confirmButtonText: "确定",
-        });
-        return;
-      }
+      // if(this.isProductDetail && !isLt2M){
+      //   this.$alert("图片不能超过800KB", "提示", {
+      //     confirmButtonText: "确定",
+      //   });
+      //   return;
+      // }
       let reader = new FileReader();
       reader.readAsDataURL(oFile);
       reader.onloadend = () => {
-        uploadFile(oFile,'productDetail')
+        uploadfile(oFile)
           .then((res) => {
             this.editor.insertEmbed(
               this.editor.selection.savedRange.index,
               sfileType,
-              res.picUrl
+              res
             ); // 这个方法用来手动插入dom到编辑器里
             this.editor.setSelection(
               this.editor.selection.savedRange.index + 1
@@ -221,7 +222,7 @@ export default {
 
       if(isJPG && isLt2M){
         console.log('1111')
-        uploadFile(file,'product')
+        uploadfile(file,'product')
           .then((res) => {
             this.productImageList.push({ uid: file.uid, url: res.picUrl });
             if(this.productData.operatorType == "update"){

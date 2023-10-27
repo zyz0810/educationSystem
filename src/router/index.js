@@ -49,26 +49,26 @@ export const constantRoutes = [{
         component: resolve => require(['@/views/error/401'], resolve),
         hidden: true
     },
-    {
-        path: '/datum',
-        component: Layout,
-        redirect: 'noRedirect',
-        hidden: true,
-        name: '查看资料',
-        meta: {
-            title: '查看资料',
-            icon: 'chart'
-        },
-        children: [{
-            path: 'datum',
-            component: resolve => require(['@/views/datum/index'], resolve),
-            name: 'datum',
-            meta: {
-                title: '查看资料',
-                icon: 'iconfont icon-pencil'
-            }
-        }]
-    },
+    // {
+    //     path: '/datum',
+    //     component: Layout,
+    //     redirect: 'noRedirect',
+    //     hidden: true,
+    //     name: '查看资料',
+    //     meta: {
+    //         title: '查看资料',
+    //         icon: 'chart'
+    //     },
+    //     children: [{
+    //         path: 'datum',
+    //         component: resolve => require(['@/views/datum/index'], resolve),
+    //         name: 'datum',
+    //         meta: {
+    //             title: '查看资料',
+    //             icon: 'iconfont icon-pencil'
+    //         }
+    //     }]
+    // },
     // {
     //     path: '/password',
     //     component: Layout,
@@ -114,7 +114,7 @@ export const asyncRoutes = [
     // redirect: 'dashboard',
     redirect: 'noRedirect',
     // name: '客户管理',
-    name: '资料审核',
+    name: 'exam',
     meta: {
       // title: '客户管理',
       title: '资料审核',
@@ -212,7 +212,7 @@ export const asyncRoutes = [
     component: Layout,
     // redirect: 'dashboard',
     redirect: 'noRedirect',
-    name: '投诉处理',
+    name: 'complaint',
     // name: '资料审核',
     meta: {
       title: '投诉处理',
@@ -273,7 +273,7 @@ export const asyncRoutes = [
     component: Layout,
     // redirect: 'dashboard',
     redirect: 'noRedirect',
-    name: '收益发放',
+    name: 'income',
     // name: '资料审核',
     meta: {
       title: '收益发放',
@@ -304,7 +304,7 @@ export const asyncRoutes = [
     path: '/supplier',
     component: Layout,
     redirect: 'noRedirect',
-    name: '供应商查询',
+    name: 'supplier',
     meta: {
       title: '供应商查询',
       icon: 'icon-04',
@@ -316,7 +316,7 @@ export const asyncRoutes = [
       path: 'list',
       component: resolve => require(['@/views/supplier/index'], resolve),
       hidden: true,
-      name: 'list',
+      name: 'supplierList',
       meta: {
         title: '供应商查询',
         icon: 'iconfont icon-ballot-check',
@@ -333,7 +333,7 @@ export const asyncRoutes = [
     component: Layout,
     // redirect: 'dashboard',
     redirect: 'noRedirect',
-    name: '经营数据',
+    name: 'businessData',
     meta: {
       title: '经营数据',
       // title: '资料审核',
@@ -367,7 +367,7 @@ export const asyncRoutes = [
     component: Layout,
     // redirect: 'dashboard',
     redirect: 'noRedirect',
-    name: '平台用户信息查询',
+    name: 'information',
     // name: '资料审核',
     meta: {
       title: '平台用户信息查询',
@@ -413,7 +413,7 @@ export const asyncRoutes = [
     path: '/roleManagement',
     component: Layout,
     redirect: 'noRedirect',
-    name: '权限管理',
+    name: 'roleManagement',
     meta: {
       title: '权限管理',
       icon: 'icon-07',
@@ -426,7 +426,7 @@ export const asyncRoutes = [
         path: 'team',
         component: resolve =>
           require(['@/views/roleManagement/team/index'], resolve),
-        name: 'service',
+        name: 'team',
         meta: {
           title: '团队管理',
           icon: '',
@@ -438,7 +438,7 @@ export const asyncRoutes = [
         path: 'role',
         component: resolve =>
           require(['@/views/roleManagement/role/index'], resolve),
-        name: 'customerLeaverSet',
+        name: 'role',
         meta: {
           title: '权限管理',
           icon: '',
@@ -450,7 +450,7 @@ export const asyncRoutes = [
         path: 'inviteCustomers',
         component: resolve =>
           require(['@/views/roleManagement/inviteCustomers/index'], resolve),
-        name: 'customerLeaverSet',
+        name: 'inviteCustomers',
         meta: {
           title: '邀请客户',
           icon: '',

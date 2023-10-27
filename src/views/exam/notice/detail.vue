@@ -19,10 +19,15 @@
         </el-radio-group>
       </el-form-item>
       <el-form-item label="用户端" prop="is_consult">
-        <el-radio-group v-model="formData.is_consult" :disabled="isCanView">
-          <el-radio-button :label="0">家长端</el-radio-button>
-          <el-radio-button :label="1">咨询师端</el-radio-button>
-        </el-radio-group>
+<!--        <el-radio-group v-model="formData.is_consult" :disabled="isCanView">-->
+<!--          <el-radio-button :label="0">家长端</el-radio-button>-->
+<!--          <el-radio-button :label="1">咨询师端</el-radio-button>-->
+<!--        </el-radio-group>-->
+
+        <el-checkbox-group v-model="formData.is_consult" :disabled="isCanView">
+          <el-checkbox :label="0">家长端</el-checkbox>
+          <el-checkbox :label="1">咨询师端</el-checkbox>
+        </el-checkbox-group>
       </el-form-item>
       <el-form-item label="公告Banner："
                     prop="cover">
@@ -97,7 +102,7 @@ export default {
         cover: '',
         cmd: '',
         notice_content: '',
-        is_consult:0,
+        is_consult:[],
       },
       isChange:false,
       textMap: {
@@ -116,9 +121,9 @@ export default {
         // cmd: [
         //   { required: true, message: "请输入链接", trigger: "blur" }
         // ],
-        // notice_content: [
-        //   { required: true, message: "请输入公告内容", trigger: "blur" }
-        // ],
+        is_consult: [
+          { required: true, message: "请选择用户端", trigger: "blur" }
+        ],
       }
     };
   },
@@ -214,7 +219,7 @@ export default {
         cover: '',
         cmd: '',
         notice_content: '',
-        is_consult:0,
+        is_consult:[],
       });
       this.dialogVisible = false;
     }
@@ -246,6 +251,11 @@ export default {
     p{
       margin: 0;
       line-height: 1.6;
+    }
+  }
+  .notice_content{
+    p{
+      margin:0;
     }
   }
 </style>

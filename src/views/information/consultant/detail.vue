@@ -1,7 +1,7 @@
 <template>
   <my-dialog :visible.sync="dialogVisible"
              :close-on-click-modal="false"
-             width="400px"
+             width="500px"
              @close="close"
              @open="open"
              top="15vh"
@@ -27,8 +27,11 @@
         <div class="flex_bd text-right">{{formData.user_name}}</div>
       </div>
       <div class="flex border_bottom1 info_content_line">
-        <div class="info_txt">咨询费</div>
-        <div class="flex_bd text-right">{{formData.price}}</div>
+        <div class="info_txt">咨询费（元/分）</div>
+        <div class="flex_bd text-right">
+          <span class="f12 gray01 mr5">{{Number(Number(formData.price)/100*15).toFixed(2)}}元/15分；{{Number(Number(formData.price)/100*30).toFixed(2)}}元/30分；{{Number(Number(formData.price)/100*60).toFixed(2)}}元/60分；</span>
+          <span class="orange01">{{Number(Number(formData.price)/100).toFixed(2)}}元/分</span>
+        </div>
       </div>
       <div class="flex border_bottom1 info_content_line">
         <div class="info_txt">城市</div>
@@ -199,13 +202,12 @@ export default {
 };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .el-form {
   padding: 0 20px;
   .flex {
     display: flex;
   }
-
 }
 
 .img_list{
@@ -228,5 +230,57 @@ export default {
   .detail_intro{
     line-height: 1.5;
     text-align: left;
+  }
+  .person_tag{
+    &:nth-child(10n-9){
+      color: #EB4C00;
+      background: #FF5E0015;
+      border: 1px solid #FF5E0020;
+    }
+    &:nth-child(10n-8){
+      color: #ED5D00;
+      background: #FBBB3D15;
+      border: 1px solid #FBBB3D20;
+    }
+    &:nth-child(10n-7){
+      color: #EC0057;
+      background: #FB3D8315;
+      border: 1px solid #FB3D8320;
+    }
+    &:nth-child(10n-6){
+      color: #F22511;
+      background: #F1301D15;
+      border: 1px solid #F1301D20;
+    }
+    &:nth-child(10n-5){
+      color: #22891F ;
+      background: #54C15115;
+      border: 1px solid #54C15120;
+    }
+    &:nth-child(10n-4){
+      color: #00808B ;
+      background: #20B6C315;
+      border: 1px solid #20B6C320;
+    }
+    &:nth-child(10n-3){
+      color: #7C35C0;
+      background: #8C48CD15;
+      border: 1px solid #8C48CD20;
+    }
+    &:nth-child(10n-2){
+      color: #0071BC;
+      background: #0099FE15;
+      border: 1px solid #0099FE20;
+    }
+    &:nth-child(10n-1){
+      color: #3650D5;
+      background: #576EE115;
+      border: 1px solid #576EE120;
+    }
+    &:nth-child(10n){
+      color: #2C4068;
+      background: #707E9815;
+      border: 1px solid #707E9820;
+    }
   }
 </style>

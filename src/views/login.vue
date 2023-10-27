@@ -79,7 +79,6 @@ import { getCodeImg } from "@/api/login";
 import Cookies from "js-cookie";
 import { encrypt, decrypt } from "@/utils/jsencrypt";
 import { mapGetters, mapActions } from "vuex";
-// import crm_icon from "@/assets/logo/crm_icon.jpg";
 export default {
   name: "Login",
   data () {
@@ -94,8 +93,6 @@ export default {
         uuid: ""
       },
       passwordType: "password",
-      crm_icon: require("@/assets/logo/crm_icon.png"),
-      crm_background: require("@/assets/image/login-background.png"),
       loginRules: {
         username: [
           { required: true, trigger: "blur", message: "用户名不能为空" }
@@ -180,6 +177,7 @@ export default {
   align-items: center;
   // height: 100%;
   height: 100vh;
+  background-color: rgb(249,244,222);
   background-image: url("../assets/logo/logo_bg.png");
   background-size: cover;
   /*background: linear-gradient(to bottom, #56ccf2, #2f80ed);*/

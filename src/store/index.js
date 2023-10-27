@@ -6,7 +6,6 @@ import tagsView from './modules/tagsView'
 import permission from './modules/permission'
 import settings from './modules/settings'
 import route from './modules/route'
-import dict from './modules/dict'
 import getters from './getters'
 
 Vue.use(Vuex)
@@ -14,7 +13,6 @@ Vue.use(Vuex)
 const store = new Vuex.Store({
   modules: {
     app,
-    dict,
     user,
     tagsView,
     route,

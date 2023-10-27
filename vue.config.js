@@ -50,9 +50,6 @@ module.exports = {
         '@': resolve('src')
       }
     },
-    externals: {
-      AMap: "AMap" // 高德地图配置
-    }
   },
   transpileDependencies: [ 'resize-detector'],
   chainWebpack(config) {
@@ -111,10 +108,11 @@ module.exports = {
                 }
               }
             })
-          config.optimization.runtimeChunk('single'), {
-            from: path.resolve(__dirname, './public/robots.txt'), //防爬虫文件
-            to: './', //到根目录下
-          }
+          config.optimization.runtimeChunk('single')
+            // {
+            // from: path.resolve(__dirname, './public/robots.txt'), //防爬虫文件
+            // to: './', //到根目录下
+          // }
         }
       )
   }

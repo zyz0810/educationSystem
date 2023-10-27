@@ -526,12 +526,13 @@ ul,ul li {
 }
 
 .person_tag{
-  color: #FF8F1F;
   font-size: 12px;
-  background: #FDEAC9;
   padding: 3px 5px;
   border-radius: 3px;
   margin-right: 3px;
+  color: #FF8F1F;
+  background: #FDEAC9;
+  border: 1px solid #FDEAC9;
 }
 .bold{
   font-weight: bold;

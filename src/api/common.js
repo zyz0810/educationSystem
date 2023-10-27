@@ -68,7 +68,7 @@ export function uploadSingleFile(file, type = "license") {
   })
 }
 
-// 供应商名称 
+// 供应商名称
 export function getSupplier (query) {
   return request({
     url: '/api-crm-order/web/crm/supplier/getSupplier',

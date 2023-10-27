@@ -57,20 +57,20 @@ Vue.prototype.$axios = axios
 
 import './assets/icons' // icon
 import './permission' // permission control
-import { getDicts } from '@/api/system/dict/data'
-import { getConfigKey } from '@/api/system/config'
-import {
-  parseTime,
-  resetForm,
-  addDateRange,
-  selectDictLabel,
-  selectDictLabels,
-  download,
-  handleTree
-} from '@/utils/ruoyi'
+// import { getDicts } from '@/api/system/dict/data'
+// import { getConfigKey } from '@/api/system/config'
+// import {
+//   parseTime,
+//   resetForm,
+//   addDateRange,
+//   selectDictLabel,
+//   selectDictLabels,
+//   download,
+//   handleTree
+// } from '@/utils/ruoyi'
 // 自定义表格工具扩展
 // import RightToolbar from '@/components/RightToolbar'
-import Sortable from 'sortablejs'
+// import Sortable from 'sortablejs'
 // 全局方法挂载
 // Vue.prototype.getDicts = getDicts
 // Vue.prototype.getConfigKey = getConfigKey

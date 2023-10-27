@@ -75,6 +75,12 @@
                          show-overflow-tooltip
                          align="left"
                          prop="is_consult" :formatter="formatConsult">
+          <template slot-scope="scope">
+            <div v-if="scope.row.is_consult != null && scope.row.is_consult.length > 0">
+              <span class="mr5" v-for="(item,index) in [scope.row.is_consult]" :key="'is_consult'+index">{{formatConsult(item)}}</span>
+            </div>
+            <span v-else>{{formatConsult(scope.row.is_consult)}}</span>
+          </template>
         </el-table-column>
         <el-table-column label="操作"
                          align="left"
@@ -145,7 +151,7 @@ export default {
     formatTime (row, column, cellValue, index) {
       return this.$moment(cellValue).format("YYYY-MM-DD HH:mm:ss");
     },
-    formatConsult (row, column, cellValue, index) {
+    formatConsult (cellValue) {
       //1: 是咨询师， 0: 普通用户
       return cellValue == 1 ? "咨询师" : cellValue == 0? "普通用户" : "";
     },

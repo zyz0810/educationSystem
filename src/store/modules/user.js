@@ -107,10 +107,11 @@ const user = {
       state
     }) {
 
+
       return new Promise((resolve, reject) => {
         getInfo(state.crm_token).then(res => {
-          // const avatar = res.data.headImgUrl == "" ? require("@/assets/image/profile.jpg") : process.env.VUE_APP_BASE_API + res.data.headImgUrl;
-          const avatar = require("@/assets/image/profile.jpg");
+          // const avatar = res.data.headImgUrl == "" ? require("@/assets/image/head Portrait.png") : process.env.VUE_APP_BASE_API + res.data.headImgUrl;
+          const avatar = require("@/assets/image/head Portrait.png");
           let role = []
           // if (res.data.roles && res.data.roles.length > 0) { // 验证返回的roles是否是一个非空数组
           //   let arr = []
