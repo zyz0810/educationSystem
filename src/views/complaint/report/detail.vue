@@ -14,9 +14,15 @@
 
       <el-form-item :label="titleMap[dialogStatus]+'原因'"
                     prop="reason">
-        <el-select v-model="formData.reason" placeholder="请选择">
+        <el-select v-model="formData.reason" placeholder="请选择" v-if="infoData.type == 'reject'">
           <el-option v-for="(item, index) in reasonList"
-                     :key="index"
+                     :key="'reason'+index"
+                     :label="item"
+                     :value="item"></el-option>
+        </el-select>
+        <el-select v-model="formData.reason" placeholder="请选择" v-if="infoData.type == 'reject'">
+          <el-option v-for="(item, index) in rejectList"
+                     :key="'reject'+index"
                      :label="item"
                      :value="item"></el-option>
         </el-select>
@@ -61,7 +67,12 @@ export default {
       required: true,
       type: Array,
       default: []
-    }
+    },
+    rejectList:{
+      required: true,
+      type: Array,
+      default: []
+    },
   },
   data () {
     return {
@@ -101,12 +112,13 @@ export default {
     },
   },
   methods: {
-    // 修改定位
+    // 保存
     save () {
       this.$refs.ruleForm.validate(valid => {
         if (valid) {
           complaintstatus(this.formData)
             .then(res => {
+              this.$message({ message: res.errmsg, type: 'success' });
               this.$emit("updateList");
               this.dialogVisible = false;
             })
@@ -138,19 +150,5 @@ export default {
 <style lang="scss">
 .el-form {
   padding: 0 20px;
-  .flex {
-    display: flex;
-  }
-
-}
-.notice_banner{
-  img{
-    height: 100px;
-  }
-}
-.uploader {
-  .el-upload--picture-card {
-    display: none;
-  }
 }
 </style>

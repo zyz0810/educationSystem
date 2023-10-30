@@ -379,39 +379,39 @@ aside {
   text-align: left;
 }
 
-.documentList {
-  .el-form-item--medium .el-form-item__content {
-    display: flex;
-  }
+//.documentList {
+//  .el-form-item--medium .el-form-item__content {
+//    display: flex;
+//  }
+//
+//  .picBox {
+//    margin-right: 20px;
+//    display: flex;
+//    width: 150px;
+//    // flex-direction: column;
+//    // position: relative;
+//
+//    .el-icon-error {
+//      position: absolute;
+//      right: -10px;
+//      top: -10px;
+//      font-size: 28px;
+//      cursor: pointer;
+//      z-index: 999;
+//    }
+//  }
+//}
 
-  .picBox {
-    margin-right: 20px;
-    display: flex;
-    width: 150px;
-    // flex-direction: column;
-    // position: relative;
-
-    .el-icon-error {
-      position: absolute;
-      right: -10px;
-      top: -10px;
-      font-size: 28px;
-      cursor: pointer;
-      z-index: 999;
-    }
-  }
-}
-
-// 预团购标签
-.label_box:before {
-  content: "预团购";
-  margin-right: 5px;
-  color: #ff3b30;
-  background-color: #ffebea;
-  font-size: 12px;
-  padding: 3px 8px;
-  border-radius: 4px;
- }
+//// 预团购标签
+//.label_box:before {
+//  content: "预团购";
+//  margin-right: 5px;
+//  color: #ff3b30;
+//  background-color: #ffebea;
+//  font-size: 12px;
+//  padding: 3px 8px;
+//  border-radius: 4px;
+// }
 // 图片上传去除动效
 .el-upload-list__item {
   transition: none !important;

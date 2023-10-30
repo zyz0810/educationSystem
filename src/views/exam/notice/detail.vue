@@ -24,8 +24,8 @@
 <!--          <el-radio-button :label="1">咨询师端</el-radio-button>-->
 <!--        </el-radio-group>-->
 
-        <el-checkbox-group v-model="formData.is_consult" :disabled="isCanView">
-          <el-checkbox :label="0">家长端</el-checkbox>
+        <el-checkbox-group v-model="formData.is_consult" :disabled="isCanView" @change="aa">
+          <el-checkbox :label="2">家长端</el-checkbox>
           <el-checkbox :label="1">咨询师端</el-checkbox>
         </el-checkbox-group>
       </el-form-item>
@@ -144,6 +144,10 @@ export default {
     }
   },
   methods: {
+    aa(e){
+      console.log(e)
+      console.log('this.formData',this.formData)
+    },
     hasImgSrc(val) {
       console.log('图片',val)
       this.formData.cover = val;
@@ -156,11 +160,19 @@ export default {
       this.$refs.ruleForm.validate(valid => {
         if (valid) {
           let formData = {};
-          const {id,notice_type,cover,cmd,notice_content,is_consult} = this.formData;
+          const {id,notice_type,cover,cmd,notice_content,} = this.formData;
+          let is_consult1='';
+          if(this.formData.is_consult.length==1 && this.formData.is_consult[0] == [1]){
+            is_consult1 = 1;
+          }else if(this.formData.is_consult.length==1 && this.formData.is_consult[0] == 2){
+            is_consult1 = 2;
+          }else if(this.formData.is_consult.indexOf(1)>-1 && this.formData.is_consult.indexOf(2)>-1){
+            is_consult1 = 3;
+          }
           if(this.formData.notice_type == 1){
-            formData = {id,notice_type,cover,cmd,is_consult};
+            formData = {id,notice_type,cover,cmd,is_consult:is_consult1};
           }else{
-            formData = {id,notice_type,cover,notice_content,is_consult};
+            formData = {id,notice_type,cover,notice_content,is_consult:is_consult1};
           }
           publishnotice(formData)
             .then(res => {
@@ -178,14 +190,24 @@ export default {
       // if (this.$refs.myQuillEditor) {
       //   this.$refs.myQuillEditor.changeContent(description);
       // }
+      console.log('this.formData222',this.formData)
       this.$refs.ruleForm.validate(valid => {
         if (valid) {
           let formData = {};
-          const {id,notice_type,cover,cmd,notice_content,is_consult} = this.formData;
+          console.log('this.formData',this.formData)
+          const {id,notice_type,cover,cmd,notice_content,} = this.formData;
+          let is_consult1='';
+          if(this.formData.is_consult.length==1 && this.formData.is_consult[0] == [1]){
+            is_consult1 = 1;
+          }else if(this.formData.is_consult.length==1 && this.formData.is_consult[0] == 2){
+            is_consult1 = 2;
+          }else if(this.formData.is_consult.indexOf(1)>-1 && this.formData.is_consult.indexOf(2)>-1){
+            is_consult1 = 3;
+          }
           if(this.formData.notice_type == 1){
-            formData = {id,notice_type,cover,cmd,is_consult};
+            formData = {id,notice_type,cover,cmd,is_consult:is_consult1};
           }else{
-            formData = {id,notice_type,cover,notice_content,is_consult};
+            formData = {id,notice_type,cover,notice_content,is_consult:is_consult1};
           }
           editnotice(formData)
             .then(res => {
@@ -200,9 +222,18 @@ export default {
       });
     },
     open () {
+      // 咨询师的 1  家长的 2  全部的 3
       if(this.infoData.type != 'create'){
-        const {id,type,cover,cmd,content,is_consult} = this.infoData.option;
-        this.formData = {id,notice_type:type,cover,cmd,notice_content:content,is_consult};
+        const {id,type,cover,cmd,content,} = this.infoData.option;
+        let is_consult=[];
+        if(this.infoData.option.is_consult == 1){
+          is_consult = [1];
+        }else if(this.infoData.option.is_consult == 2){
+          is_consult = [2];
+        }else if(this.infoData.option.is_consult == 3){
+          is_consult = [1,2];
+        }
+        this.formData = {id,notice_type:type,cover,cmd,notice_content:content,is_consult:is_consult};
       }
       this.dialogStatus = this.infoData.type;
       this.$nextTick(()=>{

@@ -9,10 +9,19 @@
                   placeholder="标题/关键词" />
       </el-form-item>
       <el-form-item label="">
-        <el-select v-model="listQuery.label" clearable placeholder="请选择" @change="queryGetList">
-          <el-option label="全部" value=""></el-option>
+        <el-select v-model="listQuery.label" clearable placeholder="请选择投诉原因" @change="queryGetList">
+<!--          <el-option label="全部" value=""></el-option>-->
           <el-option v-for="(item, index) in reasonList"
-                     :key="index"
+                     :key="'reason'+index"
+                     :label="item"
+                     :value="item"></el-option>
+        </el-select>
+      </el-form-item>
+      <el-form-item label="">
+        <el-select v-model="listQuery.label" clearable placeholder="请选择驳回原因" @change="queryGetList">
+<!--          <el-option label="全部" value=""></el-option>-->
+          <el-option v-for="(item, index) in rejectList"
+                     :key="'reject'+index"
                      :label="item"
                      :value="item"></el-option>
         </el-select>
@@ -83,7 +92,7 @@
                          prop="mobile">
           <template slot-scope="scope">
             <viewer :images="scope.row.pictures">
-              <span class="report_img" v-for="(item,index) in scope.row.pictures" :key="index">
+              <span class="report_img" v-for="(item,index) in scope.row.pictures" :key="'img'+index">
                 <img :src="item" />
               </span>
             </viewer>
@@ -101,9 +110,9 @@
                          width="160"
                          prop="remarks">
           <template slot-scope="scope">
-            <el-button type="text" @click.stop="handelDetail('reject',scope.row)">驳回</el-button>
-            <el-button type="text" @click.stop="handelDetail('warn', scope.row)">警告</el-button>
-            <el-button type="text" @click.stop="handelDetail('black',scope.row)">移入黑名单</el-button>
+            <el-button type="text" v-show="scope.row.status == 1" @click.stop="handelDetail('reject',scope.row)">驳回</el-button>
+            <el-button type="text" v-show="scope.row.status == 1" @click.stop="handelDetail('warn', scope.row)">警告</el-button>
+            <el-button type="text" v-show="scope.row.status == 1" @click.stop="handelDetail('black',scope.row)">移入黑名单</el-button>
           </template>
         </el-table-column>
         <template slot="empty">
@@ -119,7 +128,7 @@
     </div>
     <!--修改定位-->
     <detail :showDialog.sync="showDetail"
-                    :infoData='infoData' :reasonList="reasonList"
+                    :infoData='infoData' :reasonList="reasonList" :rejectList="rejectList"
                     @updateList='getList' />
   </div>
 </template>
@@ -149,6 +158,7 @@ export default {
         option:{},
       },
       reasonList:[],
+      rejectList:[],
       // reasonList:['接单时不专心','恶意骚扰','色情/性骚扰','涉及政治','诈骗','其它',]
     };
   },
@@ -165,12 +175,20 @@ export default {
     });
     this.getList();
     this.getReasonList();
+    this.getRejectList();
   },
   methods: {
     getReasonList () {
-      complaintlabels()
+      complaintlabels({label_type:1})
         .then(res => {
           this.reasonList = res.data;
+        })
+        .catch(err => console.log(err));
+    },
+    getRejectList () {
+      complaintlabels({label_type:2})
+        .then(res => {
+          this.rejectList = res.data;
         })
         .catch(err => console.log(err));
     },
@@ -180,7 +198,7 @@ export default {
       let aa = cellValue + '000';
       return this.$moment(Number(aa)).format("YYYY-MM-DD HH:mm:ss");
     },
-    // 修改定位
+    // 驳回、警告、拉入黑名单
     handelDetail (type, row) {
       this.showDetail = true
       this.infoData = {

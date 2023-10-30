@@ -45,7 +45,8 @@
                     <template slot-scope="scope">
 <!--                      1：链接，2：图文-->
                       <div class="over_one" v-if="scope.row.type == 1">{{scope.row.cmd}}</div>
-                      <div class="over_html" v-if="scope.row.type == 2" v-html="scope.row.content"></div>
+<!--                      <div class="over_html" v-if="scope.row.type == 2" v-html="scope.row.content"></div>-->
+                      <div v-if="scope.row.type == 2">图文</div>
 <!--                      <el-popover v-if="scope.row.type == 2"-->
 <!--                        width="800"-->
 <!--                        trigger="hover">-->
@@ -76,10 +77,11 @@
                          align="left"
                          prop="is_consult" :formatter="formatConsult">
           <template slot-scope="scope">
-            <div v-if="scope.row.is_consult != null && scope.row.is_consult.length > 0">
-              <span class="mr5" v-for="(item,index) in [scope.row.is_consult]" :key="'is_consult'+index">{{formatConsult(item)}}</span>
-            </div>
-            <span v-else>{{formatConsult(scope.row.is_consult)}}</span>
+
+              <span v-if="scope.row.is_consult == 1" >咨询师端</span>
+              <span v-else-if="scope.row.is_consult == 3" >家长端</span>
+              <span v-else-if="scope.row.is_consult == 4" >家长端，咨询师端</span>
+
           </template>
         </el-table-column>
         <el-table-column label="操作"

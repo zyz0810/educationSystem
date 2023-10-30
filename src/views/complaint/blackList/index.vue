@@ -17,6 +17,7 @@
                      :value="item"></el-option>
         </el-select>
       </el-form-item>
+      <el-button type="primary" class="fr mt_10" @click="handelDetail('create', '')">添加黑名单(暂无接口)</el-button>
     </el-form>
     <div class="container mt_10">
       <el-table v-loading="listLoading"
@@ -110,12 +111,15 @@
                   @pagination="getList"
                   class="text-right" />
     </div>
-
+    <detail :showDialog.sync="showDetail"
+            :infoData='infoData' :reasonList="reasonList"
+            @updateList='getList' />
   </div>
 </template>
 
 <script>
   import {getblacklist,removebacklist,complaintlabels} from "@/api/blackList";
+  import detail from './detail';
   export default {
     data () {
       return {
@@ -139,7 +143,7 @@
         channelList:[{id:'',name:'全部渠道'},{id:1,name:'超级管理员'},{id:2,name:'管理员'},{id:3,name:'供应商'},{id:4,name:'客服审核员'}]
       };
     },
-    components: {},
+    components: {detail,},
     computed: {},
     mounted () {
       this.$nextTick(() => {
@@ -154,10 +158,17 @@
       this.getReasonList();
     },
     methods: {
+      handelDetail (type, row) {
+        this.showDetail = true
+        this.infoData = {
+          type:type,
+          option:row==''?{}:row,
+        }
+      },
       // reasonList
       // 获取客户列表
       getReasonList () {
-        complaintlabels()
+        complaintlabels({label_type:1})
           .then(res => {
             this.reasonList = res.data;
           })
