@@ -83,11 +83,11 @@
                          show-overflow-tooltip
                          prop="incoming_count">
         </el-table-column>
-        <el-table-column label="本月汇总没字段"
+        <el-table-column label="本月汇总"
                          min-width="100"
                          align="left"
                          show-overflow-tooltip
-                         prop="">
+                         prop="incoming_per_month">
         </el-table-column>
         <el-table-column label="注册日期"
                          min-width="150"
@@ -103,6 +103,12 @@
           <template slot-scope="scope">
             {{scope.row.invitor_name}}（{{scope.row.invitor_Id}}）
           </template>
+        </el-table-column>
+        <el-table-column label="邀请码"
+                         min-width="100"
+                         align="left"
+                         show-overflow-tooltip
+                         prop="">
         </el-table-column>
         <template slot="empty">
           <empty-table/>
