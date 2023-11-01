@@ -17,7 +17,7 @@
                      :value="item"></el-option>
         </el-select>
       </el-form-item>
-      <el-button type="primary" class="fr mt_10" @click="handelDetail('create', '')">添加黑名单(暂无接口)</el-button>
+      <el-button type="primary" class="fr mt_10" @click="handelDetail('create', '')">添加黑名单</el-button>
     </el-form>
     <div class="container mt_10">
       <el-table v-loading="listLoading"
@@ -168,7 +168,7 @@
       // reasonList
       // 获取客户列表
       getReasonList () {
-        complaintlabels({label_type:1})
+        complaintlabels({label_type:3})
           .then(res => {
             this.reasonList = res.data;
           })

@@ -5,19 +5,19 @@
       <el-form-item label="">
         <el-input v-model.trim="listQuery.search_key"
                   clearable suffix-icon="el-icon-search"
-                  @change="queryCustomerList"
+                  @change="queryList"
                   placeholder="请输入" />
       </el-form-item>
       <el-form-item label="">
         <el-date-picker
           v-model="listQuery.month" value-format="yyyy-MM"
-          @change="queryCustomerList"
+          @change="queryList"
           type="month"
           placeholder="选择月">
         </el-date-picker>
       </el-form-item>
       <el-form-item label="">
-        <el-select v-model="listQuery.user_type" clearable placeholder="请选择" @change="queryCustomerList">
+        <el-select v-model="listQuery.user_type" clearable placeholder="请选择" @change="queryList">
 <!--          <el-option label="所有用户" value=""></el-option>-->
           <el-option v-for="(item, index) in userList"
                      :key="index"
@@ -108,7 +108,7 @@
                          min-width="100"
                          align="left"
                          show-overflow-tooltip
-                         prop="">
+                         prop="invitor_code">
         </el-table-column>
         <template slot="empty">
           <empty-table/>
@@ -118,7 +118,7 @@
                   :total="total"
                   :page.sync="listQuery.pn"
                   :limit.sync="listQuery.rn"
-                  @pagination="customerList"
+                  @pagination="getList"
                   class="text-right" />
     </div>
 
@@ -163,11 +163,11 @@
             window.innerHeight - this.$refs.activityTable.$el.offsetTop - 150;
         };
       });
-      this.customerList();
+      this.getList();
     },
     methods: {
       // 获取客户列表
-      customerList () {
+      getList () {
         suppliers({ ...this.listQuery, })
           .then(res => {
             this.dataList = res.data.total_num == 0 ? [] : res.data.users;
@@ -176,9 +176,9 @@
           })
           .catch(err => console.log(err));
       },
-      queryCustomerList () {
+      queryList () {
         this.listQuery.pn = 1
-        this.customerList()
+        this.getList()
       },
     },
   };

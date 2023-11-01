@@ -5,11 +5,11 @@
       <el-form-item label="">
         <el-input v-model.trim="listQuery.keyword"
                   clearable suffix-icon="el-icon-search"
-                  @change="queryCustomerList"
+                  @change="queryList"
                   placeholder="搜索/ID/姓名/手机号" />
       </el-form-item>
       <el-form-item label="">
-          <el-select v-model="listQuery.channel" clearable @change="queryCustomerList" placeholder="请选择">
+          <el-select v-model="listQuery.channel" clearable @change="queryList" placeholder="请选择">
             <el-option label="渠道无值" value=""></el-option>
 <!--            <el-option v-for="(item, index) in channelList"-->
 <!--                       :key="index"-->
@@ -136,12 +136,12 @@
                   :total="total"
                   :page.sync="listQuery.pn"
                   :limit.sync="listQuery.rn"
-                  @pagination="customerList"
+                  @pagination="getList"
                   class="text-right" />
     </div>
     <detail :showDialog.sync="showDetail"
             :infoData='infoData'
-            @updateList='customerList' />
+            @updateList='getList' />
   </div>
 </template>
 
@@ -181,7 +181,7 @@
             window.innerHeight - this.$refs.activityTable.$el.offsetTop - 150;
         };
       });
-      this.customerList();
+      this.getList();
     },
     methods: {
       formatterSex (row, column, cellValue, index) {
@@ -196,7 +196,7 @@
         }
       },
       // 获取客户列表
-      customerList () {
+      getList () {
         getauditconsultlist({ ...this.listQuery, })
           .then(res => {
             this.dataList = res.data.total_num == 0 ? [] : res.data.list;
@@ -206,9 +206,9 @@
           .catch(err => console.log(err));
       },
 
-      queryCustomerList () {
+      queryList () {
         this.listQuery.pn = 1;
-        this.customerList();
+        this.getList();
       },
 
     },

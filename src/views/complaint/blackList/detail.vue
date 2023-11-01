@@ -8,11 +8,11 @@
              :title="textMap[dialogStatus]">
     <el-form ref="ruleForm"
              :model="formData"
-             label-width="100px"
+             label-width="110px"
              :rules="rules"
              class="formList">
-      <el-form-item label="添加黑名单：" prop="mobile">
-        <el-input v-model.trim="formData.mobile"
+      <el-form-item label="添加黑名单：" prop="black_user_id">
+        <el-input v-model.trim="formData.black_user_id"
                   clearable
                   placeholder="请输入用户ID" />
       </el-form-item>
@@ -25,12 +25,12 @@
                      :value="item"></el-option>
         </el-select>
       </el-form-item>
-      <el-form-item label="备注" prop="content">
+      <el-form-item label="备注" prop="ext_note">
         <el-input
           type="textarea"
           :autosize="{ minRows: 6, maxRows: 10}"
           placeholder="请输入内容"
-          v-model="formData.content">
+          v-model="formData.ext_note">
         </el-input>
 
       </el-form-item>
@@ -43,7 +43,8 @@
   </my-dialog>
 </template>
 <script>
-  import {complaintstatus} from "@/api/report";
+  import {addblacklist} from "@/api/blackList";
+
   export default {
     props: {
       showDialog: {
@@ -68,10 +69,9 @@
     data () {
       return {
         formData: {
-          id: '',
-          action: '',
+          black_user_id: '',
           reason: '',
-          content: '',
+          ext_note: '',
         },
         textMap: {
           create: '添加黑名单',
@@ -79,6 +79,9 @@
         },
         dialogStatus: '',
         rules: {
+          black_user_id: [
+            { required: true, message: "请输入用户ID", trigger: "blur" }
+          ],
           reason: [
             { required: true, message: "请选择类型", trigger: "blur" }
           ],
@@ -101,7 +104,7 @@
       save () {
         this.$refs.ruleForm.validate(valid => {
           if (valid) {
-            complaintstatus(this.formData)
+            addblacklist(this.formData)
               .then(res => {
                 this.$message({ message: res.errmsg, type: 'success' });
                 this.$emit("updateList");
@@ -114,18 +117,16 @@
         });
       },
       open () {
-
-        this.formData.action = this.infoData.type;
         this.dialogStatus = this.infoData.type;
       },
       close () {
         this.$refs.ruleForm.clearValidate();
         Object.assign(this.formData, {
-          id: '',
-          action: '',
+          black_user_id: '',
           reason: '',
-          content: '',
+          ext_note: '',
         });
+        this.dialogStatus = '';
         this.dialogVisible = false;
       }
     }
