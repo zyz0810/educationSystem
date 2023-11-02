@@ -29,8 +29,8 @@
       <div class="flex border_bottom1 info_content_line">
         <div class="info_txt">咨询费（元/分）</div>
         <div class="flex_bd text-right">
-          <span class="f12 gray01 mr5">{{Number(Number(formData.price)/100*15).toFixed(2)}}元/15分；{{Number(Number(formData.price)/100*30).toFixed(2)}}元/30分；{{Number(Number(formData.price)/100*60).toFixed(2)}}元/60分；</span>
-          <span class="orange01">{{Number(Number(formData.price)/100).toFixed(2)}}元/分</span>
+          <span class="f12 gray01 mr5">{{Number(Number(formData.price)*15).toFixed(2)}}元/15分；{{Number(Number(formData.price)*30).toFixed(2)}}元/30分；{{Number(Number(formData.price)*60).toFixed(2)}}元/60分；</span>
+          <span class="orange01">{{Number(formData.price).toFixed(2)}}元/分</span>
         </div>
       </div>
       <div class="flex border_bottom1 info_content_line">
@@ -180,7 +180,7 @@ export default {
       this.formData = {id,portrait,user_name,mobile,user_id,city,intro,sex,price,label,cert,ren_zheng,pictures,};
     },
     close () {
-      this.$refs.ruleForm.clearValidate();
+      // this.$refs.ruleForm.clearValidate();
       Object.assign(this.formData, {
         id:'',
         portrait:'',

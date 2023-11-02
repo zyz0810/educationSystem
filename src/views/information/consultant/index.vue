@@ -95,7 +95,7 @@
           <!--          </template>-->
         </el-table-column>
         <el-table-column label="分类"
-                         width="180"
+                         width="220"
                          align="left"
                          prop="intro">
           <template slot-scope="scope">
@@ -104,7 +104,6 @@
               <span class="person_tag" v-for="(item,index) in scope.row.label" :index="index" v-show="index < 2">{{item}}</span>
               <span class="f16 bold yellow02" v-show="scope.row.label!=null && scope.row.label.length > 2">…</span>
             </span>
-
           </template>
         </el-table-column>
 <!--        <el-table-column label=""-->

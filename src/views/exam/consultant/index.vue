@@ -89,7 +89,7 @@
 <!--          </template>-->
         </el-table-column>
         <el-table-column label="分类"
-                         width="180"
+                         width="220"
                          align="left"
                          prop="intro">
           <template slot-scope="scope">
