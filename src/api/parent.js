@@ -24,3 +24,25 @@ export function audituserinfo(query) {
     params: query
   })
 }
+/* 家长信息列表
+ * keyword
+ * channel
+ * pn
+ * rn
+*/
+export function getuserlist(query) {
+  return request({
+    url: '/pc/getuserlist',
+    method: 'get',
+    params: query
+  })
+}
+/* 家长信息列表--筛选条件（渠道）
+*/
+export function getallchannels(query) {
+  return request({
+    url: '/pc/getallchannels',
+    method: 'get',
+    params: query
+  })
+}

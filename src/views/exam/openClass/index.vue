@@ -63,7 +63,6 @@
                          align="center"
                          show-overflow-tooltip
                          prop="update_time"></el-table-column>
-
         <el-table-column label="发布日期"
                          min-width="160"
                          align="center"
@@ -141,7 +140,7 @@ export default {
           window.innerHeight - this.$refs.activityTable.$el.offsetTop - 150;
       };
     });
-    this.getList();
+    // this.getList();
   },
   methods: {
     formatTime (row, column, cellValue, index) {

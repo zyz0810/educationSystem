@@ -28,10 +28,10 @@ const user = {
     roles: [],
     permissions: [],
     crm_mobile: '',
-    agent_number: '', //代办数
-    ineffective_count:'',//已过期
-    will_effective_count:'',//即将过期
-    customer_store_ids:'',
+    // agent_number: '', //代办数
+    // ineffective_count:'',//已过期
+    // will_effective_count:'',//即将过期
+    // customer_store_ids:'',
   },
 
   mutations: {
@@ -59,22 +59,22 @@ const user = {
     SET_PERSONA: (state, persona) => {
       state.persona = persona
     },
-    // 代办数
-    SET_AGENT_NUMBER: (state, agent_number) => {
-      state.agent_number = agent_number
-    },
-    // 已过期
-    SET_INEFFECTIVE_COUNT: (state, ineffective_count) => {
-      state.ineffective_count = ineffective_count
-    },
-    // 即将过期
-    SET_WILL_EFFECTIVE_COUNT: (state, will_effective_count) => {
-      state.will_effective_count = will_effective_count
-    },
-    // 代办事项分配给我的客户跳转客户列表参数
-    SET_CUSTOMER_STORE_IDS: (state, customer_store_ids) => {
-      state.customer_store_ids = customer_store_ids
-    },
+    // // 代办数
+    // SET_AGENT_NUMBER: (state, agent_number) => {
+    //   state.agent_number = agent_number
+    // },
+    // // 已过期
+    // SET_INEFFECTIVE_COUNT: (state, ineffective_count) => {
+    //   state.ineffective_count = ineffective_count
+    // },
+    // // 即将过期
+    // SET_WILL_EFFECTIVE_COUNT: (state, will_effective_count) => {
+    //   state.will_effective_count = will_effective_count
+    // },
+    // // 代办事项分配给我的客户跳转客户列表参数
+    // SET_CUSTOMER_STORE_IDS: (state, customer_store_ids) => {
+    //   state.customer_store_ids = customer_store_ids
+    // },
   },
 
   actions: {

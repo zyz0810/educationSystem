@@ -62,12 +62,12 @@ export default {
       "sidebar",
       "permission_routes",
       "name",
-      "agent_number",
-      "ineffective_count",
-      "will_effective_count",
-      "provider_status",
-      "provider_type",
-      "customer_store_ids",
+      // "agent_number",
+      // "ineffective_count",
+      // "will_effective_count",
+      // "provider_status",
+      // "provider_type",
+      // "customer_store_ids",
       "persona"
     ]),
     setting: {

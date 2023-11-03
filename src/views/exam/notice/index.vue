@@ -79,8 +79,8 @@
           <template slot-scope="scope">
 
               <span v-if="scope.row.is_consult == 1" >咨询师端</span>
-              <span v-else-if="scope.row.is_consult == 3" >家长端</span>
-              <span v-else-if="scope.row.is_consult == 4" >家长端，咨询师端</span>
+              <span v-else-if="scope.row.is_consult == 2" >家长端</span>
+              <span v-else-if="scope.row.is_consult == 3" >家长端，咨询师端</span>
 
           </template>
         </el-table-column>

@@ -41,6 +41,11 @@
                          show-overflow-tooltip
                          prop="role" :formatter="formatterRole">
         </el-table-column>
+        <el-table-column label="邀请码" v-if="listQuery.role == 'supplier'"
+                         align="left"
+                         show-overflow-tooltip
+                         prop="invite_code">
+        </el-table-column>
 
         <el-table-column label="操作"
                          align="left"

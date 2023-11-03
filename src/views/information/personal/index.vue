@@ -10,11 +10,10 @@
       </el-form-item>
       <el-form-item label="">
           <el-select v-model="listQuery.channel" clearable @change="queryList" placeholder="请选择">
-            <el-option label="渠道无值" value=""></el-option>
-<!--            <el-option v-for="(item, index) in channelList"-->
-<!--                       :key="index"-->
-<!--                       :label="item.name"-->
-<!--                       :value="item.id"></el-option>-->
+            <el-option v-for="(item, index) in channelList"
+                       :key="index"
+                       :label="item"
+                       :value="item"></el-option>
           </el-select>
       </el-form-item>
     </el-form>
@@ -74,7 +73,7 @@
                          align="left"
                          show-overflow-tooltip
                          prop="intro"></el-table-column>
-        <el-table-column label="注册来源"
+        <el-table-column label="渠道"
                          min-width="130"
                          align="left"
                          show-overflow-tooltip
@@ -101,7 +100,7 @@
 </template>
 
 <script>
-  import {getaudituserlist,} from "@/api/parent";
+  import {getuserlist,getallchannels} from "@/api/parent";
   import detail from './detail';
   export default {
     data () {
@@ -122,7 +121,7 @@
           type:'',
           option:{},
         },
-        channelList:[{id:'',name:'全部渠道'},{id:1,name:'超级管理员'},{id:2,name:'管理员'},{id:3,name:'供应商'},{id:4,name:'客服审核员'}]
+        channelList:[]
       };
     },
     components: {detail},
@@ -137,6 +136,7 @@
         };
       });
       this.getList();
+      this.getChannels();
     },
     methods: {
       formatterSex (row, column, cellValue, index) {
@@ -153,9 +153,17 @@
           option:row==''?{}:row,
         }
       },
+      // 获取渠道列表
+      getChannels () {
+        getallchannels()
+          .then(res => {
+            this.channelList = res.data == null ? [] : res.data;
+          })
+          .catch(err => console.log(err));
+      },
       // 获取客户列表
       getList () {
-        getaudituserlist({ ...this.listQuery, })
+        getuserlist({ ...this.listQuery, })
           .then(res => {
             this.dataList = res.data.total_num == 0 ? [] : res.data.list;
             // this.dataList = [{id:1,storeName:'111',storeSn:'11',linkman:'张三',mobile:'18656547892'}];

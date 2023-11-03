@@ -9,7 +9,7 @@
       <p class="f16">家庭教育需要科学引导</p>
       <p class="f16">我们也需要注重家庭氛围的营造，为孩子创造一个稳定、和谐的成长环境。只有这样，我们才能让孩子健康、快乐地成长</p>
       <img class="logo_img" src="./../assets/logo/logo_img01.png"/>
-      <p class="f12 p_footer">Copyright © 北京XXX数科技有限公司    京ICP备17027560号-2</p>
+<!--      <p class="f12 p_footer">Copyright © 北京XXX数科技有限公司    京ICP备17027560号-2</p>-->
       </el-col>
     </el-row>
     <el-form ref="loginForm"
