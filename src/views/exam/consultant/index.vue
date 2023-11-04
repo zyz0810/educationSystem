@@ -79,14 +79,9 @@
                          show-overflow-tooltip
                          align="left"
                          prop="intro">
-<!--          <template slot-scope="scope">-->
-<!--            <span class="mr10">{{scope.row.intro}}</span>-->
-<!--            <span v-if="scope.row.label != null && scope.row.label != [] && scope.row.label.length > 0">-->
-<!--               <span class="person_tag" v-for="(item,index) in scope.row.label">{{item}}</span>-->
-<!--            <span class="f16 bold yellow02" v-show="scope.row.label.length > 2">…</span>-->
-<!--            </span>-->
-
-<!--          </template>-->
+          <template slot-scope="scope">
+            <span v-html="scope.row.intro"></span>
+          </template>
         </el-table-column>
         <el-table-column label="分类"
                          width="220"

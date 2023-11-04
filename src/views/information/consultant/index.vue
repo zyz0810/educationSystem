@@ -9,7 +9,7 @@
                   placeholder="搜索/ID/姓名/手机号" />
       </el-form-item>
       <el-form-item label="">
-          <el-select v-model="listQuery.channel" clearable @change="queryList" placeholder="请选择">
+          <el-select v-model="listQuery.channel" clearable @change="queryList" placeholder="请选择渠道">
             <el-option v-for="(item, index) in channelList"
                        :key="index"
                        :label="item"
@@ -84,14 +84,7 @@
                          show-overflow-tooltip
                          align="left"
                          prop="intro">
-          <!--          <template slot-scope="scope">-->
-          <!--            <span class="mr10">{{scope.row.intro}}</span>-->
-          <!--            <span v-if="scope.row.label != null && scope.row.label != [] && scope.row.label.length > 0">-->
-          <!--               <span class="person_tag" v-for="(item,index) in scope.row.label">{{item}}</span>-->
-          <!--            <span class="f16 bold yellow02" v-show="scope.row.label.length > 2">…</span>-->
-          <!--            </span>-->
-
-          <!--          </template>-->
+          <template slot-scope="scope"><span v-html="scope.row.intro"></span></template>
         </el-table-column>
         <el-table-column label="分类"
                          width="220"
@@ -144,7 +137,7 @@
 </template>
 
 <script>
-  import {getauditconsultlist,} from "@/api/counselor";
+  import {getconsultlist,} from "@/api/counselor";
   import {getallchannels} from "@/api/parent";
   import detail from './detail';
   export default {
@@ -205,7 +198,7 @@
       },
       // 获取客户列表
       getList () {
-        getauditconsultlist({ ...this.listQuery, })
+        getconsultlist({ ...this.listQuery, })
           .then(res => {
             this.dataList = res.data.total_num == 0 ? [] : res.data.list;
             // this.dataList = [{id:1,storeName:'111',storeSn:'11',linkman:'张三',mobile:'18656547892'}];

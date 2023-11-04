@@ -24,3 +24,14 @@ export function auditconsultinfo(query) {
     params: query
   })
 }
+/* 人员信息 -- 咨询师列表
+ * pn
+ * rn
+*/
+export function getconsultlist(query) {
+  return request({
+    url: '/pc/getconsultlist',
+    method: 'get',
+    params: query
+  })
+}

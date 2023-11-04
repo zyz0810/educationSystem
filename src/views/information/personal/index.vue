@@ -9,7 +9,7 @@
                   placeholder="搜索/ID/姓名/手机号" />
       </el-form-item>
       <el-form-item label="">
-          <el-select v-model="listQuery.channel" clearable @change="queryList" placeholder="请选择">
+          <el-select v-model="listQuery.channel" clearable @change="queryList" placeholder="请选择渠道">
             <el-option v-for="(item, index) in channelList"
                        :key="index"
                        :label="item"
