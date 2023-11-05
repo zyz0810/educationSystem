@@ -14,7 +14,7 @@
 
       <el-form-item :label="titleMap[dialogStatus]+'原因'"
                     prop="reason">
-        <el-select v-model="formData.reason" placeholder="请选择" v-if="infoData.type == 'reject'">
+        <el-select v-model="formData.reason" placeholder="请选择" v-if="infoData.type != 'reject'">
           <el-option v-for="(item, index) in reasonList"
                      :key="'reason'+index"
                      :label="item"
@@ -95,7 +95,7 @@ export default {
       dialogStatus: '',
       rules: {
         reason: [
-          { required: true, message: "请选择类型", trigger: "blur" }
+          { required: true, message: "请选择", trigger: "blur" }
         ],
       }
     };

@@ -39,7 +39,7 @@
       </div>
       <div class="flex border_bottom1 info_content_line">
         <div class="info_txt">个人简介</div>
-        <div class="flex_bd text-right detail_intro" v-html="formData.intro"></div>
+        <div class="flex_bd text-right detail_intro"  style='white-space: pre-wrap;' v-html="formData.intro"></div>
       </div>
     </div>
     <div class="mt_10 info_content">

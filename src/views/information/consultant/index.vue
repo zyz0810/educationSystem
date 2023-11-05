@@ -8,14 +8,14 @@
                   @change="queryList"
                   placeholder="搜索/ID/姓名/手机号" />
       </el-form-item>
-      <el-form-item label="">
-          <el-select v-model="listQuery.channel" clearable @change="queryList" placeholder="请选择渠道">
-            <el-option v-for="(item, index) in channelList"
-                       :key="index"
-                       :label="item"
-                       :value="item"></el-option>
-          </el-select>
-      </el-form-item>
+<!--      <el-form-item label="">-->
+<!--          <el-select v-model="listQuery.channel" clearable @change="queryList" placeholder="请选择渠道">-->
+<!--            <el-option v-for="(item, index) in channelList"-->
+<!--                       :key="index"-->
+<!--                       :label="item"-->
+<!--                       :value="item"></el-option>-->
+<!--          </el-select>-->
+<!--      </el-form-item>-->
     </el-form>
     <div class="container mt_10">
       <el-table v-loading="listLoading"
@@ -84,7 +84,7 @@
                          show-overflow-tooltip
                          align="left"
                          prop="intro">
-          <template slot-scope="scope"><span v-html="scope.row.intro"></span></template>
+          <template slot-scope="scope"><span style='white-space: pre-wrap;' v-html="scope.row.intro"></span></template>
         </el-table-column>
         <el-table-column label="分类"
                          width="220"
@@ -108,11 +108,11 @@
 <!--            <span class="f16 bold yellow02">…</span>-->
 <!--          </template>-->
 <!--        </el-table-column>-->
-        <el-table-column label="渠道无字段"
-                         min-width="130"
-                         align="left"
-                         show-overflow-tooltip
-                         prop="mobile"></el-table-column>
+<!--        <el-table-column label="渠道无字段"-->
+<!--                         min-width="130"-->
+<!--                         align="left"-->
+<!--                         show-overflow-tooltip-->
+<!--                         prop="mobile"></el-table-column>-->
         <el-table-column label="提交时间"
                          min-width="150"
                          align="left"
@@ -138,7 +138,7 @@
 
 <script>
   import {getconsultlist,} from "@/api/counselor";
-  import {getallchannels} from "@/api/parent";
+  // import {getallchannels} from "@/api/parent";
   import detail from './detail';
   export default {
     data () {
@@ -174,7 +174,7 @@
         };
       });
       this.getList();
-      this.getChannels();
+      // this.getChannels();
     },
     methods: {
       formatterSex (row, column, cellValue, index) {

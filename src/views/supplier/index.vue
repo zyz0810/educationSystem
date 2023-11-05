@@ -77,7 +77,7 @@
             {{scope.row.mobile | phoneStart}}
           </template>
         </el-table-column>
-        <el-table-column label="收入金额"
+        <el-table-column label="可提现金额"
                          min-width="100"
                          align="left"
                          show-overflow-tooltip
