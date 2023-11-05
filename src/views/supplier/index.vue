@@ -36,6 +36,13 @@
 <!--      </el-form-item>-->
     </el-form>
     <div class="container mt_10">
+      <div class="total_row" v-show="listQuery.user_type == '1'">
+        <span>可提现总额：<span class="bold"><CountTo :startVal='0' :endVal='Number(1568230.00)' :duration='2000' :decimals="2"/></span>元</span>
+        <span>收入总额:<span class="bold"><CountTo :startVal='0' :endVal='Number(1568230.00)' :duration='2000' :decimals="2"/>元</span></span>
+      </div>
+      <div class="total_row" v-show="listQuery.user_type == '2'">
+        <span>支出总额：<span class="bold"><CountTo :startVal='0' :endVal='Number(1568230.00)' :duration='2000' :decimals="2"/></span>元</span>
+      </div>
       <el-table v-loading="listLoading"
                 :data="dataList"
                 :max-height="tableHeight"
@@ -197,5 +204,19 @@
   }
   /deep/.search_box .el-form-item {
     float: none;
+  }
+  .total_row{
+    color:#515a6e;
+    font-size: 12px;
+    margin-bottom: 10px;
+    background: #F8F9FA;
+    line-height: 30px;
+    padding: 0 20px;
+    &>span{
+      margin-right: 50px;
+      &>span{
+        color:#000;
+      }
+    }
   }
 </style>

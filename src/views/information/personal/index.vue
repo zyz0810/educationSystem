@@ -46,7 +46,7 @@
           </template>
         </el-table-column>
 
-        <el-table-column label="ID"
+        <el-table-column label="家长ID"
                          min-width="100"
                          align="left"
                          show-overflow-tooltip
@@ -107,7 +107,7 @@
       return {
         listQuery: {
           keyword: "",
-          channel:"",
+          channel:"全部渠道",
           rn: 10,
           pn: 1,
         },

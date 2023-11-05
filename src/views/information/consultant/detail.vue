@@ -7,7 +7,11 @@
              top="15vh"
              :title="textMap[dialogStatus]">
     <div class="flex mr10 ml_10">
-      <div class="flex_hd mr5"><img class="head_img_detail" :src="formData.portrait"/></div>
+      <div class="flex_hd mr5">
+        <viewer :images="formData.portrait">
+          <img class="head_img_detail" :src="formData.portrait"/>
+        </viewer>
+      </div>
       <div class="flex_bd">
         <div class="f14 flex ">{{formData.user_name}}
           <img src="./../../../assets/image/male.png" class="sex_icon ml5" v-show="formData.sex == 1"/>

@@ -47,7 +47,7 @@
             </span>
           </template>
         </el-table-column>
-        <el-table-column label="ID"
+        <el-table-column label="家长ID"
                          min-width="80"
                          align="left"
                          show-overflow-tooltip

@@ -46,11 +46,11 @@
           </template>
         </el-table-column>
 
-        <el-table-column label="ID"
+        <el-table-column label="咨询师ID"
                          min-width="100"
                          show-overflow-tooltip
                          align="left"
-                         prop="user_id">
+                         prop="id">
         </el-table-column>
         <el-table-column label="手机"
                          min-width="100"
@@ -84,7 +84,7 @@
                          show-overflow-tooltip
                          align="left"
                          prop="intro">
-          <template slot-scope="scope"><span style='white-space: pre-wrap;' v-html="scope.row.intro"></span></template>
+          <template slot-scope="scope"><span class="over_html" style='white-space: pre-wrap;' v-html="scope.row.intro"></span></template>
         </el-table-column>
         <el-table-column label="分类"
                          width="220"

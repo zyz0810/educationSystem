@@ -47,7 +47,7 @@
           </template>
         </el-table-column>
 
-        <el-table-column label="ID"
+        <el-table-column label="家长ID"
                          min-width="100"
                          show-overflow-tooltip
                          align="left"
@@ -80,7 +80,7 @@
                          align="left"
                          prop="intro">
           <template slot-scope="scope">
-            <span v-html="scope.row.intro"></span>
+            <span style='white-space: pre-wrap;' v-html="scope.row.intro"></span>
           </template>
         </el-table-column>
         <el-table-column label="分类"
