@@ -36,13 +36,15 @@
 <!--      </el-form-item>-->
     </el-form>
     <div class="container mt_10">
-      <div class="total_row" v-show="listQuery.user_type == '1'">
-        <span>可提现总额：<span class="bold"><CountTo :startVal='0' :endVal='Number(1568230.00)' :duration='2000' :decimals="2"/></span>元</span>
-        <span>收入总额:<span class="bold"><CountTo :startVal='0' :endVal='Number(1568230.00)' :duration='2000' :decimals="2"/>元</span></span>
+      <div class="total_row" >
+        <div class="flex_item">
+          <span class="bold total_tit">咨询师端</span>收入总额：<span class="bold"><CountTo :startVal='0' :endVal='Number(1568230.00)' :duration='2000' :decimals="2"/>元</span>
+        </div>
+        <div class="flex_item">
+          <span class="bold total_tit">家长端</span>支出总额：<span class="bold"><CountTo :startVal='0' :endVal='Number(1568230.00)' :duration='2000' :decimals="2"/>元</span>
+        </div>
       </div>
-      <div class="total_row" v-show="listQuery.user_type == '2'">
-        <span>支出总额：<span class="bold"><CountTo :startVal='0' :endVal='Number(1568230.00)' :duration='2000' :decimals="2"/></span>元</span>
-      </div>
+
       <el-table v-loading="listLoading"
                 :data="dataList"
                 :max-height="tableHeight"
@@ -84,12 +86,12 @@
             {{scope.row.mobile | phoneStart}}
           </template>
         </el-table-column>
-        <el-table-column label="可提现金额"
-                         min-width="100"
-                         align="left"
-                         show-overflow-tooltip
-                         prop="incoming_count">
-        </el-table-column>
+<!--        <el-table-column label="可提现金额"-->
+<!--                         min-width="100"-->
+<!--                         align="left"-->
+<!--                         show-overflow-tooltip-->
+<!--                         prop="incoming_count">-->
+<!--        </el-table-column>-->
         <el-table-column label="本月汇总"
                          min-width="100"
                          align="left"
@@ -209,14 +211,21 @@
     color:#515a6e;
     font-size: 12px;
     margin-bottom: 10px;
-    background: #F8F9FA;
-    line-height: 30px;
-    padding: 0 20px;
-    &>span{
-      margin-right: 50px;
-      &>span{
-        color:#000;
+    line-height: 35px;
+    /*padding: 0 20px;*/
+    display: flex;
+    &>.flex_item{
+      padding: 0 30px;
+      background: rgb(248,249,250);
+      &:first-child{
+        margin-right: 5px;
       }
+      .total_tit{
+        margin-right: 30px;
+      }
+      /*&>span{*/
+      /*  color:#000;*/
+      /*}*/
     }
   }
 </style>

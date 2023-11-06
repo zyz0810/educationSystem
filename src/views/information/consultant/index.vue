@@ -79,13 +79,13 @@
 <!--            <span class="f16 bold yellow02" v-show="scope.row.label.length > 2">…</span>-->
 <!--          </template>-->
 <!--        </el-table-column>-->
-        <el-table-column label="个人简介"
-                         min-width="200"
-                         show-overflow-tooltip
-                         align="left"
-                         prop="intro">
-          <template slot-scope="scope"><span class="over_html" style='white-space: pre-wrap;' v-html="scope.row.intro"></span></template>
-        </el-table-column>
+<!--        <el-table-column label="个人简介"-->
+<!--                         min-width="200"-->
+<!--                         show-overflow-tooltip-->
+<!--                         align="left"-->
+<!--                         prop="intro">-->
+<!--          <template slot-scope="scope"><span class="over_html" style='white-space: pre-wrap;' v-html="scope.row.intro"></span></template>-->
+<!--        </el-table-column>-->
         <el-table-column label="分类"
                          width="220"
                          align="left"
@@ -179,7 +179,7 @@
     methods: {
       formatterSex (row, column, cellValue, index) {
         // 1男 2女
-        return cellValue == 1 ? "男" : cellValue == 2? "女" : "";
+        return cellValue == 1 ? "男" : cellValue == 2? "女" : cellValue == 3? "保密" : "";
       },
       handelDetail (type, row) {
         this.showDetail = true

@@ -176,7 +176,7 @@
       },
       formatterSex (row, column, cellValue, index) {
         // 1男 2女
-        return cellValue == 1 ? "男" : cellValue == 2? "女" : "";
+        return cellValue == 1 ? "男" : cellValue == 2? "女" : cellValue == 3? "保密" : "";
       },
       // 删除单个
       async  handleDel(row){

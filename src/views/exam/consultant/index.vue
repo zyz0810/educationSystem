@@ -74,15 +74,15 @@
                          show-overflow-tooltip
                          align="left"
                          prop="city"></el-table-column>
-        <el-table-column label="个人简介"
-                         min-width="200"
-                         show-overflow-tooltip
-                         align="left"
-                         prop="intro">
-          <template slot-scope="scope">
-            <span style='white-space: pre-wrap;' v-html="scope.row.intro"></span>
-          </template>
-        </el-table-column>
+<!--        <el-table-column label="个人简介"-->
+<!--                         min-width="200"-->
+<!--                         show-overflow-tooltip-->
+<!--                         align="left"-->
+<!--                         prop="intro">-->
+<!--          <template slot-scope="scope">-->
+<!--            <span style='white-space: pre-wrap;' v-html="scope.row.intro"></span>-->
+<!--          </template>-->
+<!--        </el-table-column>-->
         <el-table-column label="分类"
                          width="220"
                          align="left"
@@ -203,7 +203,7 @@
       },
       formatterSex (row, column, cellValue, index) {
         // 1男 2女
-        return cellValue == 1 ? "男" : cellValue == 2? "女" : "";
+        return cellValue == 1 ? "男" : cellValue == 2? "女" : cellValue == 3? "保密" : "";
       },
       formatTime (row, column, cellValue, index) {
         return this.$moment(cellValue).format("YYYY-MM-DD HH:mm:ss");
