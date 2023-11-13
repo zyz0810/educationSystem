@@ -47,7 +47,7 @@
           </template>
         </el-table-column>
 
-        <el-table-column label="家长ID"
+        <el-table-column label="咨询师ID"
                          min-width="100"
                          show-overflow-tooltip
                          align="left"
