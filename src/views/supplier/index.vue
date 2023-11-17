@@ -38,10 +38,10 @@
     <div class="container mt_10">
       <div class="total_row" >
         <div class="flex_item">
-          <span class="bold total_tit">咨询师端</span>收入总额：<span class="bold"><CountTo :startVal='0' :endVal='Number(1568230.00)' :duration='2000' :decimals="2"/>元</span>
+          <span class="bold total_tit">咨询师端</span>收入总额：<span class="bold"><CountTo :startVal='0' :endVal='Number(totalNum.total_income)' :duration='2000' :decimals="2"/>元</span>
         </div>
         <div class="flex_item">
-          <span class="bold total_tit">家长端</span>支出总额：<span class="bold"><CountTo :startVal='0' :endVal='Number(1568230.00)' :duration='2000' :decimals="2"/>元</span>
+          <span class="bold total_tit">家长端</span>支出总额：<span class="bold"><CountTo :startVal='0' :endVal='Number(totalNum.total_cost)' :duration='2000' :decimals="2"/>元</span>
         </div>
       </div>
 
@@ -159,6 +159,10 @@
           type:'',
           option:{},
         },
+        totalNum:{
+          total_income:0,
+          total_cost:0,
+        },
       };
     },
 
@@ -182,6 +186,10 @@
             this.dataList = res.data.total_num == 0 ? [] : res.data.users;
             // this.dataList = [{id:1,storeName:'111',storeSn:'11',linkman:'张三',mobile:'18656547892'}];
             this.total = res.data.total_num;
+            this.totalNum={
+              total_income : res.data.total_income ? res.data.total_income : 0,
+              total_cost : res.data.total_cost ? res.data.total_income : 0,
+            };
           })
           .catch(err => console.log(err));
       },
