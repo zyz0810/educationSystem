@@ -6,7 +6,7 @@
         <el-input v-model.trim="listQuery.search_key"
                   clearable suffix-icon="el-icon-search"
                   @change="queryList"
-                  placeholder="请输入" />
+                  placeholder="请输入ID/用户名" />
       </el-form-item>
       <el-form-item label="">
         <el-date-picker
@@ -141,11 +141,19 @@
     data () {
       return {
         // 0: all. 1: consult(咨询师) 2: user (普通家长)
-        userList:[{id:0,name:'所有用户'},{id:1,name:'咨询师'},{id:2,name:'普通家长'},],
+        userList:[
+        //   {
+        //   id:0,name:'所有用户'
+        // },
+          {
+          id:1,name:'咨询师'
+        },{
+          id:2,name:'普通家长'
+        },],
         listQuery: {
           search_key: "",
           month:"",
-          user_type:0,
+          user_type:1,
           rn: 10,
           pn: 1,
         },
