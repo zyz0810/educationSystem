@@ -241,7 +241,8 @@
 <!--        </div>-->
 
         <div v-for="(item,index) in dataList.users" :key="index" :class="['flex_item', 'statistics_item',(item.name == '咨询者总量'||item.name == '咨询师总量')&&listQuery.type !== 1?'visibility':'']">
-          <p class="f14">{{item.name}} <el-popover
+          <p class="f14">{{item.name}}
+            <el-popover v-if="item.name == '新增咨询者' || item.name == '新增咨询师'"
             placement="top-start"
             width="200"
             trigger="hover"
@@ -253,7 +254,8 @@
               </div>
             </div>
             <i slot="reference" class="iconfont icon-tips gray01 f12 "></i>
-          </el-popover></p>
+          </el-popover>
+          </p>
           <p class="f26 bold"> <CountTo :startVal='0' :endVal='Number(item.value)' :duration='2000' /></p>
         </div>
       </div>

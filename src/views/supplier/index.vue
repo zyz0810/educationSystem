@@ -196,7 +196,7 @@
             this.total = res.data.total_num;
             this.totalNum={
               total_income : res.data.total_income ? res.data.total_income : 0,
-              total_cost : res.data.total_cost ? res.data.total_income : 0,
+              total_cost : res.data.total_cost ? res.data.total_cost : 0,
             };
           })
           .catch(err => console.log(err));
