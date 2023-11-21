@@ -73,6 +73,11 @@
                          align="left"
                          show-overflow-tooltip
                          prop="intro"></el-table-column>
+        <el-table-column label="邀请码"
+                         min-width="180"
+                         align="left"
+                         show-overflow-tooltip
+                         prop="invite_code"></el-table-column>
         <el-table-column label="渠道"
                          min-width="130"
                          align="left"

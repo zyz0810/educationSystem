@@ -6,7 +6,7 @@
         <el-input v-model.trim="listQuery.keyword"
                   clearable suffix-icon="el-icon-search"
                   @change="queryList"
-                  placeholder="标题/关键词" />
+                  placeholder="id /手机号/用户名" />
       </el-form-item>
       <el-form-item label="">
         <el-select v-model="listQuery.status" clearable placeholder="请选择" @change="queryList">
