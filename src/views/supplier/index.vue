@@ -25,6 +25,15 @@
                      :value="item.id"></el-option>
         </el-select>
       </el-form-item>
+<!--      roleList:[{id:'',name:'全部'},{id:'super_manager',name:'超级管理员'},{id:'manager',name:'管理员'},{id:'supplier',name:'供应商'},{id:'custom_service',name:'客服审核员'}],-->
+      <el-form-item label="">
+        <el-select v-model="listQuery.channel" clearable @change="queryList" placeholder="请选择渠道" v-if="persona == 'super_manager' || persona == 'manager'">
+          <el-option v-for="(item, index) in channelList"
+                     :key="index"
+                     :label="item"
+                     :value="item"></el-option>
+        </el-select>
+      </el-form-item>
 <!--      <el-form-item label="">-->
 <!--        <el-select v-model="listQuery.one" placeholder="请选择" @change="queryCustomerList">-->
 <!--          <el-option label="邀请人" value=""></el-option>-->
@@ -136,7 +145,8 @@
 
 <script>
   import {suppliers,} from "@/api/supplier";
-
+  import {getallchannels} from "@/api/parent";
+  import { mapState } from "vuex";
   export default {
     data () {
       return {
@@ -154,6 +164,7 @@
           search_key: "",
           month:"",
           user_type:1,
+          channel:'全部渠道',
           rn: 10,
           pn: 1,
         },
@@ -171,10 +182,14 @@
           total_income:0,
           total_cost:0,
         },
+        channelList:[],
       };
     },
-
-    computed: {},
+    computed: {
+      ...mapState({
+        persona: (state) => state.user.persona,
+      }),
+    },
     mounted () {
       this.$nextTick(() => {
         this.tableHeight =
@@ -185,8 +200,17 @@
         };
       });
       this.getList();
+      this.getChannels();
     },
     methods: {
+      // 获取渠道列表
+      getChannels () {
+        getallchannels()
+          .then(res => {
+            this.channelList = res.data == null ? [] : res.data;
+          })
+          .catch(err => console.log(err));
+      },
       // 获取客户列表
       getList () {
         suppliers({ ...this.listQuery, })
