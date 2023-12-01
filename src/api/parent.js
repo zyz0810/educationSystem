@@ -46,3 +46,12 @@ export function getallchannels(query) {
     params: query
   })
 }
+/* 家长信息列表--修改邀请码
+*/
+export function rebindinvitecode(query) {
+  return request({
+    url: '/pc/rebindinvitecode',
+    method: 'get',
+    params: query
+  })
+}

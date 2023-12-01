@@ -87,6 +87,16 @@
                          min-width="150"
                          align="left"
                          prop="create_time" :formatter="formatTime"></el-table-column>
+
+        <el-table-column label="操作"
+                         align="left"
+                         width="100"
+                         prop="remarks">
+          <template slot-scope="scope">
+            <el-button type="text" @click.stop="handleInviteCode('inviteCode',scope.row)" v-if="persona == 'super_manager'">修改邀请码</el-button>
+          </template>
+        </el-table-column>
+
         <template slot="empty">
           <empty-table/>
         </template>
@@ -101,12 +111,17 @@
     <detail :showDialog.sync="showDetail"
             :infoData='infoData'
             @updateList='getList' />
+    <inviteCode :showDialog.sync="showInviteCode"
+            :infoData='infoData'
+            @updateList='getList' />
   </div>
 </template>
 
 <script>
   import {getuserlist,getallchannels} from "@/api/parent";
   import detail from './detail';
+  import inviteCode from './inviteCode';
+  import { mapState } from "vuex";
   export default {
     data () {
       return {
@@ -126,11 +141,16 @@
           type:'',
           option:{},
         },
-        channelList:[]
+        channelList:[],
+        showInviteCode:false,
       };
     },
-    components: {detail},
-    computed: {},
+    components: {detail,inviteCode},
+    computed: {
+      ...mapState({
+        persona: (state) => state.user.persona,
+      }),
+    },
     mounted () {
       this.$nextTick(() => {
         this.tableHeight =
@@ -144,6 +164,13 @@
       this.getChannels();
     },
     methods: {
+      handleInviteCode(type,row){
+        this.showInviteCode = true;
+        this.infoData = {
+          type:type,
+          option:row==''?{}:row,
+        }
+      },
       formatterSex (row, column, cellValue, index) {
         // 1男 2女
         return cellValue == 1 ? "男" : cellValue == 2? "女" : cellValue == 3? "保密" : "";
@@ -152,7 +179,7 @@
         return this.$moment(cellValue).format("YYYY-MM-DD HH:mm:ss");
       },
       handelDetail (type, row) {
-        this.showDetail = true
+        this.showDetail = true;
         this.infoData = {
           type:type,
           option:row==''?{}:row,

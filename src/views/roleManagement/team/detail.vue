@@ -114,6 +114,7 @@ export default {
         if (valid) {
           updateuser(this.formData)
             .then(res => {
+              this.$message({ message: res.errmsg, type: 'success' });
               this.$emit("updateList");
               this.dialogVisible = false;
             })
@@ -132,6 +133,7 @@ export default {
         if (valid) {
           adduser(this.formData)
             .then(res => {
+              this.$message({ message: res.errmsg, type: 'success' });
               this.$emit("updateList");
               this.dialogVisible = false;
             })
