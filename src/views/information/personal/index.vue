@@ -74,7 +74,7 @@
                          show-overflow-tooltip
                          prop="intro"></el-table-column>
         <el-table-column label="邀请码"
-                         min-width="180"
+                         min-width="100"
                          align="left"
                          show-overflow-tooltip
                          prop="invite_code"></el-table-column>
