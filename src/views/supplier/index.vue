@@ -128,6 +128,11 @@
                          show-overflow-tooltip
                          prop="invitor_code">
         </el-table-column>
+        <el-table-column label="区域"
+                         min-width="100"
+                         align="left"
+                         show-overflow-tooltip
+                         prop="phone_zone"></el-table-column>
         <template slot="empty">
           <empty-table/>
         </template>

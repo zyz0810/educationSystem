@@ -63,6 +63,11 @@
                          show-overflow-tooltip
                          align="left"
                          prop="sex" :formatter="formatterSex"></el-table-column>
+        <el-table-column label="区域"
+                         min-width="100"
+                         align="left"
+                         show-overflow-tooltip
+                         prop="phone_zone"></el-table-column>
         <el-table-column label="城市"
                          min-width="100"
                          show-overflow-tooltip
