@@ -58,7 +58,7 @@
                 highlight-current-row>
         <el-table-column :reserve-selection="true"
                          type="selection"></el-table-column>
-        <el-table-column label="个人姓名"
+        <el-table-column label="咨询师姓名"
                          min-width="120"
                          align="left"
                          show-overflow-tooltip
@@ -73,7 +73,7 @@
 
           </template>
         </el-table-column>
-        <el-table-column label="ID"
+        <el-table-column label="咨询师ID"
                          min-width="100"
                          align="left"
                          show-overflow-tooltip
