@@ -12,3 +12,13 @@ export function summerys(query) {
     params: query
   })
 }
+/* 获取某一天的新增订单
+ * day
+ */
+export function orderlistbyday(query) {
+  return request({
+    url: '/pc/orderlistbyday',
+    method: 'get',
+    params: query
+  })
+}

@@ -322,7 +322,21 @@
         <div class="statistics_cont flex">
 
           <div v-for="(item,index) in dataList.voice" :key="index" :class="['flex_item', 'statistics_item',item.name == '本月下单数量'&&listQuery.type == 2?'visibility':'',item.name == '今日下单数量'&&listQuery.type == 3?'visibility':'']">
-            <p class="f14">{{item.name}}</p>
+            <p class="f14">{{item.name}}
+              <el-popover v-if="item.name == '今日下单数量'"
+                          placement="top-start"
+                          width="200"
+                          trigger="hover"
+              >
+                <div class="hover_list">
+                  <div class="flex" v-for="(itemB,indexB) in orderList" :key="'order'+indexB">
+                    <div class="flex_bd">{{itemB.user_name}}</div>
+                    <div>{{itemB.amount}}</div>
+                  </div>
+                </div>
+                <i slot="reference" class="iconfont icon-tips gray01 f12 "></i>
+              </el-popover>
+            </p>
             <p class="f26 bold"> <CountTo :startVal='0' :endVal='Number(item.value)' :duration='2000' /></p>
           </div>
 
@@ -368,7 +382,7 @@
 </template>
 
 <script>
-import {summerys,} from "@/api/businessData";
+import {summerys,orderlistbyday} from "@/api/businessData";
 const currentDate = Date.now();
 export default {
   data () {
@@ -413,8 +427,8 @@ export default {
       // },
       listLoading: false,
       dataList: {},
-      popoverContent:'张三<br>李四',
-      arr:[{name:'张三',num:11},{name:'李四',num:22}]
+      arr:[{name:'张三',num:11},{name:'李四',num:22}],
+      orderList:[],
     };
   },
   computed: {
@@ -431,30 +445,42 @@ export default {
   },
   mounted () {
     this.getList();
+    this.getOrder();
   },
   methods: {
     handelType(e){
       if(e == 2){
         this.listQuery.date = this.$moment().format("YYYY-MM-DD");
+        this.getOrder();
       }else if(e == 3){
         this.listQuery.date = this.$moment().format('yyyy-MM');
       }else{
         this.listQuery.date = '';
+        this.getOrder();
       }
       console.log(e,this.listQuery.date )
-
       this.getList();
     },
     handelTime(e){
       console.log(e)
       // this.listQuery.date = '';
       this.getList();
+      this.getOrder();
     },
     // 获取客户列表
     getList () {
       summerys({ ...this.listQuery, })
         .then(res => {
           this.dataList = res.data;
+        })
+        .catch(err => console.log(err));
+    },
+    // 获取某一天的新增订单
+    getOrder () {
+      orderlistbyday({ ...this.listQuery, })
+        .then(res => {
+          this.orderList = res.data.order_list == null ? [] : res.data.order_list;
+          console.log('this.orderList',this.orderList)
         })
         .catch(err => console.log(err));
     },
@@ -488,5 +514,7 @@ export default {
     line-height: 2;
     font-size: 12px;
     color: #2C4068;
+    max-height: 240px;
+    overflow: auto;
   }
 </style>
