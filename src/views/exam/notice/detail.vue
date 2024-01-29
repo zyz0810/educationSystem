@@ -29,6 +29,12 @@
           <el-checkbox :label="1">咨询师端</el-checkbox>
         </el-checkbox-group>
       </el-form-item>
+      <el-form-item label="排序：" prop="weight">
+        <el-input v-model.trim="formData.weight" v-show="!isCanView"
+                  placeholder="请输入"
+                  clearable />
+        <span v-show="isCanView">{{formData.weight}}</span>
+      </el-form-item>
       <el-form-item label="公告Banner："
                     prop="cover">
 <!--        <el-input v-model.trim="formData.two" v-if="!isCanView"-->
@@ -103,6 +109,7 @@ export default {
         cmd: '',
         notice_content: '',
         is_consult:[],
+        weight:'',
       },
       isChange:false,
       textMap: {
@@ -160,7 +167,7 @@ export default {
       this.$refs.ruleForm.validate(valid => {
         if (valid) {
           let formData = {};
-          const {id,notice_type,cover,cmd,notice_content,} = this.formData;
+          const {id,notice_type,cover,cmd,notice_content,weight,} = this.formData;
           let is_consult1='';
           if(this.formData.is_consult.length==1 && this.formData.is_consult[0] == [1]){
             is_consult1 = 1;
@@ -170,9 +177,9 @@ export default {
             is_consult1 = 3;
           }
           if(this.formData.notice_type == 1){
-            formData = {id,notice_type,cover,cmd,is_consult:is_consult1};
+            formData = {id,notice_type,cover,cmd,is_consult:is_consult1,weight};
           }else{
-            formData = {id,notice_type,cover,notice_content,is_consult:is_consult1};
+            formData = {id,notice_type,cover,notice_content,is_consult:is_consult1,weight};
           }
           publishnotice(formData)
             .then(res => {
@@ -195,7 +202,7 @@ export default {
         if (valid) {
           let formData = {};
           console.log('this.formData',this.formData)
-          const {id,notice_type,cover,cmd,notice_content,} = this.formData;
+          const {id,notice_type,cover,cmd,notice_content,weight} = this.formData;
           let is_consult1='';
           if(this.formData.is_consult.length==1 && this.formData.is_consult[0] == [1]){
             is_consult1 = 1;
@@ -205,9 +212,9 @@ export default {
             is_consult1 = 3;
           }
           if(this.formData.notice_type == 1){
-            formData = {id,notice_type,cover,cmd,is_consult:is_consult1};
+            formData = {id,notice_type,cover,cmd,is_consult:is_consult1,weight};
           }else{
-            formData = {id,notice_type,cover,notice_content,is_consult:is_consult1};
+            formData = {id,notice_type,cover,notice_content,is_consult:is_consult1,weight};
           }
           editnotice(formData)
             .then(res => {
@@ -224,7 +231,7 @@ export default {
     open () {
       // 咨询师的 1  家长的 2  全部的 3
       if(this.infoData.type != 'create'){
-        const {id,type,cover,cmd,content,} = this.infoData.option;
+        const {id,type,cover,cmd,content,weight,} = this.infoData.option;
         let is_consult=[];
         if(this.infoData.option.is_consult == 1){
           is_consult = [1];
@@ -233,7 +240,7 @@ export default {
         }else if(this.infoData.option.is_consult == 3){
           is_consult = [1,2];
         }
-        this.formData = {id,notice_type:type,cover,cmd,notice_content:content,is_consult:is_consult};
+        this.formData = {id,notice_type:type,cover,cmd,notice_content:content,is_consult:is_consult,weight};
       }
       this.dialogStatus = this.infoData.type;
       this.$nextTick(()=>{
@@ -251,7 +258,15 @@ export default {
         cmd: '',
         notice_content: '',
         is_consult:[],
+        weight:'',
       });
+      this.isChange=false;
+      this.textMap= {
+        update: '编辑公告',
+          create: '新建公告',
+          detail:'公告详情'
+      };
+      this.dialogStatus= '';
       this.dialogVisible = false;
     }
   }

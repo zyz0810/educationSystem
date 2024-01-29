@@ -24,6 +24,12 @@
           }
         "
                 highlight-current-row>
+        <el-table-column label="顺序"
+                         width="100"
+                         align="left"
+                         show-overflow-tooltip
+                         prop="weight">
+        </el-table-column>
         <el-table-column label="公告banner"
                          min-width="120"
                          align="left"

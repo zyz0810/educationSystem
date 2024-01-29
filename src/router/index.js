@@ -394,7 +394,7 @@ export const asyncRoutes = [
       }, {
         path: 'consultant',
         component: resolve => require(['@/views/information/consultant/index'], resolve),
-        name: 'consultant',
+        name: 'consultantTwo',
         meta: {
           title: '咨询师简介/定位',
           noCache: true,

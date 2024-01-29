@@ -9,21 +9,26 @@ let requestUrl ='https://xcx.xgzjj365.com/'  //测试环境
 
 switch (process.env.VUE_APP_MODE) {
  case 'development':
-  requestUrl ='https://xcx.xgzjj365.com/' //dev环境
+  // requestUrl ='https://xcx.xgzjj365.com/' //dev环境
+   requestUrl ='http://www.xgzjj365.com/' //dev环境
   break;
  case 'production':
- requestUrl ='https://xcx.xgzjj365.com/'
+ // requestUrl ='https://xcx.xgzjj365.com/'
+   requestUrl ='http://www.xgzjj365.com/'
  break;
  case 'staging':
- requestUrl ='https://xcx.xgzjj365.com/'
- break;
+ // requestUrl ='https://xcx.xgzjj365.com/'
+   requestUrl ='http://www.xgzjj365.com/'
+   break;
  case 'test':
- requestUrl ='https://xcx.xgzjj365.com/'
- break;
+ // requestUrl ='https://xcx.xgzjj365.com/'
+   requestUrl ='http://www.xgzjj365.com/'
+   break;
 
  default:
-   requestUrl ='https://xcx.xgzjj365.com/'  //测试环境
-  // requestUrl ='http://23.60.185.194:9200/'   //UAT环境
+   // requestUrl ='https://xcx.xgzjj365.com/'  //测试环境
+   requestUrl ='http://www.xgzjj365.com/'   //测试环境
+   // requestUrl ='http://23.60.185.194:9200/'   //UAT环境
   // requestUrl ='http://123.60.145.79:9200/' //dev环境
   break;
 }
