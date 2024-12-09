@@ -3,9 +3,7 @@ import Qs from 'qs'
 import { MessageBox, Message, Confirm } from 'element-ui'
 import store from '@/store'
 import { getToken } from '@/utils/auth'
-let requestUrl ='https://xcx.xgzjj365.com/'  //测试环境
-// let requestUrl ='http://23.60.185.194:9200/'  //UAT环境
-// let requestUrl ='http://123.60.145.79:9200/'  //dev环境
+let requestUrl = ''  //测试环境
 
 switch (process.env.VUE_APP_MODE) {
  case 'development':
@@ -26,10 +24,7 @@ switch (process.env.VUE_APP_MODE) {
    break;
 
  default:
-   // requestUrl ='https://xcx.xgzjj365.com/'  //测试环境
-   requestUrl ='http://www.xgzjj365.com/'   //测试环境
-   // requestUrl ='http://23.60.185.194:9200/'   //UAT环境
-  // requestUrl ='http://123.60.145.79:9200/' //dev环境
+   // requestUrl =''  //测试环境
   break;
 }
 // create an axios instance

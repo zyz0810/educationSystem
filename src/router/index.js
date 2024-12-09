@@ -190,6 +190,19 @@ export const asyncRoutes = [
           ]
         }
       },{
+        path: 'document',
+        component: resolve => require(['@/views/exam/document/index'], resolve),
+        name: 'document',
+        meta: {
+          title: '文章发布',
+          noCache: true,
+          icon: '',
+          // affix: true,
+          roles: [
+            'can_audit_user',
+          ]
+        }
+      },{
         path: 'aboutUs',
         component: resolve => require(['@/views/exam/aboutUs/index'], resolve),
         name: 'aboutUs',
